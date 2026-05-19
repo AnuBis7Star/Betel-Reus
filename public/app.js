@@ -124,7 +124,7 @@ let videoResumeTimer;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const accessCode = "BETEL-REUS";
-const adminCode = "ADMIN-BETEL";
+const defaultAdminCode = "ADMIN-BETEL";
 const heroImages = [
   "https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg",
   "https://i.ytimg.com/vi/V-w7Xf8OvDg/maxresdefault.jpg",
@@ -176,11 +176,15 @@ async function apiRequest(path, options = {}) {
     headers["Content-Type"] = "application/json";
     options.body = JSON.stringify(options.body);
   }
-  if (path.startsWith("/api/admin/")) headers["x-admin-code"] = adminCode;
+  if (path.startsWith("/api/admin/")) headers["x-admin-code"] = localStorage.getItem("betel-admin-code") || defaultAdminCode;
 
   const response = await fetch(path, { ...options, headers });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error || "API request failed");
+  if (!response.ok) {
+    const error = new Error(data.error || "API request failed");
+    error.status = response.status;
+    throw error;
+  }
   return data;
 }
 
@@ -197,7 +201,7 @@ async function loadBooksFromApi() {
   }
 }
 
-async function loadAdminDataFromApi() {
+async function loadAdminDataFromApi(throwOnError = false) {
   try {
     const [ordersData, auditData] = await Promise.all([
       apiRequest("/api/admin/orders?active=true"),
@@ -209,6 +213,7 @@ async function loadAdminDataFromApi() {
     saveAuditLogs();
   } catch (error) {
     usingServerData = false;
+    if (throwOnError) throw error;
   }
 }
 
@@ -558,34 +563,49 @@ async function confirmCart() {
   $("#cartMessage").textContent = translations[lang].cartSent;
 }
 
-async function unlockAdmin() {
+async function unlockAdmin(code = localStorage.getItem("betel-admin-code") || defaultAdminCode) {
+  localStorage.setItem("betel-admin-code", code);
+  await loadBooksFromApi();
+  await loadAdminDataFromApi(true);
   localStorage.setItem("betel-admin-access", "true");
   $("#adminGate")?.classList.add("is-hidden");
   $("#adminShell")?.classList.remove("is-hidden");
-  await loadBooksFromApi();
-  await loadAdminDataFromApi();
   renderAdmin();
 }
 
 function setupAdmin() {
   if (!$("#adminGate")) return;
 
-  if (localStorage.getItem("betel-admin-access") === "true") unlockAdmin();
+  if (localStorage.getItem("betel-admin-access") === "true") {
+    unlockAdmin().catch(() => {
+      localStorage.removeItem("betel-admin-access");
+      $("#adminAccessMessage").textContent = "Vuelve a introducir el codigo admin.";
+    });
+  }
 
   $("#adminAccessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
-    const code = new FormData(event.currentTarget).get("code").trim().toUpperCase();
-    if (code === adminCode) {
-      await unlockAdmin();
-      return;
+    const code = new FormData(event.currentTarget).get("code").trim();
+    $("#adminAccessMessage").textContent = "Comprobando...";
+    try {
+      await unlockAdmin(code);
+      $("#adminAccessMessage").textContent = "";
+    } catch (error) {
+      localStorage.removeItem("betel-admin-access");
+      localStorage.removeItem("betel-admin-code");
+      $("#adminAccessMessage").textContent = "Codigo incorrecto o conexion no disponible.";
     }
-    $("#adminAccessMessage").textContent = "Codigo incorrecto.";
   });
 
   $("#adminBookForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const editingId = data.get("id");
+    const submitButton = event.currentTarget.querySelector("button[type='submit']");
+    const message = $("#adminFormMessage");
+    submitButton.disabled = true;
+    submitButton.textContent = editingId ? "Actualizando..." : "Guardando...";
+    message.textContent = "";
     const payload = {
       title: data.get("title").trim(),
       author: data.get("author").trim(),
@@ -602,6 +622,12 @@ function setupAdmin() {
         const index = books.findIndex((item) => item.id === editingId);
         if (index >= 0) books[index] = data.book;
       } catch (error) {
+        if (usingServerData || error.status === 401) {
+          message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo actualizar en la base de datos.";
+          submitButton.disabled = false;
+          submitButton.textContent = "Actualizar libro";
+          return;
+        }
         const book = books.find((item) => item.id === editingId);
         if (book) {
           const before = { ...book };
@@ -614,6 +640,12 @@ function setupAdmin() {
         const data = await apiRequest("/api/admin/books", { method: "POST", body: payload });
         books.unshift(data.book);
       } catch (error) {
+        if (usingServerData || error.status === 401) {
+          message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo guardar en la base de datos.";
+          submitButton.disabled = false;
+          submitButton.textContent = "Guardar libro";
+          return;
+        }
         const book = { id: crypto.randomUUID(), ...payload };
         books.unshift(book);
         logAudit("Libro creado", "book", null, book);
@@ -623,6 +655,8 @@ function setupAdmin() {
     event.currentTarget.reset();
     event.currentTarget.elements.id.value = "";
     $("#adminSubmitLabel").textContent = "Guardar libro";
+    submitButton.disabled = false;
+    message.textContent = "Guardado.";
     saveBooks();
     renderAdmin();
   });
