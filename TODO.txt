@@ -166,6 +166,10 @@ Este documento recoge todo lo que necesito recibir, confirmar o implementar ante
 
 8. Base de datos y seguridad
 ----------------------------
+- Ejecutar `db/schema.sql` en PostgreSQL.
+- Configurar `DATABASE_URL` en Render.
+- Configurar `ADMIN_CODE` en Render y cambiarlo por un codigo privado.
+- Comprobar `/api/books`: debe devolver `"source":"postgres"`.
 - Elegir base de datos para produccion:
   - Supabase.
   - Firebase.

@@ -117,6 +117,7 @@ const seedBooks = [
 let lang = localStorage.getItem("betel-lang") || "ro";
 let books = JSON.parse(localStorage.getItem("betel-books") || "null") || seedBooks;
 let cart = JSON.parse(localStorage.getItem("betel-cart") || "[]");
+let usingServerData = false;
 let videoRotationFrame;
 let videoResumeTimer;
 
@@ -167,6 +168,48 @@ function saveCart() {
 
 function saveAuditLogs() {
   localStorage.setItem("betel-audit-logs", JSON.stringify(auditLogs));
+}
+
+async function apiRequest(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+  if (options.body && typeof options.body !== "string") {
+    headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(options.body);
+  }
+  if (path.startsWith("/api/admin/")) headers["x-admin-code"] = adminCode;
+
+  const response = await fetch(path, { ...options, headers });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "API request failed");
+  return data;
+}
+
+async function loadBooksFromApi() {
+  try {
+    const data = await apiRequest("/api/books");
+    books = data.books;
+    usingServerData = data.source !== "memory";
+    cart = cart.filter((item) => books.some((book) => book.id === item.id));
+    saveCart();
+    localStorage.setItem("betel-books", JSON.stringify(books));
+  } catch (error) {
+    usingServerData = false;
+  }
+}
+
+async function loadAdminDataFromApi() {
+  try {
+    const [ordersData, auditData] = await Promise.all([
+      apiRequest("/api/admin/orders?active=true"),
+      apiRequest("/api/admin/audit")
+    ]);
+    reservations = ordersData.orders;
+    auditLogs = auditData.auditLogs;
+    saveReservations();
+    saveAuditLogs();
+  } catch (error) {
+    usingServerData = false;
+  }
 }
 
 function logAudit(action, entity, before = null, after = null) {
@@ -394,11 +437,12 @@ function startVideoRotation() {
   videoRotationFrame = requestAnimationFrame(tick);
 }
 
-function unlockLibrary() {
+async function unlockLibrary() {
   localStorage.setItem("betel-library-access", "true");
   $("#libraryGate")?.classList.add("is-hidden");
   $("#libraryShell")?.classList.remove("is-hidden");
   if ($("#activeMember")) $("#activeMember").textContent = localStorage.getItem("betel-member-name") || "";
+  await loadBooksFromApi();
   renderBooks();
   renderCart();
 }
@@ -408,14 +452,14 @@ function setupLibrary() {
 
   if (localStorage.getItem("betel-library-access") === "true" && localStorage.getItem("betel-member-name")) unlockLibrary();
 
-  $("#accessForm").addEventListener("submit", (event) => {
+  $("#accessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get("name").trim();
     const code = data.get("code").trim().toUpperCase();
     if (code === accessCode) {
       localStorage.setItem("betel-member-name", name);
-      unlockLibrary();
+      await unlockLibrary();
       return;
     }
     $("#accessMessage").textContent = translations[lang].accessDenied;
@@ -483,30 +527,43 @@ function renderCart() {
   $("#cartTotal").textContent = `${total.toFixed(2)} €`;
 }
 
-function confirmCart() {
+async function confirmCart() {
   if (cart.length === 0) return;
   const member = localStorage.getItem("betel-member-name") || "Membru";
   const request = {
-    id: crypto.randomUUID(),
     member,
     contact: "biblioteca",
-    status: "pending",
     items: cart.map((item) => ({ title: item.title, quantity: item.quantity, price: item.price })),
     createdAt: new Date().toISOString()
   };
-  reservations.unshift(request);
-  logAudit("Solicitud enviada por miembro", "reservation", null, request);
-  saveReservations();
+  try {
+    const data = await apiRequest("/api/orders", {
+      method: "POST",
+      body: {
+        member,
+        contact: "biblioteca",
+        items: cart.map((item) => ({ id: item.id, quantity: item.quantity }))
+      }
+    });
+    reservations.unshift(data.order);
+  } catch (error) {
+    const fallbackRequest = { ...request, id: crypto.randomUUID(), status: "pending" };
+    reservations.unshift(fallbackRequest);
+    logAudit("Solicitud enviada por miembro", "reservation", null, fallbackRequest);
+    saveReservations();
+  }
   cart = [];
   saveCart();
   renderCart();
   $("#cartMessage").textContent = translations[lang].cartSent;
 }
 
-function unlockAdmin() {
+async function unlockAdmin() {
   localStorage.setItem("betel-admin-access", "true");
   $("#adminGate")?.classList.add("is-hidden");
   $("#adminShell")?.classList.remove("is-hidden");
+  await loadBooksFromApi();
+  await loadAdminDataFromApi();
   renderAdmin();
 }
 
@@ -515,17 +572,17 @@ function setupAdmin() {
 
   if (localStorage.getItem("betel-admin-access") === "true") unlockAdmin();
 
-  $("#adminAccessForm").addEventListener("submit", (event) => {
+  $("#adminAccessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const code = new FormData(event.currentTarget).get("code").trim().toUpperCase();
     if (code === adminCode) {
-      unlockAdmin();
+      await unlockAdmin();
       return;
     }
     $("#adminAccessMessage").textContent = "Codigo incorrecto.";
   });
 
-  $("#adminBookForm").addEventListener("submit", (event) => {
+  $("#adminBookForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const editingId = data.get("id");
@@ -540,16 +597,27 @@ function setupAdmin() {
     };
 
     if (editingId) {
-      const book = books.find((item) => item.id === editingId);
-      if (book) {
-        const before = { ...book };
-        Object.assign(book, payload);
-        logAudit("Libro actualizado", "book", before, { ...book });
+      try {
+        const data = await apiRequest(`/api/admin/books/${editingId}`, { method: "PATCH", body: payload });
+        const index = books.findIndex((item) => item.id === editingId);
+        if (index >= 0) books[index] = data.book;
+      } catch (error) {
+        const book = books.find((item) => item.id === editingId);
+        if (book) {
+          const before = { ...book };
+          Object.assign(book, payload);
+          logAudit("Libro actualizado", "book", before, { ...book });
+        }
       }
     } else {
-      const book = { id: crypto.randomUUID(), ...payload };
-      books.unshift(book);
-      logAudit("Libro creado", "book", null, book);
+      try {
+        const data = await apiRequest("/api/admin/books", { method: "POST", body: payload });
+        books.unshift(data.book);
+      } catch (error) {
+        const book = { id: crypto.randomUUID(), ...payload };
+        books.unshift(book);
+        logAudit("Libro creado", "book", null, book);
+      }
     }
 
     event.currentTarget.reset();
@@ -562,7 +630,7 @@ function setupAdmin() {
   $("#adminSearch").addEventListener("input", renderAdminBooks);
   $("#adminCategoryFilter").addEventListener("change", renderAdminBooks);
 
-  $("#adminBooks").addEventListener("click", (event) => {
+  $("#adminBooks").addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
     const book = books.find((item) => item.id === button.dataset.id);
@@ -584,31 +652,53 @@ function setupAdmin() {
       return;
     }
 
-    if (button.dataset.action === "plus") book.stock += 1;
-    if (button.dataset.action === "minus") book.stock = Math.max(book.reserved || 0, book.stock - 1);
-    if (button.dataset.action === "delete") books = books.filter((item) => item.id !== book.id);
-
-    logAudit(`Inventario: ${button.dataset.action}`, "book", before, button.dataset.action === "delete" ? null : { ...book });
+    try {
+      if (button.dataset.action === "plus" || button.dataset.action === "minus") {
+        const data = await apiRequest(`/api/admin/books/${book.id}/stock`, {
+          method: "PATCH",
+          body: { delta: button.dataset.action === "plus" ? 1 : -1 }
+        });
+        Object.assign(book, data.book);
+      }
+      if (button.dataset.action === "delete") {
+        await apiRequest(`/api/admin/books/${book.id}`, { method: "DELETE" });
+        books = books.filter((item) => item.id !== book.id);
+      }
+    } catch (error) {
+      if (button.dataset.action === "plus") book.stock += 1;
+      if (button.dataset.action === "minus") book.stock = Math.max(book.reserved || 0, book.stock - 1);
+      if (button.dataset.action === "delete") books = books.filter((item) => item.id !== book.id);
+      logAudit(`Inventario: ${button.dataset.action}`, "book", before, button.dataset.action === "delete" ? null : { ...book });
+    }
     saveBooks();
     renderAdmin();
   });
 
-  $("#reservationsList").addEventListener("click", (event) => {
+  $("#reservationsList").addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
     const reservation = reservations.find((item) => item.id === button.dataset.id);
     if (!reservation) return;
     const before = { ...reservation };
-    reservation.status = button.dataset.status;
-    if (button.dataset.status === "collected" && !reservation.fulfilled) {
-      getReservationItems(reservation).forEach((item) => {
-        const book = books.find((entry) => entry.title === item.title);
-        if (book) book.stock = Math.max(0, Number(book.stock || 0) - Number(item.quantity || 1));
+    try {
+      const data = await apiRequest(`/api/admin/orders/${reservation.id}`, {
+        method: "PATCH",
+        body: { status: button.dataset.status }
       });
-      reservation.fulfilled = true;
-      saveBooks();
+      Object.assign(reservation, data.order);
+      if (button.dataset.status === "collected") await loadBooksFromApi();
+    } catch (error) {
+      reservation.status = button.dataset.status;
+      if (button.dataset.status === "collected" && !reservation.fulfilled) {
+        getReservationItems(reservation).forEach((item) => {
+          const book = books.find((entry) => entry.title === item.title);
+          if (book) book.stock = Math.max(0, Number(book.stock || 0) - Number(item.quantity || 1));
+        });
+        reservation.fulfilled = true;
+        saveBooks();
+      }
+      logAudit(`Solicitud marcada como ${button.dataset.status}`, "reservation", before, { ...reservation });
     }
-    logAudit(`Solicitud marcada como ${button.dataset.status}`, "reservation", before, { ...reservation });
     saveReservations();
     renderAdminReservations();
     renderAdminStats();
