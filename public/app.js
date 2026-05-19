@@ -13,7 +13,7 @@ const translations = {
     scheduleTitle: "Program si evenimente",
     scheduleText: "Pastreaza aici programul principal al bisericii si evenimentele care trebuie vazute rapid de membrii si vizitatori.",
     saturdayOther: "Alte activitati dupa program",
-    libraryEyebrow: "MVP pentru membri",
+    libraryEyebrow: "Pentru membri",
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
     libraryAccessText: "Accesul este pentru membrii comunitatii. Introdu numele tau si codul primit de la responsabilul bibliotecii.",
@@ -22,7 +22,7 @@ const translations = {
     accessCode: "Cod acces",
     enterLibrary: "Intra in biblioteca",
     accessDenied: "Codul nu este corect.",
-    resetLibrary: "Reseteaza demo",
+    resetLibrary: "Reseteaza",
     bookTitle: "Titlu",
     bookAuthor: "Autor",
     bookStock: "Stoc",
@@ -36,7 +36,7 @@ const translations = {
     socialTitle: "Ramai aproape de comunitate",
     aboutEyebrow: "Despre noi",
     aboutTitle: "O familie in credinta, in inima orasului Reus",
-    aboutText: "Text provizoriu: Biserica Betel Reus exista pentru a-L glorifica pe Dumnezeu, a creste in Cuvant si a sluji oamenilor cu dragoste.",
+    aboutText: "Biserica Betel Reus exista pentru a-L glorifica pe Dumnezeu, a creste in Cuvant si a sluji oamenilor cu dragoste.",
     contactAddress: "Adresa exacta de completat",
     contactEmail: "Email / telefon de completat",
     reserve: "Rezerva",
@@ -66,7 +66,7 @@ const translations = {
     scheduleTitle: "Horario y eventos",
     scheduleText: "Aqui vive el programa principal de la iglesia y los eventos que miembros y visitantes necesitan encontrar rapido.",
     saturdayOther: "Otras actividades segun programacion",
-    libraryEyebrow: "MVP para miembros",
+    libraryEyebrow: "Para miembros",
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
     libraryAccessText: "El acceso es para miembros de la comunidad. Introduce tu nombre y el codigo recibido del responsable de la biblioteca.",
@@ -75,7 +75,7 @@ const translations = {
     accessCode: "Codigo de acceso",
     enterLibrary: "Entrar en biblioteca",
     accessDenied: "El codigo no es correcto.",
-    resetLibrary: "Reiniciar demo",
+    resetLibrary: "Reiniciar",
     bookTitle: "Titulo",
     bookAuthor: "Autor",
     bookStock: "Stock",
@@ -89,7 +89,7 @@ const translations = {
     socialTitle: "Permanece cerca de la comunidad",
     aboutEyebrow: "Sobre nosotros",
     aboutTitle: "Una familia en la fe, en el corazon de Reus",
-    aboutText: "Texto provisional: Biserica Betel Reus existe para glorificar a Dios, crecer en la Palabra y servir a las personas con amor.",
+    aboutText: "Biserica Betel Reus existe para glorificar a Dios, crecer en la Palabra y servir a las personas con amor.",
     contactAddress: "Direccion exacta pendiente",
     contactEmail: "Email / telefono pendiente",
     reserve: "Reservar",
@@ -115,9 +115,11 @@ const seedBooks = [
 ];
 
 let lang = localStorage.getItem("betel-lang") || "ro";
-let books = JSON.parse(localStorage.getItem("betel-books") || "null") || seedBooks;
-let cart = JSON.parse(localStorage.getItem("betel-cart") || "[]");
+let books = seedBooks;
+let cart = JSON.parse(sessionStorage.getItem("betel-cart") || "[]");
 let usingServerData = false;
+let currentMemberName = "";
+let currentAdminCode = "";
 let videoRotationFrame;
 let videoResumeTimer;
 
@@ -132,42 +134,23 @@ const heroImages = [
   "https://i.ytimg.com/vi/J3lrKcTgpmU/maxresdefault.jpg"
 ];
 
-const seedReservations = [
-  {
-    id: crypto.randomUUID(),
-    member: "Membru demo",
-    contact: "biblioteca",
-    status: "pending",
-    items: [{ title: "Viata condusa de scopuri", quantity: 1, price: 12.5 }],
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: crypto.randomUUID(),
-    member: "Familie demo",
-    contact: "dupa program",
-    status: "approved",
-    items: [{ title: "Biblia pentru copii", quantity: 1, price: 18 }],
-    createdAt: new Date(Date.now() - 86400000).toISOString()
-  }
-];
-
-let reservations = JSON.parse(localStorage.getItem("betel-reservations") || "null") || seedReservations;
-let auditLogs = JSON.parse(localStorage.getItem("betel-audit-logs") || "[]");
+let reservations = [];
+let auditLogs = [];
 
 function saveBooks() {
-  localStorage.setItem("betel-books", JSON.stringify(books));
+  sessionStorage.setItem("betel-books", JSON.stringify(books));
 }
 
 function saveReservations() {
-  localStorage.setItem("betel-reservations", JSON.stringify(reservations));
+  sessionStorage.setItem("betel-reservations", JSON.stringify(reservations));
 }
 
 function saveCart() {
-  localStorage.setItem("betel-cart", JSON.stringify(cart));
+  sessionStorage.setItem("betel-cart", JSON.stringify(cart));
 }
 
 function saveAuditLogs() {
-  localStorage.setItem("betel-audit-logs", JSON.stringify(auditLogs));
+  sessionStorage.setItem("betel-audit-logs", JSON.stringify(auditLogs));
 }
 
 async function apiRequest(path, options = {}) {
@@ -176,7 +159,7 @@ async function apiRequest(path, options = {}) {
     headers["Content-Type"] = "application/json";
     options.body = JSON.stringify(options.body);
   }
-  if (path.startsWith("/api/admin/")) headers["x-admin-code"] = localStorage.getItem("betel-admin-code") || defaultAdminCode;
+  if (path.startsWith("/api/admin/")) headers["x-admin-code"] = currentAdminCode || defaultAdminCode;
 
   const response = await fetch(path, { ...options, headers });
   const data = await response.json().catch(() => ({}));
@@ -195,7 +178,7 @@ async function loadBooksFromApi() {
     usingServerData = data.source !== "memory";
     cart = cart.filter((item) => books.some((book) => book.id === item.id));
     saveCart();
-    localStorage.setItem("betel-books", JSON.stringify(books));
+    saveBooks();
   } catch (error) {
     usingServerData = false;
   }
@@ -220,7 +203,7 @@ async function loadAdminDataFromApi(throwOnError = false) {
 function logAudit(action, entity, before = null, after = null) {
   auditLogs.unshift({
     id: crypto.randomUUID(),
-    actor: "admin-demo",
+    actor: "admin",
     action,
     entity,
     before,
@@ -443,10 +426,9 @@ function startVideoRotation() {
 }
 
 async function unlockLibrary() {
-  localStorage.setItem("betel-library-access", "true");
   $("#libraryGate")?.classList.add("is-hidden");
   $("#libraryShell")?.classList.remove("is-hidden");
-  if ($("#activeMember")) $("#activeMember").textContent = localStorage.getItem("betel-member-name") || "";
+  if ($("#activeMember")) $("#activeMember").textContent = currentMemberName;
   await loadBooksFromApi();
   renderBooks();
   renderCart();
@@ -455,19 +437,26 @@ async function unlockLibrary() {
 function setupLibrary() {
   if (!$("#libraryGate")) return;
 
-  if (localStorage.getItem("betel-library-access") === "true" && localStorage.getItem("betel-member-name")) unlockLibrary();
-
   $("#accessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get("name").trim();
     const code = data.get("code").trim().toUpperCase();
     if (code === accessCode) {
-      localStorage.setItem("betel-member-name", name);
+      currentMemberName = name;
       await unlockLibrary();
       return;
     }
     $("#accessMessage").textContent = translations[lang].accessDenied;
+  });
+
+  $("#exitLibrary")?.addEventListener("click", () => {
+    currentMemberName = "";
+    cart = [];
+    saveCart();
+    $("#libraryShell")?.classList.add("is-hidden");
+    $("#libraryGate")?.classList.remove("is-hidden");
+    $("#accessForm").reset();
   });
 
   $("#books").addEventListener("click", (event) => {
@@ -534,7 +523,7 @@ function renderCart() {
 
 async function confirmCart() {
   if (cart.length === 0) return;
-  const member = localStorage.getItem("betel-member-name") || "Membru";
+  const member = currentMemberName || "Membru";
   const request = {
     member,
     contact: "biblioteca",
@@ -563,11 +552,10 @@ async function confirmCart() {
   $("#cartMessage").textContent = translations[lang].cartSent;
 }
 
-async function unlockAdmin(code = localStorage.getItem("betel-admin-code") || defaultAdminCode) {
-  localStorage.setItem("betel-admin-code", code);
+async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
+  currentAdminCode = code;
   await loadBooksFromApi();
   await loadAdminDataFromApi(true);
-  localStorage.setItem("betel-admin-access", "true");
   $("#adminGate")?.classList.add("is-hidden");
   $("#adminShell")?.classList.remove("is-hidden");
   renderAdmin();
@@ -575,13 +563,6 @@ async function unlockAdmin(code = localStorage.getItem("betel-admin-code") || de
 
 function setupAdmin() {
   if (!$("#adminGate")) return;
-
-  if (localStorage.getItem("betel-admin-access") === "true") {
-    unlockAdmin().catch(() => {
-      localStorage.removeItem("betel-admin-access");
-      $("#adminAccessMessage").textContent = "Vuelve a introducir el codigo admin.";
-    });
-  }
 
   $("#adminAccessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -591,10 +572,16 @@ function setupAdmin() {
       await unlockAdmin(code);
       $("#adminAccessMessage").textContent = "";
     } catch (error) {
-      localStorage.removeItem("betel-admin-access");
-      localStorage.removeItem("betel-admin-code");
+      currentAdminCode = "";
       $("#adminAccessMessage").textContent = "Codigo incorrecto o conexion no disponible.";
     }
+  });
+
+  $("#exitAdmin")?.addEventListener("click", () => {
+    currentAdminCode = "";
+    $("#adminShell")?.classList.add("is-hidden");
+    $("#adminGate")?.classList.remove("is-hidden");
+    $("#adminAccessForm").reset();
   });
 
   $("#adminBookForm").addEventListener("submit", async (event) => {

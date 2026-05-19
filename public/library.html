@@ -25,7 +25,7 @@
     <main>
       <section class="section library-page">
         <div class="library-gate" id="libraryGate">
-          <p class="eyebrow" data-i18n="libraryEyebrow">MVP pentru membri</p>
+          <p class="eyebrow" data-i18n="libraryEyebrow">Pentru membri</p>
           <h1 data-i18n="libraryAccessTitle">Biblioteca Betel</h1>
           <p data-i18n="libraryAccessText">Accesul este pentru membrii comunitatii. Introdu numele tau si codul primit de la responsabilul bibliotecii.</p>
           <form class="access-form" id="accessForm">
@@ -35,7 +35,7 @@
             </label>
             <label>
               <span data-i18n="accessCode">Cod acces</span>
-              <input name="code" type="password" autocomplete="off" required placeholder="BETEL-REUS" />
+              <input name="code" type="password" autocomplete="off" required placeholder="Cod biblioteca" />
             </label>
             <button class="button primary" type="submit" data-i18n="enterLibrary">Intra in biblioteca</button>
             <span class="form-note" id="accessMessage"></span>
@@ -45,10 +45,11 @@
         <div class="library-shell is-hidden" id="libraryShell">
           <div class="section-heading">
             <div>
-              <p class="eyebrow" data-i18n="libraryEyebrow">MVP pentru membri</p>
+              <p class="eyebrow" data-i18n="libraryEyebrow">Pentru membri</p>
               <h1 data-i18n="libraryTitle">Biblioteca Betel</h1>
               <p class="member-line"><span data-i18n="memberActive">Membru</span>: <strong id="activeMember"></strong></p>
             </div>
+            <button class="button secondary" type="button" id="exitLibrary">Iesire</button>
           </div>
           <div class="library-layout">
             <div class="library-results">

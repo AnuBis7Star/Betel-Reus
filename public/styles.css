@@ -308,6 +308,13 @@ cite {
   margin-bottom: 28px;
 }
 
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .compact-heading {
   align-items: start;
   margin-bottom: 18px;

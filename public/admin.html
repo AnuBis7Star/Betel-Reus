@@ -26,11 +26,11 @@
         <div class="library-gate" id="adminGate">
           <p class="eyebrow">Panel privado</p>
           <h1>Control biblioteca</h1>
-          <p>Acceso provisional para probar el flujo de administracion. En produccion se cambiara por login con usuarios y roles.</p>
+          <p>Introduce el codigo privado de administracion para gestionar libros, pedidos e historial.</p>
           <form class="access-form" id="adminAccessForm">
             <label>
               <span>Codigo admin</span>
-              <input name="code" type="password" autocomplete="off" required placeholder="ADMIN-BETEL" />
+              <input name="code" type="password" autocomplete="off" required placeholder="Codigo privado" />
             </label>
             <button class="button primary" type="submit">Entrar al panel</button>
             <span class="form-note" id="adminAccessMessage"></span>
@@ -43,7 +43,10 @@
               <p class="eyebrow">Biblioteca Betel</p>
               <h1>Panel de control</h1>
             </div>
-            <a class="button secondary" href="/library.html">Ver biblioteca</a>
+            <div class="header-actions">
+              <a class="button secondary" href="/library.html">Ver biblioteca</a>
+              <button class="button secondary" type="button" id="exitAdmin">Salir</button>
+            </div>
           </div>
 
           <div class="admin-stats" id="adminStats"></div>
