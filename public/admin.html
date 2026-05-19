@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Panel Biblioteca Betel Reus</title>
+    <meta name="description" content="Panel privado para gestionar inventario, reservas e historial de la Biblioteca Betel Reus." />
+    <link rel="icon" href="/assets/icon-dark.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Biserica Betel Reus">
+        <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
+      </a>
+      <nav class="nav" aria-label="Navegacion administracion">
+        <a href="/">Landing</a>
+        <a href="/library.html">Biblioteca</a>
+        <a href="/admin.html">Panel</a>
+      </nav>
+      <button class="lang-toggle" type="button" id="langToggle">ES</button>
+    </header>
+
+    <main>
+      <section class="section admin-page">
+        <div class="library-gate" id="adminGate">
+          <p class="eyebrow">Panel privado</p>
+          <h1>Control biblioteca</h1>
+          <p>Acceso provisional para probar el flujo de administracion. En produccion se cambiara por login con usuarios y roles.</p>
+          <form class="access-form" id="adminAccessForm">
+            <label>
+              <span>Codigo admin</span>
+              <input name="code" type="password" autocomplete="off" required placeholder="ADMIN-BETEL" />
+            </label>
+            <button class="button primary" type="submit">Entrar al panel</button>
+            <span class="form-note" id="adminAccessMessage"></span>
+          </form>
+        </div>
+
+        <div class="admin-shell is-hidden" id="adminShell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Biblioteca Betel</p>
+              <h1>Panel de control</h1>
+            </div>
+            <a class="button secondary" href="/library.html">Ver biblioteca</a>
+          </div>
+
+          <div class="admin-stats" id="adminStats"></div>
+
+          <div class="admin-grid">
+            <form class="book-form admin-book-form" id="adminBookForm">
+              <input type="hidden" name="id" />
+              <h2>Libro</h2>
+              <label>
+                <span>Titulo</span>
+                <input name="title" required placeholder="Titulo del libro" />
+              </label>
+              <label>
+                <span>Autor</span>
+                <input name="author" required placeholder="Autor" />
+              </label>
+              <label>
+                <span>Categoria</span>
+                <input name="category" placeholder="Biblia, Familia, Jovenes..." />
+              </label>
+              <div class="form-row">
+                <label>
+                  <span>Idioma</span>
+                  <select name="language">
+                    <option value="ro">Rumano</option>
+                    <option value="es">Espanol</option>
+                    <option value="en">Ingles</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Precio</span>
+                  <input name="price" type="number" min="0" step="0.01" value="0" required />
+                </label>
+              </div>
+              <div class="form-row">
+                <label>
+                  <span>Stock</span>
+                  <input name="stock" type="number" min="0" value="1" required />
+                </label>
+                <label>
+                  <span>Reservados</span>
+                  <input name="reserved" type="number" min="0" value="0" required />
+                </label>
+              </div>
+              <button class="button primary" type="submit" id="adminSubmitLabel">Guardar libro</button>
+            </form>
+
+            <section class="admin-panel">
+              <div class="toolbar">
+                <input id="adminSearch" type="search" placeholder="Buscar por titulo, autor o categoria" />
+                <select id="adminCategoryFilter" aria-label="Filtrar por categoria">
+                  <option value="all">Todas las categorias</option>
+                </select>
+              </div>
+              <div class="table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Libro</th>
+                      <th>Categoria</th>
+                      <th>Idioma</th>
+                      <th>Stock</th>
+                      <th>Reserv.</th>
+                      <th>Disp.</th>
+                      <th>Precio</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminBooks"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <div class="admin-bottom">
+            <section class="admin-panel">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Reservas</p>
+                  <h2>Pendientes y estado</h2>
+                </div>
+              </div>
+              <div class="reservations-list" id="reservationsList"></div>
+            </section>
+
+            <section class="admin-panel">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Historial</p>
+                  <h2>Ultimos cambios</h2>
+                </div>
+              </div>
+              <div class="audit-log" id="auditLog"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <img src="/assets/icon-dark.png" alt="" />
+      <span>© <span id="year"></span> Biserica Betel Reus</span>
+    </footer>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

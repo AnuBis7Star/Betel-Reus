@@ -1,0 +1,267 @@
+Pendiente para lanzar Biserica Betel Reus
+=========================================
+
+Objetivo
+--------
+Este documento recoge todo lo que necesito recibir, confirmar o implementar antes de publicar la web para el publico.
+
+
+1. Identidad y contenido principal
+----------------------------------
+- Confirmar nombre final mostrado en toda la web: "Biserica Betel Reus".
+- Enviar logo final preferido para web, favicon y redes si hay versiones nuevas.
+- Enviar fotos reales de la iglesia:
+  - Fachada / entrada.
+  - Sala principal.
+  - Cultos.
+  - Alabanza.
+  - Jovenes.
+  - Eventos.
+  - Biblioteca / mesa de libros, si existe.
+- Confirmar si se pueden usar miniaturas de YouTube como imagenes de fondo o si preferimos solo fotos propias.
+- Enviar texto definitivo de "Sobre nosotros".
+- Enviar declaracion de fe.
+- Enviar mision, vision y valores.
+- Enviar una frase corta para el hero principal.
+- Enviar texto breve de bienvenida para visitantes nuevos.
+- Enviar textos finales en rumano.
+- Enviar traduccion final al espanol o confirmar que la preparo yo y luego se revisa.
+- Confirmar si tambien hara falta catalan o ingles mas adelante.
+
+
+2. Programa y eventos
+---------------------
+- Confirmar programa actual:
+  - Domingo: 10:00 - 12:00 y 18:00 - 20:00.
+  - Miercoles rugaciune: 20:00 - 21:30.
+  - Viernes rugaciune: 20:00 - 21:30.
+  - Sabado tineret: 19:00 - 21:00.
+- Confirmar si se debe mostrar "rugaciune" tal cual o traducirlo segun idioma.
+- Confirmar si hay escuela dominical, reuniones de mujeres, hombres, familias, celulas u otros grupos.
+- Enviar proximos eventos que deben aparecer al lanzar.
+- Decidir si el calendario sera:
+  - Manual en la web.
+  - Google Calendar.
+  - Otra herramienta.
+- Si se usa Google Calendar, enviar calendario o cuenta desde la que se gestionara.
+
+
+3. Contacto y localizacion
+--------------------------
+- Enviar direccion exacta de la iglesia.
+- Enviar enlace de Google Maps.
+- Enviar email publico.
+- Enviar telefono publico.
+- Enviar WhatsApp si se quiere boton directo.
+- Confirmar persona/equipo responsable de recibir mensajes.
+- Decidir si habra formulario de contacto.
+- Si hay formulario, confirmar a que email llegan los mensajes.
+
+
+4. Redes sociales y multimedia
+------------------------------
+- Confirmar enlaces oficiales:
+  - YouTube: https://www.youtube.com/@BisericaBetelReus
+  - Instagram: https://www.instagram.com/bisericabetelreus/
+  - TikTok: confirmar URL final.
+  - Facebook, si existe.
+- Confirmar si el carrusel de YouTube debe mostrar:
+  - Ultimos videos automaticamente.
+  - Solo predicaciones.
+  - Solo directos completos.
+  - Una lista seleccionada manualmente.
+- Confirmar si el feed RSS de YouTube es suficiente para la primera version.
+- Decidir si mas adelante se usara YouTube Data API para filtros mas avanzados.
+- Confirmar si Instagram sera:
+  - Solo enlace.
+  - Posts incrustados manualmente.
+  - Feed automatico mediante Meta/Instagram API.
+- Si Instagram sera automatico, hara falta acceso a Meta Developer / cuenta profesional.
+
+
+5. Versiculo del dia
+--------------------
+- Decidir proveedor final:
+  - Fallback local diario, como ahora.
+  - API.Bible.
+  - YouVersion u otro proveedor.
+- Si se usa API.Bible, crear y enviar API key.
+- Confirmar traduccion biblica preferida en rumano.
+- Confirmar traduccion biblica preferida en espanol.
+- Confirmar si el versiculo debe aparecer solo en la landing o tambien en otras paginas.
+- Confirmar si se permite mostrar textos biblicos segun licencias de la traduccion elegida.
+
+
+6. Biblioteca: contenido inicial
+--------------------------------
+- Enviar lista inicial de libros, idealmente en Excel/CSV con:
+  - Titulo.
+  - Autor.
+  - ISBN, si existe.
+  - Categoria.
+  - Idioma.
+  - Editorial.
+  - Precio.
+  - Stock.
+  - Estado: nuevo/usado.
+  - Ubicacion fisica.
+  - Imagen de portada, si existe.
+  - Si es venta, prestamo, reserva o pedido.
+- Confirmar si los precios llevan IVA o son donativo/precio interno.
+- Confirmar moneda: EUR.
+- Confirmar categorias iniciales:
+  - Biblias.
+  - Teologia.
+  - Familia.
+  - Jovenes.
+  - Ninos.
+  - Devocionales.
+  - Alabanza.
+  - Otros.
+
+
+7. Biblioteca: funcionalidades
+------------------------------
+- Sustituir codigo demo BETEL-REUS por sistema real antes de produccion.
+- Sustituir codigo demo del panel admin ADMIN-BETEL por login real antes de produccion.
+- La primera version del panel esta en /admin.html y usa localStorage; migrar a base de datos antes del lanzamiento publico.
+- La biblioteca de miembros ya funciona como catalogo + carrito; antes de produccion conectar pedidos a base de datos.
+- La entrada a biblioteca pide nombre del miembro; sustituir por usuario autenticado cuando haya login.
+- El panel admin recibe solicitudes con nombre, items y total; revisar estados finales: pendiente, preparado, entregado, cancelado.
+- Decidir acceso:
+  - Login por email/contrasena.
+  - Codigo de miembro.
+  - Acceso solo para administradores.
+  - Lectura publica y pedidos protegidos.
+- Definir roles:
+  - Administrador.
+  - Responsable de biblioteca.
+  - Miembro.
+  - Visitante.
+- Definir acciones permitidas por rol:
+  - Ver libros.
+  - Reservar.
+  - Pedir libro.
+  - Comprar.
+  - Editar stock.
+  - Anadir libros.
+  - Cambiar precios.
+  - Aprobar solicitudes.
+- Definir flujo de reserva:
+  - Reserva inmediata.
+  - Aprobacion manual.
+  - Caducidad de reserva.
+  - Aviso por email/WhatsApp.
+- Definir flujo de pedido:
+  - Pedido interno a responsable.
+  - Pedido externo a proveedor.
+  - Pago antes/despues.
+  - Recogida en iglesia.
+- Decidir si se enviaran emails automaticos.
+- Decidir si se enviaran mensajes por WhatsApp.
+- Decidir si habra historial de movimientos de stock.
+- Decidir si se necesita exportar stock a Excel/CSV.
+- Decidir si habra panel de administracion separado.
+
+
+8. Base de datos y seguridad
+----------------------------
+- Elegir base de datos para produccion:
+  - Supabase.
+  - Firebase.
+  - PostgreSQL.
+  - Airtable.
+  - Otra.
+- Definir donde se guardaran usuarios y reservas.
+- Definir normas anti-spam:
+  - Login obligatorio para pedir/reservar.
+  - Limite de reservas por usuario.
+  - Captcha en formularios publicos.
+  - Rate limiting en APIs.
+- Definir quien puede ver datos personales.
+- Definir politica de retencion de datos.
+- Preparar variables de entorno para API keys y secretos.
+
+
+9. Hosting, dominio y despliegue
+--------------------------------
+- Elegir dominio final.
+- Comprar/configurar dominio.
+- Elegir hosting:
+  - Vercel.
+  - Netlify.
+  - Render/Fly/Railway para servidor Node.
+  - Hosting propio.
+- Decidir si la web sera estatica, Node server, o Next.js.
+- Configurar entorno de produccion.
+- Configurar HTTPS.
+- Configurar redireccion www/no-www.
+- Configurar backups si hay base de datos.
+- Configurar emails transaccionales si hacen falta.
+
+
+10. SEO y compartir en redes
+----------------------------
+- Confirmar titulo SEO.
+- Confirmar descripcion SEO.
+- Preparar imagen Open Graph para WhatsApp/Facebook.
+- Confirmar palabras clave principales:
+  - Biserica Betel Reus.
+  - Iglesia rumana Reus.
+  - Biserica penticostala Reus.
+  - Iglesia evangelica Reus.
+- Crear sitemap.xml.
+- Crear robots.txt.
+- Configurar Google Search Console.
+- Confirmar si se usara Google Analytics, Plausible u otra analitica.
+
+
+11. Legal y privacidad
+----------------------
+- Confirmar responsable legal de la web.
+- Preparar aviso legal.
+- Preparar politica de privacidad.
+- Preparar politica de cookies si se usan cookies/embeds/analitica.
+- Confirmar tratamiento de datos para:
+  - Formulario de contacto.
+  - Biblioteca.
+  - Reservas.
+  - Login.
+  - Analitica.
+- Confirmar consentimiento para usar fotos donde aparecen personas.
+- Confirmar si hay menores en imagenes y si se pueden publicar.
+
+
+12. Diseno y revision final
+---------------------------
+- Sustituir placeholders por textos finales.
+- Sustituir imagenes provisionales por fotos reales.
+- Revisar version movil.
+- Revisar version desktop.
+- Revisar navegacion RO/ES.
+- Revisar accesibilidad basica:
+  - Contraste.
+  - Textos alternativos.
+  - Botones claros.
+  - Navegacion con teclado.
+- Revisar velocidad de carga.
+- Revisar que los videos cargan bien.
+- Revisar que el versiculo carga bien.
+- Revisar que la biblioteca no permite spam.
+- Revisar enlaces externos.
+- Revisar textos con acentos/diacriticos correctos en rumano y espanol.
+
+
+13. Preguntas pendientes
+------------------------
+- Quien administrara la biblioteca?
+- Quien actualizara eventos?
+- Quien aprobara reservas/pedidos?
+- Hace falta pasarela de pago o solo reserva/pedido?
+- La biblioteca sera solo para miembros o visible para todos?
+- Se quiere newsletter?
+- Se quiere seccion de donaciones/ofrendas?
+- Se quiere pagina de predicaciones separada?
+- Se quiere pagina de eventos separada?
+- Se quiere blog/devocionales?
+- Se quiere area privada de miembros mas adelante?

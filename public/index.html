@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Biserica Betel Reus</title>
+    <meta name="description" content="Biserica Betel Reus: program, predici, evenimente, versetul zilei si biblioteca comunitatii." />
+    <link rel="icon" href="/assets/icon-dark.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Biserica Betel Reus">
+        <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
+      </a>
+      <nav class="nav" aria-label="Navigare principala">
+        <a href="#program" data-i18n="navSchedule">Program</a>
+        <a href="#predici" data-i18n="navVideos">Predici</a>
+        <a href="/library.html" data-i18n="navLibrary">Biblioteca</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
+      </nav>
+      <button class="lang-toggle" type="button" id="langToggle">ES</button>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="eyebrow">Biserica penticostala in Reus</p>
+          <h1>Biserica Betel Reus</h1>
+          <p data-i18n="heroText">O comunitate calda, centrata in inchinare, Cuvant si slujire. Urmareste programul, predicile si resursele pentru familie.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#predici" data-i18n="heroYoutube">Vezi predici</a>
+            <a class="button secondary" href="#program" data-i18n="heroSchedule">Vezi programul</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Versetul zilei">
+          <span data-i18n="verseLabel">Versetul zilei</span>
+          <blockquote id="dailyVerse">Se incarca...</blockquote>
+          <cite id="dailyVerseRef"></cite>
+        </div>
+      </section>
+
+      <section class="section video-feature" id="predici">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">YouTube</p>
+            <h2 data-i18n="videosTitle">Ultimele predici si cantari</h2>
+          </div>
+          <a class="button secondary" href="https://www.youtube.com/@BisericaBetelReus" target="_blank" rel="noreferrer">YouTube</a>
+        </div>
+        <div class="video-rail" id="videoRail"></div>
+      </section>
+
+      <section class="section split" id="program">
+        <div>
+          <p class="eyebrow" data-i18n="scheduleEyebrow">Ne intalnim impreuna</p>
+          <h2 data-i18n="scheduleTitle">Program si evenimente</h2>
+          <p data-i18n="scheduleText">Pastreaza aici programul principal al bisericii si evenimentele care trebuie vazute rapid de membrii si vizitatori.</p>
+        </div>
+        <div class="schedule-grid">
+          <article>
+            <strong>Duminica</strong>
+            <span>10:00 - 12:00 · Serviciu divin</span>
+            <span>18:00 - 20:00 · Serviciu divin</span>
+          </article>
+          <article>
+            <strong>Miercuri</strong>
+            <span>20:00 - 21:30 · Rugaciune</span>
+          </article>
+          <article>
+            <strong>Vineri</strong>
+            <span>20:00 - 21:30 · Rugaciune</span>
+          </article>
+          <article>
+            <strong>Sambata</strong>
+            <span>19:00 - 21:00 · Tineret</span>
+            <span data-i18n="saturdayOther">Alte activitati dupa program</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section social-band">
+        <div>
+          <p class="eyebrow" data-i18n="socialEyebrow">Retele sociale</p>
+          <h2 data-i18n="socialTitle">Ramai aproape de comunitate</h2>
+        </div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/bisericabetelreus/?hl=en" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.youtube.com/@BisericaBetelReus" target="_blank" rel="noreferrer">YouTube</a>
+          <a href="https://www.tiktok.com/@bisericabetelreus" target="_blank" rel="noreferrer">TikTok</a>
+        </div>
+      </section>
+
+      <section class="section split" id="contact">
+        <div>
+          <p class="eyebrow" data-i18n="aboutEyebrow">Despre noi</p>
+          <h2 data-i18n="aboutTitle">O familie in credinta, in inima orasului Reus</h2>
+          <p data-i18n="aboutText">Text provizoriu: Biserica Betel Reus exista pentru a-L glorifica pe Dumnezeu, a creste in Cuvant si a sluji oamenilor cu dragoste.</p>
+        </div>
+        <div class="contact-box">
+          <strong>Biserica Betel Reus</strong>
+          <span data-i18n="contactAddress">Adresa exacta de completat</span>
+          <span data-i18n="contactEmail">Email / telefon de completat</span>
+          <a class="button primary" href="mailto:contact@betelreus.example">Contact</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <img src="/assets/icon-dark.png" alt="" />
+      <span>© <span id="year"></span> Biserica Betel Reus</span>
+    </footer>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Biblioteca Betel Reus</title>
+    <meta name="description" content="Biblioteca Bisericii Betel Reus: stoc, preturi, rezervari si cereri de carti." />
+    <link rel="icon" href="/assets/icon-dark.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Biserica Betel Reus">
+        <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
+      </a>
+      <nav class="nav" aria-label="Navigare principala">
+        <a href="/#program" data-i18n="navSchedule">Program</a>
+        <a href="/#predici" data-i18n="navVideos">Predici</a>
+        <a href="/library.html" data-i18n="navLibrary">Biblioteca</a>
+        <a href="/#contact" data-i18n="navContact">Contact</a>
+      </nav>
+      <button class="lang-toggle" type="button" id="langToggle">ES</button>
+    </header>
+
+    <main>
+      <section class="section library-page">
+        <div class="library-gate" id="libraryGate">
+          <p class="eyebrow" data-i18n="libraryEyebrow">MVP pentru membri</p>
+          <h1 data-i18n="libraryAccessTitle">Biblioteca Betel</h1>
+          <p data-i18n="libraryAccessText">Accesul este pentru membrii comunitatii. Introdu numele tau si codul primit de la responsabilul bibliotecii.</p>
+          <form class="access-form" id="accessForm">
+            <label>
+              <span data-i18n="memberName">Nume</span>
+              <input name="name" autocomplete="name" required placeholder="Numele tau" />
+            </label>
+            <label>
+              <span data-i18n="accessCode">Cod acces</span>
+              <input name="code" type="password" autocomplete="off" required placeholder="BETEL-REUS" />
+            </label>
+            <button class="button primary" type="submit" data-i18n="enterLibrary">Intra in biblioteca</button>
+            <span class="form-note" id="accessMessage"></span>
+          </form>
+        </div>
+
+        <div class="library-shell is-hidden" id="libraryShell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="libraryEyebrow">MVP pentru membri</p>
+              <h1 data-i18n="libraryTitle">Biblioteca Betel</h1>
+              <p class="member-line"><span data-i18n="memberActive">Membru</span>: <strong id="activeMember"></strong></p>
+            </div>
+          </div>
+          <div class="library-layout">
+            <div class="library-results">
+              <div class="toolbar">
+                <input id="bookSearch" type="search" placeholder="Cauta dupa titlu sau autor" />
+                <select id="bookFilter" aria-label="Filtru biblioteca">
+                  <option value="all" data-i18n="filterAll">Toate</option>
+                  <option value="available" data-i18n="filterAvailable">Disponibile</option>
+                </select>
+              </div>
+              <div class="books" id="books"></div>
+            </div>
+            <aside class="cart-panel">
+              <div>
+                <p class="eyebrow" data-i18n="cartEyebrow">Cos</p>
+                <h2 data-i18n="cartTitle">Cererea ta</h2>
+              </div>
+              <div class="cart-items" id="cartItems"></div>
+              <div class="cart-total">
+                <span data-i18n="cartTotal">Total</span>
+                <strong id="cartTotal">0.00 €</strong>
+              </div>
+              <button class="button primary" type="button" id="confirmCart" data-i18n="confirmCart">Trimite cererea</button>
+              <span class="form-note" id="cartMessage"></span>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <img src="/assets/icon-dark.png" alt="" />
+      <span>© <span id="year"></span> Biserica Betel Reus</span>
+    </footer>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
