@@ -116,10 +116,10 @@ const seedBooks = [
 
 let lang = localStorage.getItem("betel-lang") || "ro";
 let books = seedBooks;
-let cart = JSON.parse(sessionStorage.getItem("betel-cart") || "[]");
+let cart = JSON.parse(localStorage.getItem("betel-cart") || "[]");
 let usingServerData = false;
-let currentMemberName = "";
-let currentAdminCode = "";
+let currentMemberName = localStorage.getItem("betel-member-name") || "";
+let currentAdminCode = sessionStorage.getItem("betel-admin-code") || "";
 let videoRotationFrame;
 let videoResumeTimer;
 
@@ -127,6 +127,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const accessCode = "BETEL-REUS";
 const defaultAdminCode = "ADMIN-BETEL";
+const adminSessionMs = 10 * 60 * 1000;
 const heroImages = [
   "https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg",
   "https://i.ytimg.com/vi/V-w7Xf8OvDg/maxresdefault.jpg",
@@ -146,7 +147,7 @@ function saveReservations() {
 }
 
 function saveCart() {
-  sessionStorage.setItem("betel-cart", JSON.stringify(cart));
+  localStorage.setItem("betel-cart", JSON.stringify(cart));
 }
 
 function saveAuditLogs() {
@@ -437,6 +438,8 @@ async function unlockLibrary() {
 function setupLibrary() {
   if (!$("#libraryGate")) return;
 
+  if (currentMemberName) unlockLibrary();
+
   $("#accessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -444,6 +447,7 @@ function setupLibrary() {
     const code = data.get("code").trim().toUpperCase();
     if (code === accessCode) {
       currentMemberName = name;
+      localStorage.setItem("betel-member-name", currentMemberName);
       await unlockLibrary();
       return;
     }
@@ -452,6 +456,7 @@ function setupLibrary() {
 
   $("#exitLibrary")?.addEventListener("click", () => {
     currentMemberName = "";
+    localStorage.removeItem("betel-member-name");
     cart = [];
     saveCart();
     $("#libraryShell")?.classList.add("is-hidden");
@@ -556,6 +561,8 @@ async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
   currentAdminCode = code;
   await loadBooksFromApi();
   await loadAdminDataFromApi(true);
+  sessionStorage.setItem("betel-admin-code", currentAdminCode);
+  sessionStorage.setItem("betel-admin-expires-at", String(Date.now() + adminSessionMs));
   $("#adminGate")?.classList.add("is-hidden");
   $("#adminShell")?.classList.remove("is-hidden");
   renderAdmin();
@@ -563,6 +570,20 @@ async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
 
 function setupAdmin() {
   if (!$("#adminGate")) return;
+
+  const expiresAt = Number(sessionStorage.getItem("betel-admin-expires-at") || 0);
+  if (currentAdminCode && expiresAt > Date.now()) {
+    unlockAdmin().catch(() => {
+      currentAdminCode = "";
+      sessionStorage.removeItem("betel-admin-code");
+      sessionStorage.removeItem("betel-admin-expires-at");
+      $("#adminAccessMessage").textContent = "Vuelve a introducir el codigo admin.";
+    });
+  } else {
+    sessionStorage.removeItem("betel-admin-code");
+    sessionStorage.removeItem("betel-admin-expires-at");
+    currentAdminCode = "";
+  }
 
   $("#adminAccessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -579,6 +600,8 @@ function setupAdmin() {
 
   $("#exitAdmin")?.addEventListener("click", () => {
     currentAdminCode = "";
+    sessionStorage.removeItem("betel-admin-code");
+    sessionStorage.removeItem("betel-admin-expires-at");
     $("#adminShell")?.classList.add("is-hidden");
     $("#adminGate")?.classList.remove("is-hidden");
     $("#adminAccessForm").reset();
