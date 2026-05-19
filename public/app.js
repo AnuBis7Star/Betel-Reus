@@ -120,6 +120,9 @@ let cart = JSON.parse(localStorage.getItem("betel-cart") || "[]");
 let usingServerData = false;
 let currentMemberName = localStorage.getItem("betel-member-name") || "";
 let currentAdminCode = sessionStorage.getItem("betel-admin-code") || "";
+let pendingStockChanges = new Map();
+let auditPage = 0;
+const auditPageSize = 5;
 let videoRotationFrame;
 let videoResumeTimer;
 
@@ -673,6 +676,16 @@ function setupAdmin() {
 
   $("#adminSearch").addEventListener("input", renderAdminBooks);
   $("#adminCategoryFilter").addEventListener("change", renderAdminBooks);
+  $("#saveStockChanges").addEventListener("click", savePendingStockChanges);
+  $("#auditPrev").addEventListener("click", () => {
+    auditPage = Math.max(0, auditPage - 1);
+    renderAuditLog();
+  });
+  $("#auditNext").addEventListener("click", () => {
+    const maxPage = Math.max(0, Math.ceil(auditLogs.length / auditPageSize) - 1);
+    auditPage = Math.min(maxPage, auditPage + 1);
+    renderAuditLog();
+  });
 
   $("#adminBooks").addEventListener("click", async (event) => {
     const button = event.target.closest("button");
@@ -698,19 +711,16 @@ function setupAdmin() {
 
     try {
       if (button.dataset.action === "plus" || button.dataset.action === "minus") {
-        const data = await apiRequest(`/api/admin/books/${book.id}/stock`, {
-          method: "PATCH",
-          body: { delta: button.dataset.action === "plus" ? 1 : -1 }
-        });
-        Object.assign(book, data.book);
+        if (!pendingStockChanges.has(book.id)) pendingStockChanges.set(book.id, Number(book.stock || 0));
+        if (button.dataset.action === "plus") book.stock += 1;
+        if (button.dataset.action === "minus") book.stock = Math.max(book.reserved || 0, book.stock - 1);
       }
       if (button.dataset.action === "delete") {
         await apiRequest(`/api/admin/books/${book.id}`, { method: "DELETE" });
         books = books.filter((item) => item.id !== book.id);
+        pendingStockChanges.delete(book.id);
       }
     } catch (error) {
-      if (button.dataset.action === "plus") book.stock += 1;
-      if (button.dataset.action === "minus") book.stock = Math.max(book.reserved || 0, book.stock - 1);
       if (button.dataset.action === "delete") books = books.filter((item) => item.id !== book.id);
       logAudit(`Inventario: ${button.dataset.action}`, "book", before, button.dataset.action === "delete" ? null : { ...book });
     }
@@ -756,6 +766,46 @@ function renderAdmin() {
   renderAdminBooks();
   renderAdminReservations();
   renderAuditLog();
+  updateStockSaveButton();
+}
+
+function updateStockSaveButton() {
+  if (!$("#saveStockChanges")) return;
+  const count = pendingStockChanges.size;
+  $("#saveStockChanges").disabled = count === 0;
+  $("#saveStockChanges").textContent = count === 0 ? "Guardar cambios de stock" : `Guardar cambios de stock (${count})`;
+}
+
+async function savePendingStockChanges() {
+  if (pendingStockChanges.size === 0) return;
+  const button = $("#saveStockChanges");
+  const message = $("#stockChangesMessage");
+  button.disabled = true;
+  button.textContent = "Guardando stock...";
+  message.textContent = "";
+
+  try {
+    for (const [bookId, originalStock] of pendingStockChanges.entries()) {
+      const book = books.find((item) => item.id === bookId);
+      if (!book) continue;
+      const delta = Number(book.stock || 0) - Number(originalStock || 0);
+      if (delta !== 0) {
+        const data = await apiRequest(`/api/admin/books/${bookId}/stock`, {
+          method: "PATCH",
+          body: { delta }
+        });
+        Object.assign(book, data.book);
+      }
+    }
+    pendingStockChanges.clear();
+    await loadAdminDataFromApi();
+    message.textContent = "Stock guardado.";
+  } catch (error) {
+    message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo guardar el stock.";
+  }
+
+  saveBooks();
+  renderAdmin();
 }
 
 function renderAdminStats() {
@@ -788,12 +838,15 @@ function renderAdminBooks() {
 
   $("#adminBooks").innerHTML = visibleBooks.map((book) => {
     const available = Math.max(Number(book.stock || 0) - Number(book.reserved || 0), 0);
+    const originalStock = pendingStockChanges.get(book.id);
+    const stockClass = originalStock === undefined ? "" : " class=\"stock-pending\"";
+    const stockLabel = originalStock === undefined ? book.stock : `${book.stock}*`;
     return `
       <tr>
         <td><strong>${book.title}</strong><span>${book.author}</span></td>
         <td>${book.category || "General"}</td>
         <td>${book.language || "ro"}</td>
-        <td>${book.stock}</td>
+        <td${stockClass}>${stockLabel}</td>
         <td>${book.reserved || 0}</td>
         <td>${available}</td>
         <td>${Number(book.price || 0).toFixed(2)} €</td>
@@ -841,12 +894,19 @@ function getReservationItems(reservation) {
 
 function renderAuditLog() {
   if (!$("#auditLog")) return;
-  $("#auditLog").innerHTML = auditLogs.slice(0, 20).map((log) => `
+  const maxPage = Math.max(0, Math.ceil(auditLogs.length / auditPageSize) - 1);
+  auditPage = Math.min(auditPage, maxPage);
+  const start = auditPage * auditPageSize;
+  const pageLogs = auditLogs.slice(start, start + auditPageSize);
+  $("#auditLog").innerHTML = pageLogs.map((log) => `
     <article>
       <strong>${log.action}</strong>
       <span>${log.entity} · ${log.actor} · ${new Date(log.createdAt).toLocaleString("es-ES")}</span>
     </article>
   `).join("") || "<p>Todavia no hay cambios registrados.</p>";
+  if ($("#auditPageInfo")) $("#auditPageInfo").textContent = `Pagina ${auditPage + 1} de ${maxPage + 1}`;
+  if ($("#auditPrev")) $("#auditPrev").disabled = auditPage === 0;
+  if ($("#auditNext")) $("#auditNext").disabled = auditPage >= maxPage;
 }
 
 $("#langToggle")?.addEventListener("click", () => {

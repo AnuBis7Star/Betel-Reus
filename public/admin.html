@@ -102,6 +102,10 @@
                   <option value="all">Todas las categorias</option>
                 </select>
               </div>
+              <div class="panel-actions">
+                <button class="button secondary" type="button" id="saveStockChanges" disabled>Guardar cambios de stock</button>
+                <span class="form-note" id="stockChangesMessage"></span>
+              </div>
               <div class="table-wrap">
                 <table class="admin-table">
                   <thead>
@@ -133,15 +137,20 @@
               <div class="reservations-list" id="reservationsList"></div>
             </section>
 
-            <section class="admin-panel">
-              <div class="section-heading compact-heading">
+            <details class="admin-panel audit-panel">
+              <summary>
                 <div>
                   <p class="eyebrow">Historial</p>
                   <h2>Ultimos cambios</h2>
                 </div>
-              </div>
+              </summary>
               <div class="audit-log" id="auditLog"></div>
-            </section>
+              <div class="pagination-controls">
+                <button type="button" id="auditPrev">Anterior</button>
+                <span id="auditPageInfo">Pagina 1</span>
+                <button type="button" id="auditNext">Siguiente</button>
+              </div>
+            </details>
           </div>
         </div>
       </section>
