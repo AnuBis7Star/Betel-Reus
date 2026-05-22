@@ -128,19 +128,6 @@ select {
   transform: translate(-50%, 0);
 }
 
-.nav-library {
-  border: 1px solid var(--ink);
-  border-radius: 999px;
-  padding: 8px 14px;
-  background: var(--ink);
-  color: var(--white);
-  font-weight: 800;
-}
-
-.nav .nav-library:hover {
-  color: var(--white);
-}
-
 .lang-toggle,
 .button,
 .book-actions button {
