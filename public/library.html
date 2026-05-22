@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Biblioteca Betel Reus</title>
-    <meta name="description" content="Biblioteca Bisericii Betel Reus: stoc, preturi, rezervari si cereri de carti." />
+    <meta name="description" content="Biblioteca Bisericii Betel Reus: stoc, prețuri și cereri de cărți." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
@@ -13,10 +13,10 @@
       <a class="brand" href="/" aria-label="Biserica Betel Reus">
         <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
       </a>
-      <nav class="nav" aria-label="Navigare principala">
+      <nav class="nav" aria-label="Navigare principală">
         <a href="/#program" data-i18n="navSchedule">Program</a>
         <a href="/#predici" data-i18n="navVideos">Predici</a>
-        <a href="/library.html" data-i18n="navLibrary">Biblioteca</a>
+        <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="/#contact" data-i18n="navContact">Contact</a>
       </nav>
       <button class="lang-toggle" type="button" id="langToggle">ES</button>
@@ -27,17 +27,17 @@
         <div class="library-gate" id="libraryGate">
           <p class="eyebrow" data-i18n="libraryEyebrow">Pentru membri</p>
           <h1 data-i18n="libraryAccessTitle">Biblioteca Betel</h1>
-          <p data-i18n="libraryAccessText">Accesul este pentru membrii comunitatii. Introdu numele tau si codul primit de la responsabilul bibliotecii.</p>
+          <p data-i18n="libraryAccessText">Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.</p>
           <form class="access-form" id="accessForm">
             <label>
               <span data-i18n="memberName">Nume</span>
-              <input name="name" autocomplete="name" required placeholder="Numele tau" />
+              <input name="name" autocomplete="name" required placeholder="Numele tău" />
             </label>
             <label>
               <span data-i18n="accessCode">Cod acces</span>
               <input name="code" type="password" autocomplete="off" required placeholder="Cod biblioteca" />
             </label>
-            <button class="button primary" type="submit" data-i18n="enterLibrary">Intra in biblioteca</button>
+            <button class="button primary" type="submit" data-i18n="enterLibrary">Intră în bibliotecă</button>
             <span class="form-note" id="accessMessage"></span>
           </form>
         </div>
@@ -49,12 +49,12 @@
               <h1 data-i18n="libraryTitle">Biblioteca Betel</h1>
               <p class="member-line"><span data-i18n="memberActive">Membru</span>: <strong id="activeMember"></strong></p>
             </div>
-            <button class="button secondary" type="button" id="exitLibrary">Iesire</button>
+            <button class="button secondary" type="button" id="exitLibrary">Ieșire</button>
           </div>
           <div class="library-layout">
             <div class="library-results">
               <div class="toolbar">
-                <input id="bookSearch" type="search" placeholder="Cauta dupa titlu sau autor" />
+                <input id="bookSearch" type="search" placeholder="Caută după titlu sau autor" />
                 <select id="bookFilter" aria-label="Filtru biblioteca">
                   <option value="all" data-i18n="filterAll">Toate</option>
                   <option value="available" data-i18n="filterAvailable">Disponibile</option>
@@ -64,7 +64,7 @@
             </div>
             <aside class="cart-panel">
               <div>
-                <p class="eyebrow" data-i18n="cartEyebrow">Cos</p>
+                <p class="eyebrow" data-i18n="cartEyebrow">Coș</p>
                 <h2 data-i18n="cartTitle">Cererea ta</h2>
               </div>
               <div class="cart-items" id="cartItems"></div>

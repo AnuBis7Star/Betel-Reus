@@ -1,54 +1,54 @@
 const translations = {
   ro: {
     navSchedule: "Program",
-    navLibrary: "Biblioteca",
+    navLibrary: "Bibliotecă",
     navVideos: "Predici",
     navContact: "Contact",
-    eyebrow: "Biserica penticostala in Reus",
-    heroText: "Betel Reus, o casa de inchinare. O familie in care ne rugam, ascultam Cuvantul si crestem impreuna in Hristos.",
+    eyebrow: "Biserică penticostală în Reus",
+    heroText: "Betel Reus, o casă de închinare. O familie în care ne rugăm, ascultăm Cuvântul și creștem împreună în Hristos.",
     heroYoutube: "Vezi predici",
     heroSchedule: "Vezi programul",
     verseLabel: "Versetul zilei",
-    scheduleEyebrow: "Ne intalnim impreuna",
-    scheduleTitle: "Program si evenimente",
-    scheduleText: "Programul principal al bisericii pentru membri, familii si vizitatori.",
-    saturdayOther: "Alte activitati dupa program",
+    scheduleEyebrow: "Ne întâlnim împreună",
+    scheduleTitle: "Program și evenimente",
+    scheduleText: "Programul principal al bisericii pentru membri, familii și vizitatori.",
+    saturdayOther: "Alte activități după program",
     libraryEyebrow: "Pentru membri",
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
-    libraryAccessText: "Accesul este pentru membrii comunitatii. Introdu numele tau si codul primit de la responsabilul bibliotecii.",
+    libraryAccessText: "Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.",
     memberName: "Nume",
     memberActive: "Membru",
     accessCode: "Cod acces",
-    enterLibrary: "Intra in biblioteca",
+    enterLibrary: "Intră în bibliotecă",
     accessDenied: "Codul nu este corect.",
-    resetLibrary: "Reseteaza",
+    resetLibrary: "Resetează",
     bookTitle: "Titlu",
     bookAuthor: "Autor",
     bookStock: "Stoc",
-    bookPrice: "Pret",
-    addBook: "Adauga carte",
+    bookPrice: "Preț",
+    addBook: "Adaugă carte",
     filterAll: "Toate",
     filterAvailable: "Disponibile",
     filterReserved: "Rezervate",
-    videosTitle: "Ultimele predici si cantari",
-    socialEyebrow: "Retele sociale",
-    socialTitle: "Ramai aproape de comunitate",
+    videosTitle: "Ultimele predici și cântări",
+    socialEyebrow: "Rețele sociale",
+    socialTitle: "Rămâi aproape de comunitate",
     aboutEyebrow: "Despre noi",
-    aboutTitle: "O familie in credinta, in inima orasului Reus",
-    aboutText: "Biserica Betel este un loc al prezentei lui Dumnezeu, unde vietile sunt transformate prin Duhul Sfant. Aici traim o viata noua, in Hristos si cu Hristos.",
+    aboutTitle: "O familie în credință, în inima orașului Reus",
+    aboutText: "Biserica Betel este un loc al prezenței lui Dumnezeu, unde viețile sunt transformate prin Duhul Sfânt. Aici trăim o viață nouă, în Hristos și cu Hristos.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
     contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
-    reserve: "Rezerva",
+    reserve: "Rezervă",
     request: "Cere",
-    addToCart: "Adauga",
-    cartEyebrow: "Cos",
+    addToCart: "Adaugă",
+    cartEyebrow: "Coș",
     cartTitle: "Cererea ta",
-    cartEmpty: "Cosul este gol.",
+    cartEmpty: "Coșul este gol.",
     cartTotal: "Total",
     confirmCart: "Trimite cererea",
-    cartSent: "Cererea a fost trimisa.",
-    returnBook: "Returneaza",
+    cartSent: "Cererea a fost trimisă.",
+    returnBook: "Returnează",
     available: "disponibile",
     reserved: "rezervate"
   },
@@ -58,46 +58,46 @@ const translations = {
     navVideos: "Predicaciones",
     navContact: "Contacto",
     eyebrow: "Iglesia pentecostal en Reus",
-    heroText: "Betel Reus, una casa de adoracion. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
+    heroText: "Betel Reus, una casa de adoración. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
     heroYoutube: "Ver predicaciones",
     heroSchedule: "Ver horario",
-    verseLabel: "Versiculo del dia",
+    verseLabel: "Versículo del día",
     scheduleEyebrow: "Nos reunimos juntos",
     scheduleTitle: "Horario y eventos",
     scheduleText: "El programa principal de la iglesia para miembros, familias y visitantes.",
-    saturdayOther: "Otras actividades segun programacion",
+    saturdayOther: "Otras actividades según programación",
     libraryEyebrow: "Para miembros",
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
-    libraryAccessText: "El acceso es para miembros de la comunidad. Introduce tu nombre y el codigo recibido del responsable de la biblioteca.",
+    libraryAccessText: "El acceso es para miembros de la comunidad. Introduce tu nombre y el código recibido del responsable de la biblioteca.",
     memberName: "Nombre",
     memberActive: "Miembro",
-    accessCode: "Codigo de acceso",
+    accessCode: "Código de acceso",
     enterLibrary: "Entrar en biblioteca",
-    accessDenied: "El codigo no es correcto.",
+    accessDenied: "El código no es correcto.",
     resetLibrary: "Reiniciar",
-    bookTitle: "Titulo",
+    bookTitle: "Título",
     bookAuthor: "Autor",
     bookStock: "Stock",
     bookPrice: "Precio",
-    addBook: "Anadir libro",
+    addBook: "Añadir libro",
     filterAll: "Todos",
     filterAvailable: "Disponibles",
     filterReserved: "Reservados",
-    videosTitle: "Ultimas predicaciones y cantos",
+    videosTitle: "Últimas predicaciones y cantos",
     socialEyebrow: "Redes sociales",
     socialTitle: "Permanece cerca de la comunidad",
     aboutEyebrow: "Sobre nosotros",
-    aboutTitle: "Una familia en la fe, en el corazon de Reus",
-    aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espiritu Santo. Aqui vivimos una vida nueva, en Cristo y con Cristo.",
+    aboutTitle: "Una familia en la fe, en el corazón de Reus",
+    aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espíritu Santo. Aquí vivimos una vida nueva, en Cristo y con Cristo.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
     contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
     reserve: "Reservar",
     request: "Pedir",
-    addToCart: "Anadir",
+    addToCart: "Añadir",
     cartEyebrow: "Carrito",
     cartTitle: "Tu pedido",
-    cartEmpty: "El carrito esta vacio.",
+    cartEmpty: "El carrito está vacío.",
     cartTotal: "Total",
     confirmCart: "Confirmar pedido",
     cartSent: "Pedido enviado al panel.",
@@ -108,9 +108,9 @@ const translations = {
 };
 
 const seedBooks = [
-  { id: crypto.randomUUID(), title: "Viata condusa de scopuri", author: "Rick Warren", stock: 4, price: 12.5, reserved: 1 },
-  { id: crypto.randomUUID(), title: "Crestinul autentic", author: "John Stott", stock: 2, price: 9.99, reserved: 0 },
-  { id: crypto.randomUUID(), title: "Rugaciunea", author: "Timothy Keller", stock: 1, price: 14, reserved: 0 },
+  { id: crypto.randomUUID(), title: "Viața condusă de scopuri", author: "Rick Warren", stock: 4, price: 12.5, reserved: 1 },
+  { id: crypto.randomUUID(), title: "Creștinul autentic", author: "John Stott", stock: 2, price: 9.99, reserved: 0 },
+  { id: crypto.randomUUID(), title: "Rugăciunea", author: "Timothy Keller", stock: 1, price: 14, reserved: 0 },
   { id: crypto.randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", stock: 6, price: 18, reserved: 2 }
 ];
 
@@ -140,6 +140,13 @@ const heroImages = [
 
 let reservations = [];
 let auditLogs = [];
+
+const statusLabels = {
+  pending: "În așteptare",
+  approved: "Pregătită",
+  collected: "Predată",
+  cancelled: "Anulată"
+};
 
 function saveBooks() {
   sessionStorage.setItem("betel-books", JSON.stringify(books));
@@ -225,7 +232,7 @@ function applyLanguage() {
     const key = node.dataset.i18n;
     if (translations[lang][key]) node.textContent = translations[lang][key];
   });
-  if ($("#bookSearch")) $("#bookSearch").placeholder = lang === "ro" ? "Cauta dupa titlu sau autor" : "Busca por titulo o autor";
+  if ($("#bookSearch")) $("#bookSearch").placeholder = lang === "ro" ? "Caută după titlu sau autor" : "Busca por título o autor";
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
 }
@@ -383,15 +390,18 @@ function startVideoRotation() {
     dragged = false;
     startX = event.clientX;
     startOffset = offset;
-    rail.classList.add("is-dragging");
     pause();
-    rail.setPointerCapture?.(event.pointerId);
   });
 
   rail.addEventListener("pointermove", (event) => {
     if (!dragging) return;
     const distance = event.clientX - startX;
-    if (Math.abs(distance) > 6) dragged = true;
+    if (Math.abs(distance) > 10) {
+      dragged = true;
+      rail.classList.add("is-dragging");
+      rail.setPointerCapture?.(event.pointerId);
+    }
+    if (!dragged) return;
     offset = startOffset + distance;
     paint();
   });
@@ -410,7 +420,7 @@ function startVideoRotation() {
     if (!dragging) return;
     dragging = false;
     rail.classList.remove("is-dragging");
-    rail.releasePointerCapture?.(event.pointerId);
+    if (dragged) rail.releasePointerCapture?.(event.pointerId);
     resumeSoon();
     setTimeout(() => {
       dragged = false;
@@ -420,9 +430,15 @@ function startVideoRotation() {
   rail.addEventListener("pointerup", finishDrag);
   rail.addEventListener("pointercancel", finishDrag);
   rail.addEventListener("click", (event) => {
-    if (!dragged) return;
+    const link = event.target.closest(".video-card");
+    if (!link) return;
     event.preventDefault();
-    event.stopPropagation();
+    if (dragged) {
+      event.stopPropagation();
+      return;
+    }
+    const opened = window.open(link.href, "_blank", "noopener,noreferrer");
+    if (!opened) window.location.href = link.href;
   }, true);
 
   paint();
@@ -551,7 +567,7 @@ async function confirmCart() {
   } catch (error) {
     const fallbackRequest = { ...request, id: crypto.randomUUID(), status: "pending" };
     reservations.unshift(fallbackRequest);
-    logAudit("Solicitud enviada por miembro", "reservation", null, fallbackRequest);
+    logAudit("Cerere trimisă de membru", "reservation", null, fallbackRequest);
     saveReservations();
   }
   cart = [];
@@ -580,7 +596,7 @@ function setupAdmin() {
       currentAdminCode = "";
       sessionStorage.removeItem("betel-admin-code");
       sessionStorage.removeItem("betel-admin-expires-at");
-      $("#adminAccessMessage").textContent = "Vuelve a introducir el codigo admin.";
+      $("#adminAccessMessage").textContent = "Introdu din nou codul de administrare.";
     });
   } else {
     sessionStorage.removeItem("betel-admin-code");
@@ -591,13 +607,13 @@ function setupAdmin() {
   $("#adminAccessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const code = new FormData(event.currentTarget).get("code").trim();
-    $("#adminAccessMessage").textContent = "Comprobando...";
+    $("#adminAccessMessage").textContent = "Se verifică...";
     try {
       await unlockAdmin(code);
       $("#adminAccessMessage").textContent = "";
     } catch (error) {
       currentAdminCode = "";
-      $("#adminAccessMessage").textContent = "Codigo incorrecto o conexion no disponible.";
+      $("#adminAccessMessage").textContent = "Cod incorect sau conexiune indisponibilă.";
     }
   });
 
@@ -618,7 +634,7 @@ function setupAdmin() {
     const submitButton = form.querySelector("button[type='submit']");
     const message = $("#adminFormMessage");
     submitButton.disabled = true;
-    submitButton.textContent = editingId ? "Actualizando..." : "Guardando...";
+    submitButton.textContent = editingId ? "Se actualizează..." : "Se salvează...";
     message.textContent = "";
     const payload = {
       title: data.get("title").trim(),
@@ -637,16 +653,16 @@ function setupAdmin() {
         if (index >= 0) books[index] = data.book;
       } catch (error) {
         if (usingServerData || error.status === 401) {
-          message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo actualizar en la base de datos.";
+          message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut actualiza în baza de date.";
           submitButton.disabled = false;
-          submitButton.textContent = "Actualizar libro";
+          submitButton.textContent = "Actualizează cartea";
           return;
         }
         const book = books.find((item) => item.id === editingId);
         if (book) {
           const before = { ...book };
           Object.assign(book, payload);
-          logAudit("Libro actualizado", "book", before, { ...book });
+          logAudit("Carte actualizată", "book", before, { ...book });
         }
       }
     } else {
@@ -655,10 +671,10 @@ function setupAdmin() {
       books.unshift(optimisticBook);
       form.reset();
       form.elements.id.value = "";
-      $("#adminSubmitLabel").textContent = "Guardar libro";
+      $("#adminSubmitLabel").textContent = "Salvează cartea";
       submitButton.disabled = false;
-      submitButton.textContent = "Guardar libro";
-      message.textContent = "Libro anadido. Guardando en la base de datos...";
+      submitButton.textContent = "Salvează cartea";
+      message.textContent = "Carte adăugată. Se salvează în baza de date...";
       saveBooks();
       renderAdmin();
 
@@ -666,16 +682,16 @@ function setupAdmin() {
         const response = await apiRequest("/api/admin/books", { method: "POST", body: payload });
         const index = books.findIndex((item) => item.id === temporaryId);
         if (index >= 0) books[index] = response.book;
-        message.textContent = "Guardado.";
+        message.textContent = "Salvat.";
       } catch (error) {
         if (usingServerData || error.status === 401) {
           books = books.filter((item) => item.id !== temporaryId);
-          message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo guardar en la base de datos.";
+          message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut salva în baza de date.";
           saveBooks();
           renderAdmin();
           return;
         }
-        logAudit("Libro creado", "book", null, optimisticBook);
+        logAudit("Carte creată", "book", null, optimisticBook);
       }
       saveBooks();
       renderAdmin();
@@ -684,9 +700,9 @@ function setupAdmin() {
 
     form.reset();
     form.elements.id.value = "";
-    $("#adminSubmitLabel").textContent = "Guardar libro";
+    $("#adminSubmitLabel").textContent = "Salvează cartea";
     submitButton.disabled = false;
-    message.textContent = "Guardado.";
+    message.textContent = "Salvat.";
     saveBooks();
     renderAdmin();
   });
@@ -722,7 +738,7 @@ function setupAdmin() {
       form.elements.stock.value = book.stock;
       form.elements.reserved.value = book.reserved || 0;
       form.elements.price.value = book.price;
-      $("#adminSubmitLabel").textContent = "Actualizar libro";
+      $("#adminSubmitLabel").textContent = "Actualizează cartea";
       form.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
@@ -740,7 +756,7 @@ function setupAdmin() {
       }
     } catch (error) {
       if (button.dataset.action === "delete") books = books.filter((item) => item.id !== book.id);
-      logAudit(`Inventario: ${button.dataset.action}`, "book", before, button.dataset.action === "delete" ? null : { ...book });
+      logAudit(`Inventar: ${button.dataset.action}`, "book", before, button.dataset.action === "delete" ? null : { ...book });
     }
     saveBooks();
     renderAdmin();
@@ -769,7 +785,7 @@ function setupAdmin() {
         reservation.fulfilled = true;
         saveBooks();
       }
-      logAudit(`Solicitud marcada como ${button.dataset.status}`, "reservation", before, { ...reservation });
+      logAudit(`Cerere marcată ca ${button.dataset.status}`, "reservation", before, { ...reservation });
     }
     saveReservations();
     renderAdminReservations();
@@ -791,7 +807,7 @@ function updateStockSaveButton() {
   if (!$("#saveStockChanges")) return;
   const count = pendingStockChanges.size;
   $("#saveStockChanges").disabled = count === 0;
-  $("#saveStockChanges").textContent = count === 0 ? "Guardar cambios de stock" : `Guardar cambios de stock (${count})`;
+  $("#saveStockChanges").textContent = count === 0 ? "Salvează modificările de stoc" : `Salvează modificările de stoc (${count})`;
 }
 
 async function savePendingStockChanges() {
@@ -799,7 +815,7 @@ async function savePendingStockChanges() {
   const button = $("#saveStockChanges");
   const message = $("#stockChangesMessage");
   button.disabled = true;
-  button.textContent = "Guardando stock...";
+  button.textContent = "Se salvează stocul...";
   message.textContent = "";
 
   try {
@@ -817,9 +833,9 @@ async function savePendingStockChanges() {
     }
     pendingStockChanges.clear();
     await loadAdminDataFromApi();
-    message.textContent = "Stock guardado.";
+    message.textContent = "Stoc salvat.";
   } catch (error) {
-    message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo guardar el stock.";
+    message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut salva stocul.";
   }
 
   saveBooks();
@@ -853,15 +869,15 @@ async function importBulkBooks() {
   const parsedBooks = parseBulkBooksInput(input.value);
 
   if (parsedBooks.length === 0) {
-    message.textContent = "Anade al menos una linea con titulo y autor.";
+    message.textContent = "Adaugă cel puțin o linie cu titlu și autor.";
     return;
   }
 
   const temporaryBooks = parsedBooks.map((book) => ({ id: `tmp-${crypto.randomUUID()}`, ...book }));
   const temporaryIds = new Set(temporaryBooks.map((book) => book.id));
   button.disabled = true;
-  button.textContent = "Importando...";
-  message.textContent = `${temporaryBooks.length} libros anadidos. Guardando en la base de datos...`;
+  button.textContent = "Se importă...";
+  message.textContent = `${temporaryBooks.length} cărți adăugate. Se salvează în baza de date...`;
   books.unshift(...temporaryBooks);
   saveBooks();
   renderAdmin();
@@ -874,20 +890,20 @@ async function importBulkBooks() {
     books = books.filter((book) => !temporaryIds.has(book.id));
     books.unshift(...response.books);
     input.value = "";
-    message.textContent = `${response.books.length} libros importados.`;
+    message.textContent = `${response.books.length} cărți importate.`;
     await loadAdminDataFromApi();
   } catch (error) {
     if (usingServerData || error.status === 401) {
       books = books.filter((book) => !temporaryIds.has(book.id));
-      message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo importar en la base de datos.";
+      message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut importa în baza de date.";
     } else {
-      logAudit("Libros importados", "book", null, temporaryBooks);
-      message.textContent = `${temporaryBooks.length} libros importados localmente.`;
+      logAudit("Cărți importate", "book", null, temporaryBooks);
+      message.textContent = `${temporaryBooks.length} cărți importate local.`;
     }
   }
 
   button.disabled = false;
-  button.textContent = "Importar libros";
+  button.textContent = "Importă cărți";
   saveBooks();
   renderAdmin();
 }
@@ -899,11 +915,11 @@ function renderAdminStats() {
   const lowStock = books.filter((book) => Number(book.stock || 0) - Number(book.reserved || 0) <= 1).length;
   const pending = reservations.filter((item) => item.status === "pending").length;
   $("#adminStats").innerHTML = `
-    <article><span>Libros</span><strong>${books.length}</strong></article>
+    <article><span>Cărți</span><strong>${books.length}</strong></article>
     <article><span>Stock total</span><strong>${totalStock}</strong></article>
-    <article><span>Apartados</span><strong>${totalReserved}</strong></article>
-    <article><span>Bajo stock</span><strong>${lowStock}</strong></article>
-    <article><span>Pedidos pendientes</span><strong>${pending}</strong></article>
+    <article><span>Rezervate</span><strong>${totalReserved}</strong></article>
+    <article><span>Stoc redus</span><strong>${lowStock}</strong></article>
+    <article><span>Cereri în așteptare</span><strong>${pending}</strong></article>
   `;
 }
 
@@ -912,7 +928,7 @@ function renderAdminBooks() {
   const query = $("#adminSearch").value.toLowerCase();
   const category = $("#adminCategoryFilter").value;
   const categories = [...new Set(books.map((book) => book.category).filter(Boolean))].sort();
-  $("#adminCategoryFilter").innerHTML = `<option value="all">Todas las categorias</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
+  $("#adminCategoryFilter").innerHTML = `<option value="all">Toate categoriile</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
   $("#adminCategoryFilter").value = category && [...categories, "all"].includes(category) ? category : "all";
 
   const visibleBooks = books.filter((book) => {
@@ -937,8 +953,8 @@ function renderAdminBooks() {
         <td class="table-actions">
           <button type="button" data-action="minus" data-id="${book.id}">-</button>
           <button type="button" data-action="plus" data-id="${book.id}">+</button>
-          <button type="button" data-action="edit" data-id="${book.id}">Editar</button>
-          <button type="button" data-action="delete" data-id="${book.id}">Eliminar</button>
+          <button type="button" data-action="edit" data-id="${book.id}">Editează</button>
+          <button type="button" data-action="delete" data-id="${book.id}">Șterge</button>
         </td>
       </tr>
     `;
@@ -958,22 +974,22 @@ function renderAdminReservations() {
         <strong>${title}</strong>
         <span>${reservation.member} · ${reservation.contact}</span>
         <span>${total.toFixed(2)} €</span>
-        <small>${new Date(reservation.createdAt).toLocaleString("es-ES")}</small>
+        <small>${new Date(reservation.createdAt).toLocaleString("ro-RO")}</small>
       </div>
-      <mark>${reservation.status}</mark>
+      <mark>${statusLabels[reservation.status] || reservation.status}</mark>
       <div class="table-actions">
-        <button type="button" data-id="${reservation.id}" data-status="approved">Preparado</button>
-        <button type="button" data-id="${reservation.id}" data-status="collected">Entregado</button>
-        <button type="button" data-id="${reservation.id}" data-status="cancelled">Cancelar</button>
+        <button type="button" data-id="${reservation.id}" data-status="approved">Pregătită</button>
+        <button type="button" data-id="${reservation.id}" data-status="collected">Predată</button>
+        <button type="button" data-id="${reservation.id}" data-status="cancelled">Anulează</button>
       </div>
     </article>
   `;
-  }).join("") || "<p>No hay pedidos activos.</p>";
+  }).join("") || "<p>Nu există cereri active.</p>";
 }
 
 function getReservationItems(reservation) {
   if (Array.isArray(reservation.items)) return reservation.items;
-  return [{ title: reservation.bookTitle || "Libro", quantity: 1, price: 0 }];
+  return [{ title: reservation.bookTitle || "Carte", quantity: 1, price: 0 }];
 }
 
 function renderAuditLog() {
@@ -985,9 +1001,9 @@ function renderAuditLog() {
   $("#auditLog").innerHTML = pageLogs.map((log) => `
     <article>
       <strong>${log.action}</strong>
-      <span>${log.entity} · ${log.actor} · ${new Date(log.createdAt).toLocaleString("es-ES")}</span>
+      <span>${log.entity} · ${log.actor} · ${new Date(log.createdAt).toLocaleString("ro-RO")}</span>
     </article>
-  `).join("") || "<p>Todavia no hay cambios registrados.</p>";
+  `).join("") || "<p>Încă nu există modificări înregistrate.</p>";
   if ($("#auditPageInfo")) $("#auditPageInfo").textContent = `Pagina ${auditPage + 1} de ${maxPage + 1}`;
   if ($("#auditPrev")) $("#auditPrev").disabled = auditPage === 0;
   if ($("#auditNext")) $("#auditNext").disabled = auditPage >= maxPage;

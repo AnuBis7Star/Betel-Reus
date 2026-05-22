@@ -20,9 +20,9 @@ if (process.env.DATABASE_URL) {
 
 const memory = {
   books: [
-    { id: randomUUID(), title: "Viata condusa de scopuri", author: "Rick Warren", category: "General", language: "ro", stock: 4, reserved: 0, price: 12.5 },
-    { id: randomUUID(), title: "Crestinul autentic", author: "John Stott", category: "General", language: "ro", stock: 2, reserved: 0, price: 9.99 },
-    { id: randomUUID(), title: "Rugaciunea", author: "Timothy Keller", category: "General", language: "ro", stock: 1, reserved: 0, price: 14 },
+    { id: randomUUID(), title: "Viața condusă de scopuri", author: "Rick Warren", category: "General", language: "ro", stock: 4, reserved: 0, price: 12.5 },
+    { id: randomUUID(), title: "Creștinul autentic", author: "John Stott", category: "General", language: "ro", stock: 2, reserved: 0, price: 9.99 },
+    { id: randomUUID(), title: "Rugăciunea", author: "Timothy Keller", category: "General", language: "ro", stock: 1, reserved: 0, price: 14 },
     { id: randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", category: "Copii", language: "ro", stock: 6, reserved: 0, price: 18 }
   ],
   orders: [],
@@ -107,10 +107,16 @@ async function readJson(req) {
   return body ? JSON.parse(body) : {};
 }
 
+const romanianTitleCorrections = {
+  "Viata condusa de scopuri": "Viața condusă de scopuri",
+  "Crestinul autentic": "Creștinul autentic",
+  Rugaciunea: "Rugăciunea"
+};
+
 function bookFromRow(row) {
   return {
     id: row.id,
-    title: row.title,
+    title: romanianTitleCorrections[row.title] || row.title,
     author: row.author,
     category: row.category,
     language: row.language,
@@ -121,6 +127,9 @@ function bookFromRow(row) {
 }
 
 function orderFromRow(row) {
+  const items = Array.isArray(row.items)
+    ? row.items.map((item) => ({ ...item, title: romanianTitleCorrections[item.title] || item.title }))
+    : [];
   return {
     id: row.id,
     member: row.member_name,
@@ -129,7 +138,7 @@ function orderFromRow(row) {
     total: Number(row.total || 0),
     fulfilled: Boolean(row.fulfilled),
     createdAt: row.created_at,
-    items: row.items || []
+    items
   };
 }
 
@@ -160,12 +169,12 @@ async function createOrder(payload) {
       if (!book) throw new Error(`Book not found: ${item.id}`);
       const quantity = Number(item.quantity || 1);
       if (Number(book.stock) - Number(book.reserved) < quantity) throw new Error(`Not enough stock: ${book.title}`);
-      return { id: book.id, title: book.title, quantity, price: book.price };
+      return { id: book.id, title: romanianTitleCorrections[book.title] || book.title, quantity, price: book.price };
     });
     const total = normalizedItems.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1), 0);
     const order = { id: randomUUID(), member: payload.member, contact: payload.contact || "biblioteca", status: "pending", total, fulfilled: false, createdAt: new Date().toISOString(), items: normalizedItems };
     memory.orders.unshift(order);
-    await audit("Solicitud enviada por miembro", "order", order.id, null, order, payload.member);
+    await audit("Cerere trimisă de membru", "order", order.id, null, order, payload.member);
     return order;
   }
 
@@ -195,13 +204,13 @@ async function createOrder(payload) {
       const quantity = Number(item.quantity || 1);
       await client.query(
         "INSERT INTO order_items (order_id, book_id, title, quantity, price) VALUES ($1, $2, $3, $4, $5)",
-        [order.id, book.id, book.title, quantity, book.price]
+        [order.id, book.id, romanianTitleCorrections[book.title] || book.title, quantity, book.price]
       );
     }
 
     await client.query(
       "INSERT INTO audit_logs (actor, action, entity_type, entity_id, after_data) VALUES ($1, $2, $3, $4, $5)",
-      [payload.member, "Solicitud enviada por miembro", "order", order.id, { ...payload, total }]
+      [payload.member, "Cerere trimisă de membru", "order", order.id, { ...payload, total }]
     );
     await client.query("COMMIT");
     return { ...orderFromRow({ ...order, items }), items };
@@ -255,7 +264,7 @@ async function createBook(payload) {
   if (!pool) {
     const created = { id: randomUUID(), ...book };
     memory.books.unshift(created);
-    await audit("Libro creado", "book", created.id, null, created);
+    await audit("Carte creată", "book", created.id, null, created);
     return created;
   }
   const result = await pool.query(
@@ -263,7 +272,7 @@ async function createBook(payload) {
     [book.title, book.author, book.category, book.language, book.stock, book.reserved, book.price]
   );
   const created = bookFromRow(result.rows[0]);
-  await audit("Libro creado", "book", created.id, null, created);
+  await audit("Carte creată", "book", created.id, null, created);
   return created;
 }
 
@@ -274,7 +283,7 @@ async function createBooks(payloads) {
   if (!pool) {
     const created = books.map((book) => ({ id: randomUUID(), ...book }));
     memory.books.unshift(...created);
-    await audit("Libros importados", "book", null, null, created);
+    await audit("Cărți importate", "book", null, null, created);
     return created;
   }
 
@@ -291,7 +300,7 @@ async function createBooks(payloads) {
     }
     await client.query(
       "INSERT INTO audit_logs (actor, action, entity_type, before_data, after_data) VALUES ($1, $2, $3, $4, $5)",
-      ["admin", "Libros importados", "book", null, created]
+      ["admin", "Cărți importate", "book", null, created]
     );
     await client.query("COMMIT");
     return created;
@@ -310,7 +319,7 @@ async function updateBook(id, payload) {
     if (index === -1) throw new Error("Book not found");
     const before = { ...memory.books[index] };
     memory.books[index] = { ...memory.books[index], ...book };
-    await audit("Libro actualizado", "book", id, before, memory.books[index]);
+    await audit("Carte actualizată", "book", id, before, memory.books[index]);
     return memory.books[index];
   }
   const before = await pool.query("SELECT * FROM books WHERE id = $1", [id]);
@@ -320,7 +329,7 @@ async function updateBook(id, payload) {
   );
   if (!result.rowCount) throw new Error("Book not found");
   const updated = bookFromRow(result.rows[0]);
-  await audit("Libro actualizado", "book", id, before.rows[0] ? bookFromRow(before.rows[0]) : null, updated);
+  await audit("Carte actualizată", "book", id, before.rows[0] ? bookFromRow(before.rows[0]) : null, updated);
   return updated;
 }
 
@@ -330,7 +339,7 @@ async function adjustBookStock(id, delta) {
     if (!book) throw new Error("Book not found");
     const before = { ...book };
     book.stock = Math.max(Number(book.reserved || 0), Number(book.stock || 0) + delta);
-    await audit(`Inventario: ${delta > 0 ? "plus" : "minus"}`, "book", id, before, book);
+    await audit(`Inventar: ${delta > 0 ? "plus" : "minus"}`, "book", id, before, book);
     return book;
   }
   const before = await pool.query("SELECT * FROM books WHERE id = $1", [id]);
@@ -340,7 +349,7 @@ async function adjustBookStock(id, delta) {
   );
   if (!result.rowCount) throw new Error("Book not found");
   const updated = bookFromRow(result.rows[0]);
-  await audit(`Inventario: ${delta > 0 ? "plus" : "minus"}`, "book", id, before.rows[0] ? bookFromRow(before.rows[0]) : null, updated);
+  await audit(`Inventar: ${delta > 0 ? "plus" : "minus"}`, "book", id, before.rows[0] ? bookFromRow(before.rows[0]) : null, updated);
   return updated;
 }
 
@@ -348,12 +357,12 @@ async function deleteBook(id) {
   if (!pool) {
     const before = memory.books.find((item) => item.id === id);
     memory.books = memory.books.filter((item) => item.id !== id);
-    await audit("Libro eliminado", "book", id, before, null);
+    await audit("Carte ștearsă", "book", id, before, null);
     return { ok: true };
   }
   const before = await pool.query("SELECT * FROM books WHERE id = $1", [id]);
   await pool.query("UPDATE books SET active = false, updated_at = now() WHERE id = $1", [id]);
-  await audit("Libro eliminado", "book", id, before.rows[0] ? bookFromRow(before.rows[0]) : null, null);
+  await audit("Carte ștearsă", "book", id, before.rows[0] ? bookFromRow(before.rows[0]) : null, null);
   return { ok: true };
 }
 
@@ -383,7 +392,7 @@ async function updateOrderStatus(id, status) {
       }
       order.fulfilled = true;
     }
-    await audit(`Solicitud marcada como ${status}`, "order", id, before, order);
+    await audit(`Cerere marcată ca ${status}`, "order", id, before, order);
     return order;
   }
 
@@ -409,7 +418,7 @@ async function updateOrderStatus(id, status) {
     );
     await client.query(
       "INSERT INTO audit_logs (actor, action, entity_type, entity_id, before_data, after_data) VALUES ($1, $2, $3, $4, $5, $6)",
-      ["admin", `Solicitud marcada como ${status}`, "order", id, before, updatedResult.rows[0]]
+      ["admin", `Cerere marcată ca ${status}`, "order", id, before, updatedResult.rows[0]]
     );
     await client.query("COMMIT");
     return orderFromRow({ ...updatedResult.rows[0], items: [] });

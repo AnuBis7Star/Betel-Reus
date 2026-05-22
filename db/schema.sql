@@ -52,8 +52,8 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DE
 
 INSERT INTO books (title, author, category, language, price, stock, reserved)
 VALUES
-  ('Viata condusa de scopuri', 'Rick Warren', 'General', 'ro', 12.50, 4, 0),
-  ('Crestinul autentic', 'John Stott', 'General', 'ro', 9.99, 2, 0),
-  ('Rugaciunea', 'Timothy Keller', 'General', 'ro', 14.00, 1, 0),
+  ('Viața condusă de scopuri', 'Rick Warren', 'General', 'ro', 12.50, 4, 0),
+  ('Creștinul autentic', 'John Stott', 'General', 'ro', 9.99, 2, 0),
+  ('Rugăciunea', 'Timothy Keller', 'General', 'ro', 14.00, 1, 0),
   ('Biblia pentru copii', 'Resurse familie', 'Copii', 'ro', 18.00, 6, 0)
 ON CONFLICT DO NOTHING;

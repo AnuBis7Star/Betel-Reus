@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="ro">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Panel Biblioteca Betel Reus</title>
-    <meta name="description" content="Panel privado para gestionar inventario, reservas e historial de la Biblioteca Betel Reus." />
+    <title>Panou Biblioteca Betel Reus</title>
+    <meta name="description" content="Panou privat pentru gestionarea inventarului, cererilor și istoricului Bibliotecii Betel Reus." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
@@ -13,10 +13,10 @@
       <a class="brand" href="/" aria-label="Biserica Betel Reus">
         <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
       </a>
-      <nav class="nav" aria-label="Navegacion administracion">
-        <a href="/">Landing</a>
-        <a href="/library.html">Biblioteca</a>
-        <a href="/admin.html">Panel</a>
+      <nav class="nav" aria-label="Navigare administrare">
+        <a href="/">Acasă</a>
+        <a href="/library.html">Bibliotecă</a>
+        <a href="/admin.html">Panou</a>
       </nav>
       <button class="lang-toggle" type="button" id="langToggle">ES</button>
     </header>
@@ -24,15 +24,15 @@
     <main>
       <section class="section admin-page">
         <div class="library-gate" id="adminGate">
-          <p class="eyebrow">Panel privado</p>
-          <h1>Control biblioteca</h1>
-          <p>Introduce el codigo privado de administracion para gestionar libros, pedidos e historial.</p>
+          <p class="eyebrow">Panou privat</p>
+          <h1>Control bibliotecă</h1>
+          <p>Introdu codul privat de administrare pentru a gestiona cărți, cereri și istoric.</p>
           <form class="access-form" id="adminAccessForm">
             <label>
-              <span>Codigo admin</span>
-              <input name="code" type="password" autocomplete="off" required placeholder="Codigo privado" />
+              <span>Cod administrare</span>
+              <input name="code" type="password" autocomplete="off" required placeholder="Cod privat" />
             </label>
-            <button class="button primary" type="submit">Entrar al panel</button>
+            <button class="button primary" type="submit">Intră în panou</button>
             <span class="form-note" id="adminAccessMessage"></span>
           </form>
         </div>
@@ -41,11 +41,11 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Biblioteca Betel</p>
-              <h1>Panel de control</h1>
+              <h1>Panou de control</h1>
             </div>
             <div class="header-actions">
-              <a class="button secondary" href="/library.html">Ver biblioteca</a>
-              <button class="button secondary" type="button" id="exitAdmin">Salir</button>
+              <a class="button secondary" href="/library.html">Vezi biblioteca</a>
+              <button class="button secondary" type="button" id="exitAdmin">Ieșire</button>
             </div>
           </div>
 
@@ -54,30 +54,30 @@
           <div class="admin-grid">
             <form class="book-form admin-book-form" id="adminBookForm">
               <input type="hidden" name="id" />
-              <h2>Libro</h2>
+              <h2>Carte</h2>
               <label>
-                <span>Titulo</span>
-                <input name="title" required placeholder="Titulo del libro" />
+                <span>Titlu</span>
+                <input name="title" required placeholder="Titlul cărții" />
               </label>
               <label>
                 <span>Autor</span>
                 <input name="author" required placeholder="Autor" />
               </label>
               <label>
-                <span>Categoria</span>
-                <input name="category" placeholder="Biblia, Familia, Jovenes..." />
+                <span>Categorie</span>
+                <input name="category" placeholder="Biblii, Familie, Tineri..." />
               </label>
               <div class="form-row">
                 <label>
-                  <span>Idioma</span>
+                  <span>Limbă</span>
                   <select name="language">
-                    <option value="ro">Rumano</option>
-                    <option value="es">Espanol</option>
-                    <option value="en">Ingles</option>
+                    <option value="ro">Română</option>
+                    <option value="es">Spaniolă</option>
+                    <option value="en">Engleză</option>
                   </select>
                 </label>
                 <label>
-                  <span>Precio</span>
+                  <span>Preț</span>
                   <input name="price" type="number" min="0" step="0.01" value="0" required />
                 </label>
               </div>
@@ -87,47 +87,47 @@
                   <input name="stock" type="number" min="0" value="1" required />
                 </label>
                 <label>
-                  <span>Reservados</span>
+                  <span>Rezervate</span>
                   <input name="reserved" type="number" min="0" value="0" required />
                 </label>
               </div>
-              <button class="button primary" type="submit" id="adminSubmitLabel">Guardar libro</button>
+              <button class="button primary" type="submit" id="adminSubmitLabel">Salvează cartea</button>
               <span class="form-note" id="adminFormMessage"></span>
             </form>
 
             <details class="book-form bulk-import">
               <summary>
-                <h2>Importar varios</h2>
+                <h2>Importă mai multe</h2>
               </summary>
-              <p>Una linea por libro: titulo; autor; categoria; idioma; stock; precio</p>
-              <textarea id="bulkBooksInput" rows="8" placeholder="Biblia de estudio; Autor; Biblias; ro; 3; 25.00"></textarea>
-              <button class="button primary" type="button" id="importBooks">Importar libros</button>
+              <p>O linie pentru fiecare carte: titlu; autor; categorie; limbă; stoc; preț</p>
+              <textarea id="bulkBooksInput" rows="8" placeholder="Biblia de studiu; Autor; Biblii; ro; 3; 25.00"></textarea>
+              <button class="button primary" type="button" id="importBooks">Importă cărți</button>
               <span class="form-note" id="bulkImportMessage"></span>
             </details>
 
             <section class="admin-panel">
               <div class="toolbar">
-                <input id="adminSearch" type="search" placeholder="Buscar por titulo, autor o categoria" />
-                <select id="adminCategoryFilter" aria-label="Filtrar por categoria">
-                  <option value="all">Todas las categorias</option>
+                <input id="adminSearch" type="search" placeholder="Caută după titlu, autor sau categorie" />
+                <select id="adminCategoryFilter" aria-label="Filtrează după categorie">
+                  <option value="all">Toate categoriile</option>
                 </select>
               </div>
               <div class="panel-actions">
-                <button class="button secondary" type="button" id="saveStockChanges" disabled>Guardar cambios de stock</button>
+                <button class="button secondary" type="button" id="saveStockChanges" disabled>Salvează modificările de stoc</button>
                 <span class="form-note" id="stockChangesMessage"></span>
               </div>
               <div class="table-wrap">
                 <table class="admin-table">
                   <thead>
                     <tr>
-                      <th>Libro</th>
-                      <th>Categoria</th>
-                      <th>Idioma</th>
-                      <th>Stock</th>
-                      <th>Reserv.</th>
+                      <th>Carte</th>
+                      <th>Categorie</th>
+                      <th>Limbă</th>
+                      <th>Stoc</th>
+                      <th>Rezerv.</th>
                       <th>Disp.</th>
-                      <th>Precio</th>
-                      <th>Acciones</th>
+                      <th>Preț</th>
+                      <th>Acțiuni</th>
                     </tr>
                   </thead>
                   <tbody id="adminBooks"></tbody>
@@ -140,8 +140,8 @@
             <section class="admin-panel">
               <div class="section-heading compact-heading">
                 <div>
-                  <p class="eyebrow">Reservas</p>
-                  <h2>Pendientes y estado</h2>
+                  <p class="eyebrow">Cereri</p>
+                  <h2>În așteptare și stare</h2>
                 </div>
               </div>
               <div class="reservations-list" id="reservationsList"></div>
@@ -151,14 +151,14 @@
               <summary>
                 <div>
                   <p class="eyebrow">Historial</p>
-                  <h2>Ultimos cambios</h2>
+                  <h2>Ultimele modificări</h2>
                 </div>
               </summary>
               <div class="audit-log" id="auditLog"></div>
               <div class="pagination-controls">
-                <button type="button" id="auditPrev">Anterior</button>
+                <button type="button" id="auditPrev">Înapoi</button>
                 <span id="auditPageInfo">Pagina 1</span>
-                <button type="button" id="auditNext">Siguiente</button>
+                <button type="button" id="auditNext">Înainte</button>
               </div>
             </details>
           </div>
