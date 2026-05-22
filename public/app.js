@@ -8,6 +8,7 @@ const translations = {
     navVideos: "Predici",
     navYoutube: "YouTube",
     navLive: "Live",
+    navAdmin: "Panou",
     navContact: "Contact",
     eyebrow: "Biserică penticostală în Reus",
     heroText: "Betel Reus, o casă de închinare. O familie în care ne rugăm, ascultăm Cuvântul și creștem împreună în Hristos.",
@@ -106,7 +107,89 @@ const translations = {
     returnBook: "Returnează",
     available: "disponibile",
     unavailable: "indisponibil",
-    reserved: "rezervate"
+    reserved: "rezervate",
+    adminPrivatePanel: "Panou privat",
+    adminGateTitle: "Control bibliotecă",
+    adminGateText: "Introdu codul privat de administrare pentru a gestiona cărți, cereri și istoric.",
+    adminCodeLabel: "Cod administrare",
+    adminCodePlaceholder: "Cod privat",
+    adminEnter: "Intră în panou",
+    adminLibraryEyebrow: "Biblioteca Betel",
+    adminControlTitle: "Panou de control",
+    adminViewLibrary: "Vezi biblioteca",
+    adminBookFormTitle: "Carte",
+    adminTitlePlaceholder: "Titlul cărții",
+    adminCategoryLabel: "Categorie",
+    adminCategoryPlaceholder: "Biblii, Familie, Tineri...",
+    adminLanguageLabel: "Limbă",
+    adminRomanian: "Română",
+    adminSpanish: "Spaniolă",
+    adminEnglish: "Engleză",
+    adminSaveBook: "Salvează cartea",
+    adminUpdateBook: "Actualizează cartea",
+    adminBulkTitle: "Importă mai multe",
+    adminBulkHelp: "O linie pentru fiecare carte: titlu; autor; categorie; limbă; stoc; preț",
+    adminBulkPlaceholder: "Biblia de studiu; Autor; Biblii; ro; 3; 25.00",
+    adminImportBooks: "Importă cărți",
+    adminSearchPlaceholder: "Caută după titlu, autor sau categorie",
+    adminSaveStockChanges: "Salvează modificările de stoc",
+    adminSaveStockChangesCount: "Salvează modificările de stoc",
+    adminTableBook: "Carte",
+    adminReservedShort: "Rezerv.",
+    adminAvailableShort: "Disp.",
+    adminActions: "Acțiuni",
+    adminRequestsEyebrow: "Cereri",
+    adminRequestsTitle: "În așteptare și stare",
+    adminHistoryEyebrow: "Istoric",
+    adminHistoryTitle: "Ultimele modificări",
+    adminPrev: "Înapoi",
+    adminNext: "Înainte",
+    adminPage: "Pagina",
+    adminPageOf: "din",
+    adminReenterCode: "Introdu din nou codul de administrare.",
+    adminChecking: "Se verifică...",
+    adminWrongCode: "Cod incorect sau conexiune indisponibilă.",
+    adminSaving: "Se salvează...",
+    adminUpdating: "Se actualizează...",
+    adminAuthError: "Cod de administrare incorect.",
+    adminDbUpdateError: "Nu s-a putut actualiza în baza de date.",
+    adminDbSaveError: "Nu s-a putut salva în baza de date.",
+    adminDbImportError: "Nu s-a putut importa în baza de date.",
+    adminStockSaveError: "Nu s-a putut salva stocul.",
+    adminBookAddedSaving: "Carte adăugată. Se salvează în baza de date...",
+    adminSaved: "Salvat.",
+    adminStockSaving: "Se salvează stocul...",
+    adminStockSaved: "Stoc salvat.",
+    adminAddBulkLine: "Adaugă cel puțin o linie cu titlu și autor.",
+    adminImporting: "Se importă...",
+    adminBooksAddedSaving: "cărți adăugate. Se salvează în baza de date...",
+    adminBooksImported: "cărți importate.",
+    adminBooksImportedLocal: "cărți importate local.",
+    adminTotalStock: "Stoc total",
+    adminLowStock: "Stoc redus",
+    adminPendingRequests: "Cereri în așteptare",
+    adminEdit: "Editează",
+    adminDelete: "Șterge",
+    adminReady: "Pregătită",
+    adminDelivered: "Predată",
+    adminCancel: "Anulează",
+    adminNoRequests: "Nu există cereri active.",
+    adminNoHistory: "Încă nu există modificări înregistrate.",
+    adminStatusPending: "În așteptare",
+    adminStatusApproved: "Pregătită",
+    adminStatusCollected: "Predată",
+    adminStatusCancelled: "Anulată",
+    adminEntityBook: "carte",
+    adminEntityOrder: "cerere",
+    adminEntityReservation: "cerere",
+    adminActionMemberRequest: "Cerere trimisă de membru",
+    adminActionBookCreated: "Carte creată",
+    adminActionBookUpdated: "Carte actualizată",
+    adminActionBooksImported: "Cărți importate",
+    adminActionBookDeleted: "Carte ștearsă",
+    adminActionInventoryPlus: "Inventar: plus",
+    adminActionInventoryMinus: "Inventar: minus",
+    adminActionRequestMarked: "Cerere marcată ca"
   },
   es: {
     navHome: "Inicio",
@@ -117,6 +200,7 @@ const translations = {
     navVideos: "Predicaciones",
     navYoutube: "YouTube",
     navLive: "Directo",
+    navAdmin: "Panel",
     navContact: "Contacto",
     eyebrow: "Iglesia pentecostal en Reus",
     heroText: "Betel Reus, una casa de adoración. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
@@ -215,7 +299,89 @@ const translations = {
     returnBook: "Devolver",
     available: "disponibles",
     unavailable: "no disponible",
-    reserved: "reservados"
+    reserved: "reservados",
+    adminPrivatePanel: "Panel privado",
+    adminGateTitle: "Control de biblioteca",
+    adminGateText: "Introduce el código privado de administración para gestionar libros, pedidos e historial.",
+    adminCodeLabel: "Código de administración",
+    adminCodePlaceholder: "Código privado",
+    adminEnter: "Entrar al panel",
+    adminLibraryEyebrow: "Biblioteca Betel",
+    adminControlTitle: "Panel de control",
+    adminViewLibrary: "Ver biblioteca",
+    adminBookFormTitle: "Libro",
+    adminTitlePlaceholder: "Título del libro",
+    adminCategoryLabel: "Categoría",
+    adminCategoryPlaceholder: "Biblias, Familia, Jóvenes...",
+    adminLanguageLabel: "Idioma",
+    adminRomanian: "Rumano",
+    adminSpanish: "Español",
+    adminEnglish: "Inglés",
+    adminSaveBook: "Guardar libro",
+    adminUpdateBook: "Actualizar libro",
+    adminBulkTitle: "Importar varios",
+    adminBulkHelp: "Una línea por cada libro: título; autor; categoría; idioma; stock; precio",
+    adminBulkPlaceholder: "Biblia de estudio; Autor; Biblias; ro; 3; 25.00",
+    adminImportBooks: "Importar libros",
+    adminSearchPlaceholder: "Buscar por título, autor o categoría",
+    adminSaveStockChanges: "Guardar cambios de stock",
+    adminSaveStockChangesCount: "Guardar cambios de stock",
+    adminTableBook: "Libro",
+    adminReservedShort: "Reserv.",
+    adminAvailableShort: "Disp.",
+    adminActions: "Acciones",
+    adminRequestsEyebrow: "Pedidos",
+    adminRequestsTitle: "Pendientes y estado",
+    adminHistoryEyebrow: "Historial",
+    adminHistoryTitle: "Últimos cambios",
+    adminPrev: "Atrás",
+    adminNext: "Siguiente",
+    adminPage: "Página",
+    adminPageOf: "de",
+    adminReenterCode: "Introduce de nuevo el código de administración.",
+    adminChecking: "Comprobando...",
+    adminWrongCode: "Código incorrecto o conexión no disponible.",
+    adminSaving: "Guardando...",
+    adminUpdating: "Actualizando...",
+    adminAuthError: "Código de administración incorrecto.",
+    adminDbUpdateError: "No se ha podido actualizar en la base de datos.",
+    adminDbSaveError: "No se ha podido guardar en la base de datos.",
+    adminDbImportError: "No se ha podido importar en la base de datos.",
+    adminStockSaveError: "No se ha podido guardar el stock.",
+    adminBookAddedSaving: "Libro añadido. Guardando en la base de datos...",
+    adminSaved: "Guardado.",
+    adminStockSaving: "Guardando stock...",
+    adminStockSaved: "Stock guardado.",
+    adminAddBulkLine: "Añade al menos una línea con título y autor.",
+    adminImporting: "Importando...",
+    adminBooksAddedSaving: "libros añadidos. Guardando en la base de datos...",
+    adminBooksImported: "libros importados.",
+    adminBooksImportedLocal: "libros importados localmente.",
+    adminTotalStock: "Stock total",
+    adminLowStock: "Stock bajo",
+    adminPendingRequests: "Pedidos pendientes",
+    adminEdit: "Editar",
+    adminDelete: "Eliminar",
+    adminReady: "Preparado",
+    adminDelivered: "Entregado",
+    adminCancel: "Cancelar",
+    adminNoRequests: "No hay pedidos activos.",
+    adminNoHistory: "Todavía no hay cambios registrados.",
+    adminStatusPending: "Pendiente",
+    adminStatusApproved: "Preparado",
+    adminStatusCollected: "Entregado",
+    adminStatusCancelled: "Cancelado",
+    adminEntityBook: "libro",
+    adminEntityOrder: "pedido",
+    adminEntityReservation: "pedido",
+    adminActionMemberRequest: "Pedido enviado por miembro",
+    adminActionBookCreated: "Libro creado",
+    adminActionBookUpdated: "Libro actualizado",
+    adminActionBooksImported: "Libros importados",
+    adminActionBookDeleted: "Libro eliminado",
+    adminActionInventoryPlus: "Inventario: suma",
+    adminActionInventoryMinus: "Inventario: resta",
+    adminActionRequestMarked: "Pedido marcado como"
   }
 };
 
@@ -253,14 +419,48 @@ const heroImages = [
 let reservations = [];
 let auditLogs = [];
 
-const statusLabels = {
-  pending: "În așteptare",
-  approved: "Pregătită",
-  collected: "Predată",
-  cancelled: "Anulată"
+const statusLabelKeys = {
+  pending: "adminStatusPending",
+  approved: "adminStatusApproved",
+  collected: "adminStatusCollected",
+  cancelled: "adminStatusCancelled"
+};
+
+const adminEntityKeys = {
+  book: "adminEntityBook",
+  order: "adminEntityOrder",
+  reservation: "adminEntityReservation"
 };
 
 const libraryCategories = ["Teologie", "Familie", "Tineri", "Copii", "Biografii", "Biblii", "Devoționale"];
+
+function tx(key) {
+  return translations[lang]?.[key] || translations.ro[key] || key;
+}
+
+function getStatusLabel(status) {
+  return tx(statusLabelKeys[status]) || status;
+}
+
+function getAdminEntityLabel(entity) {
+  return tx(adminEntityKeys[entity]) || entity;
+}
+
+function getAdminActionLabel(action = "") {
+  const exactActions = {
+    "Cerere trimisă de membru": "adminActionMemberRequest",
+    "Carte creată": "adminActionBookCreated",
+    "Carte actualizată": "adminActionBookUpdated",
+    "Cărți importate": "adminActionBooksImported",
+    "Carte ștearsă": "adminActionBookDeleted",
+    "Inventar: plus": "adminActionInventoryPlus",
+    "Inventar: minus": "adminActionInventoryMinus"
+  };
+  if (exactActions[action]) return tx(exactActions[action]);
+  const markedMatch = action.match(/^Cerere marcată ca (.+)$/);
+  if (markedMatch) return `${tx("adminActionRequestMarked")} ${getStatusLabel(markedMatch[1])}`;
+  return action;
+}
 
 function saveBooks() {
   sessionStorage.setItem("betel-books", JSON.stringify(books));
@@ -361,6 +561,7 @@ function applyLanguage() {
   if ($("#bookSearch")) $("#bookSearch").placeholder = translations[lang].bookSearchPlaceholder;
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
+  if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) renderAdmin();
   updateLiveCountdown();
 }
 
@@ -729,7 +930,7 @@ function setupAdmin() {
       currentAdminCode = "";
       sessionStorage.removeItem("betel-admin-code");
       sessionStorage.removeItem("betel-admin-expires-at");
-      $("#adminAccessMessage").textContent = "Introdu din nou codul de administrare.";
+      $("#adminAccessMessage").textContent = tx("adminReenterCode");
     });
   } else {
     sessionStorage.removeItem("betel-admin-code");
@@ -740,13 +941,13 @@ function setupAdmin() {
   $("#adminAccessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const code = new FormData(event.currentTarget).get("code").trim();
-    $("#adminAccessMessage").textContent = "Se verifică...";
+    $("#adminAccessMessage").textContent = tx("adminChecking");
     try {
       await unlockAdmin(code);
       $("#adminAccessMessage").textContent = "";
     } catch (error) {
       currentAdminCode = "";
-      $("#adminAccessMessage").textContent = "Cod incorect sau conexiune indisponibilă.";
+      $("#adminAccessMessage").textContent = tx("adminWrongCode");
     }
   });
 
@@ -767,7 +968,7 @@ function setupAdmin() {
     const submitButton = form.querySelector("button[type='submit']");
     const message = $("#adminFormMessage");
     submitButton.disabled = true;
-    submitButton.textContent = editingId ? "Se actualizează..." : "Se salvează...";
+    submitButton.textContent = editingId ? tx("adminUpdating") : tx("adminSaving");
     message.textContent = "";
     const payload = {
       title: data.get("title").trim(),
@@ -786,9 +987,9 @@ function setupAdmin() {
         if (index >= 0) books[index] = data.book;
       } catch (error) {
         if (usingServerData || error.status === 401) {
-          message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut actualiza în baza de date.";
+          message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminDbUpdateError");
           submitButton.disabled = false;
-          submitButton.textContent = "Actualizează cartea";
+          submitButton.textContent = tx("adminUpdateBook");
           return;
         }
         const book = books.find((item) => item.id === editingId);
@@ -804,10 +1005,10 @@ function setupAdmin() {
       books.unshift(optimisticBook);
       form.reset();
       form.elements.id.value = "";
-      $("#adminSubmitLabel").textContent = "Salvează cartea";
+      $("#adminSubmitLabel").textContent = tx("adminSaveBook");
       submitButton.disabled = false;
-      submitButton.textContent = "Salvează cartea";
-      message.textContent = "Carte adăugată. Se salvează în baza de date...";
+      submitButton.textContent = tx("adminSaveBook");
+      message.textContent = tx("adminBookAddedSaving");
       saveBooks();
       renderAdmin();
 
@@ -815,11 +1016,11 @@ function setupAdmin() {
         const response = await apiRequest("/api/admin/books", { method: "POST", body: payload });
         const index = books.findIndex((item) => item.id === temporaryId);
         if (index >= 0) books[index] = response.book;
-        message.textContent = "Salvat.";
+        message.textContent = tx("adminSaved");
       } catch (error) {
         if (usingServerData || error.status === 401) {
           books = books.filter((item) => item.id !== temporaryId);
-          message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut salva în baza de date.";
+          message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminDbSaveError");
           saveBooks();
           renderAdmin();
           return;
@@ -833,9 +1034,9 @@ function setupAdmin() {
 
     form.reset();
     form.elements.id.value = "";
-    $("#adminSubmitLabel").textContent = "Salvează cartea";
+    $("#adminSubmitLabel").textContent = tx("adminSaveBook");
     submitButton.disabled = false;
-    message.textContent = "Salvat.";
+    message.textContent = tx("adminSaved");
     saveBooks();
     renderAdmin();
   });
@@ -871,7 +1072,7 @@ function setupAdmin() {
       form.elements.stock.value = book.stock;
       form.elements.reserved.value = book.reserved || 0;
       form.elements.price.value = book.price;
-      $("#adminSubmitLabel").textContent = "Actualizează cartea";
+      $("#adminSubmitLabel").textContent = tx("adminUpdateBook");
       form.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
@@ -940,7 +1141,7 @@ function updateStockSaveButton() {
   if (!$("#saveStockChanges")) return;
   const count = pendingStockChanges.size;
   $("#saveStockChanges").disabled = count === 0;
-  $("#saveStockChanges").textContent = count === 0 ? "Salvează modificările de stoc" : `Salvează modificările de stoc (${count})`;
+  $("#saveStockChanges").textContent = count === 0 ? tx("adminSaveStockChanges") : `${tx("adminSaveStockChangesCount")} (${count})`;
 }
 
 async function savePendingStockChanges() {
@@ -948,7 +1149,7 @@ async function savePendingStockChanges() {
   const button = $("#saveStockChanges");
   const message = $("#stockChangesMessage");
   button.disabled = true;
-  button.textContent = "Se salvează stocul...";
+  button.textContent = tx("adminStockSaving");
   message.textContent = "";
 
   try {
@@ -966,9 +1167,9 @@ async function savePendingStockChanges() {
     }
     pendingStockChanges.clear();
     await loadAdminDataFromApi();
-    message.textContent = "Stoc salvat.";
+    message.textContent = tx("adminStockSaved");
   } catch (error) {
-    message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut salva stocul.";
+    message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminStockSaveError");
   }
 
   saveBooks();
@@ -1002,15 +1203,15 @@ async function importBulkBooks() {
   const parsedBooks = parseBulkBooksInput(input.value);
 
   if (parsedBooks.length === 0) {
-    message.textContent = "Adaugă cel puțin o linie cu titlu și autor.";
+    message.textContent = tx("adminAddBulkLine");
     return;
   }
 
   const temporaryBooks = parsedBooks.map((book) => ({ id: `tmp-${crypto.randomUUID()}`, ...book }));
   const temporaryIds = new Set(temporaryBooks.map((book) => book.id));
   button.disabled = true;
-  button.textContent = "Se importă...";
-  message.textContent = `${temporaryBooks.length} cărți adăugate. Se salvează în baza de date...`;
+  button.textContent = tx("adminImporting");
+  message.textContent = `${temporaryBooks.length} ${tx("adminBooksAddedSaving")}`;
   books.unshift(...temporaryBooks);
   saveBooks();
   renderAdmin();
@@ -1023,20 +1224,20 @@ async function importBulkBooks() {
     books = books.filter((book) => !temporaryIds.has(book.id));
     books.unshift(...response.books);
     input.value = "";
-    message.textContent = `${response.books.length} cărți importate.`;
+    message.textContent = `${response.books.length} ${tx("adminBooksImported")}`;
     await loadAdminDataFromApi();
   } catch (error) {
     if (usingServerData || error.status === 401) {
       books = books.filter((book) => !temporaryIds.has(book.id));
-      message.textContent = error.status === 401 ? "Cod de administrare incorect." : "Nu s-a putut importa în baza de date.";
+      message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminDbImportError");
     } else {
       logAudit("Cărți importate", "book", null, temporaryBooks);
-      message.textContent = `${temporaryBooks.length} cărți importate local.`;
+      message.textContent = `${temporaryBooks.length} ${tx("adminBooksImportedLocal")}`;
     }
   }
 
   button.disabled = false;
-  button.textContent = "Importă cărți";
+  button.textContent = tx("adminImportBooks");
   saveBooks();
   renderAdmin();
 }
@@ -1048,11 +1249,11 @@ function renderAdminStats() {
   const lowStock = books.filter((book) => Number(book.stock || 0) - Number(book.reserved || 0) <= 1).length;
   const pending = reservations.filter((item) => item.status === "pending").length;
   $("#adminStats").innerHTML = `
-    <article><span>Cărți</span><strong>${books.length}</strong></article>
-    <article><span>Stock total</span><strong>${totalStock}</strong></article>
-    <article><span>Rezervate</span><strong>${totalReserved}</strong></article>
-    <article><span>Stoc redus</span><strong>${lowStock}</strong></article>
-    <article><span>Cereri în așteptare</span><strong>${pending}</strong></article>
+    <article><span>${tx("adminTableBook")}</span><strong>${books.length}</strong></article>
+    <article><span>${tx("adminTotalStock")}</span><strong>${totalStock}</strong></article>
+    <article><span>${tx("filterReserved")}</span><strong>${totalReserved}</strong></article>
+    <article><span>${tx("adminLowStock")}</span><strong>${lowStock}</strong></article>
+    <article><span>${tx("adminPendingRequests")}</span><strong>${pending}</strong></article>
   `;
 }
 
@@ -1061,7 +1262,7 @@ function renderAdminBooks() {
   const query = $("#adminSearch").value.toLowerCase();
   const category = $("#adminCategoryFilter").value;
   const categories = [...new Set(books.map((book) => book.category).filter(Boolean))].sort();
-  $("#adminCategoryFilter").innerHTML = `<option value="all">Toate categoriile</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
+  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
   $("#adminCategoryFilter").value = category && [...categories, "all"].includes(category) ? category : "all";
 
   const visibleBooks = books.filter((book) => {
@@ -1086,8 +1287,8 @@ function renderAdminBooks() {
         <td class="table-actions">
           <button type="button" data-action="minus" data-id="${book.id}">-</button>
           <button type="button" data-action="plus" data-id="${book.id}">+</button>
-          <button type="button" data-action="edit" data-id="${book.id}">Editează</button>
-          <button type="button" data-action="delete" data-id="${book.id}">Șterge</button>
+          <button type="button" data-action="edit" data-id="${book.id}">${tx("adminEdit")}</button>
+          <button type="button" data-action="delete" data-id="${book.id}">${tx("adminDelete")}</button>
         </td>
       </tr>
     `;
@@ -1107,17 +1308,17 @@ function renderAdminReservations() {
         <strong>${title}</strong>
         <span>${reservation.member} · ${reservation.contact}</span>
         <span>${total.toFixed(2)} €</span>
-        <small>${new Date(reservation.createdAt).toLocaleString("ro-RO")}</small>
+        <small>${new Date(reservation.createdAt).toLocaleString(lang === "ro" ? "ro-RO" : "es-ES")}</small>
       </div>
-      <mark>${statusLabels[reservation.status] || reservation.status}</mark>
+      <mark>${getStatusLabel(reservation.status)}</mark>
       <div class="table-actions">
-        <button type="button" data-id="${reservation.id}" data-status="approved">Pregătită</button>
-        <button type="button" data-id="${reservation.id}" data-status="collected">Predată</button>
-        <button type="button" data-id="${reservation.id}" data-status="cancelled">Anulează</button>
+        <button type="button" data-id="${reservation.id}" data-status="approved">${tx("adminReady")}</button>
+        <button type="button" data-id="${reservation.id}" data-status="collected">${tx("adminDelivered")}</button>
+        <button type="button" data-id="${reservation.id}" data-status="cancelled">${tx("adminCancel")}</button>
       </div>
     </article>
   `;
-  }).join("") || "<p>Nu există cereri active.</p>";
+  }).join("") || `<p>${tx("adminNoRequests")}</p>`;
 }
 
 function getReservationItems(reservation) {
@@ -1133,11 +1334,11 @@ function renderAuditLog() {
   const pageLogs = auditLogs.slice(start, start + auditPageSize);
   $("#auditLog").innerHTML = pageLogs.map((log) => `
     <article>
-      <strong>${log.action}</strong>
-      <span>${log.entity} · ${log.actor} · ${new Date(log.createdAt).toLocaleString("ro-RO")}</span>
+      <strong>${getAdminActionLabel(log.action)}</strong>
+      <span>${getAdminEntityLabel(log.entity)} · ${log.actor} · ${new Date(log.createdAt).toLocaleString(lang === "ro" ? "ro-RO" : "es-ES")}</span>
     </article>
-  `).join("") || "<p>Încă nu există modificări înregistrate.</p>";
-  if ($("#auditPageInfo")) $("#auditPageInfo").textContent = `Pagina ${auditPage + 1} de ${maxPage + 1}`;
+  `).join("") || `<p>${tx("adminNoHistory")}</p>`;
+  if ($("#auditPageInfo")) $("#auditPageInfo").textContent = `${tx("adminPage")} ${auditPage + 1} ${tx("adminPageOf")} ${maxPage + 1}`;
   if ($("#auditPrev")) $("#auditPrev").disabled = auditPage === 0;
   if ($("#auditNext")) $("#auditNext").disabled = auditPage >= maxPage;
 }
