@@ -1,0 +1,174 @@
+TODOs hechos / resueltos para Betel Reus
+========================================
+
+Objetivo
+--------
+Este documento registra lo que ya esta confirmado, implementado o resuelto. Si algo cambia mas adelante, se puede devolver a TODO.txt.
+
+
+1. Identidad y contenido confirmado
+-----------------------------------
+- Nombre principal visible confirmado: "Betel Reus".
+- Nombre oficial/SEO confirmado: "Biserica Betel Reus" cuando haga falta identificar oficialmente la iglesia.
+- Logo actual confirmado como base visual de la web.
+- Se pueden usar miniaturas de YouTube como recurso inicial.
+- Texto principal de identidad confirmado:
+  "Biserica Betel este un loc al prezentei lui Dumnezeu, unde vietile sunt transformate prin Duhul Sfant. Aici traim o viata noua, in Hristos si cu Hristos. Glorificarea lui Dumnezeu este scopul nostru. Urmareste slujbele si mesajele noastre. Fii binevenit in familia Betel!"
+- Version espanola base confirmada:
+  "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espiritu Santo. Aqui vivimos una vida nueva, en Cristo y con Cristo. La glorificacion de Dios es nuestro proposito. Sigue nuestros mensajes y servicios. Bienvenido a la familia Betel!"
+- Frase hero confirmada y aplicada: "Betel Reus, o casa de inchinare."
+- Rumano confirmado como idioma principal.
+- Espanol confirmado como segundo idioma seleccionable.
+- Catalan e ingles quedan fuera de la primera version.
+- Saludo/versiculo de identidad confirmado: Evrei 12:14.
+- Texto recomendado aplicado:
+  "Urmariti pacea cu toti si sfintirea, fara care nimeni nu va vedea pe Domnul."
+
+
+2. Programa confirmado
+----------------------
+- Domingo:
+  - 10:00 - 12:00 · Serviciu divin.
+  - 18:00 - 20:00 · Serviciu divin.
+- Miercoles:
+  - 20:00 - 21:30 · Rugaciune.
+- Viernes:
+  - 20:00 - 21:30 · Rugaciune.
+- Sabado:
+  - 19:00 - 21:00 · Tineret.
+- Escuela dominical de ninos confirmada el domingo por la manana, 10:00 - 12:00.
+- En rumano se muestra "Rugaciune"; en espanol se traduce como "Oracion".
+- Por ahora no hay proximos eventos para lanzar.
+
+
+3. Contacto confirmado y aplicado
+---------------------------------
+- Direccion confirmada:
+  Carrer de Terrassa, 33, 43204 Reus, Tarragona, Spain.
+- Google Maps confirmado:
+  https://maps.app.goo.gl/cx4rVZyv5y9qeULV7
+- Email publico confirmado:
+  bbetelreus@gmail.com
+- Telefono publico confirmado:
+  +34 605 43 05 73
+- Responsable de recibir mensajes confirmado:
+  Pastor, Fratele Dorel Abutnariti.
+- La landing ya muestra direccion, email, telefono y enlace a Maps.
+
+
+4. Redes y multimedia confirmado/aplicado
+-----------------------------------------
+- YouTube confirmado:
+  https://www.youtube.com/@BisericaBetelReus
+- Instagram confirmado:
+  https://www.instagram.com/bisericabetelreus/
+- Instagram Tineri confirmado:
+  https://www.instagram.com/tineriibetelreus/
+- TikTok confirmado:
+  https://www.tiktok.com/@bisericabetelreus
+- Facebook confirmado:
+  https://www.facebook.com/BBetelReus
+- La landing ya muestra enlaces sociales con pequenos indicadores visuales.
+- Carrusel de YouTube implementado con feed RSS.
+- El carrusel muestra videos automaticamente y se mueve de derecha a izquierda.
+- El carrusel puede pausarse al pasar el cursor y reanuda unos segundos despues.
+- El carrusel puede arrastrarse horizontalmente con el mouse.
+- YouTube RSS confirmado como suficiente para la primera version.
+- Instagram automatico descartado para la primera version; por ahora queda como enlace externo.
+
+
+5. Versiculo del dia
+--------------------
+- Versiculo del dia implementado con fallback local diario.
+- Evrei 12:14 aplicado como versiculo fijo de identidad.
+- Traducciones biblicas preferidas anotadas:
+  - Rumano: VDC/Cornilescu, pendiente de licencia para textos extensos.
+  - Espanol: Reina Valera, version mas nueva, pendiente de licencia para textos extensos.
+
+
+6. Biblioteca implementada
+--------------------------
+- Biblioteca de miembros implementada como subpagina separada.
+- El acceso a biblioteca ya no esta como bloque principal de la landing; queda en la barra superior.
+- Acceso de miembros con nombre y codigo.
+- Codigo de miembros confirmado: `BETEL-REUS`.
+- El nombre del miembro queda guardado para facilitar el acceso.
+- Catalogo de libros implementado.
+- Carrito implementado.
+- Pedidos de miembros implementados.
+- Panel admin privado implementado en `/admin.html`.
+- Codigo admin confirmado para esta fase: `ADMIN-BETEL`.
+- Sesion admin implementada durante 10 minutos al recargar.
+- Panel admin permite:
+  - Ver libros.
+  - Anadir libros.
+  - Editar libros.
+  - Eliminar libros.
+  - Modificar stock.
+  - Guardar cambios de stock en lote.
+  - Ver solicitudes/pedidos.
+  - Cambiar estado de solicitudes.
+  - Ver historial de cambios.
+- Historial de cambios implementado como seccion desplegable con paginacion.
+- Importacion multiple de libros implementada con formato:
+  titulo; autor; categoria; idioma; stock; precio
+- Al anadir un libro, aparece al instante en el panel y se guarda en base de datos en segundo plano.
+- Se elimino la idea de "devolver libro" porque la biblioteca funciona como libreria/venta interna, no prestamo.
+
+
+7. Base de datos implementada
+-----------------------------
+- PostgreSQL elegido para produccion.
+- `db/schema.sql` creado.
+- Tablas preparadas:
+  - `books`.
+  - `orders`.
+  - `order_items`.
+  - `audit_logs`.
+- API conectada a PostgreSQL cuando existe `DATABASE_URL`.
+- `/api/books` devuelve `source: "postgres"` cuando esta conectado correctamente.
+- Render PostgreSQL conectado y comprobado por el usuario.
+- Admin panel y biblioteca usan APIs del servidor para libros y pedidos.
+- Modo memoria local sigue existiendo solo como fallback de desarrollo si falta `DATABASE_URL`.
+- `DATABASE_SETUP.md` creado con pasos de configuracion.
+
+
+8. Hosting y despliegue hecho
+-----------------------------
+- Repositorio GitHub conectado:
+  https://github.com/AnuBis7Star/Betel-Reus
+- Proyecto hosteado provisionalmente en Render:
+  https://betel-reus.onrender.com
+- Se confirmo que GitHub Pages no encaja con la version actual porque la app necesita servidor Node y base de datos.
+- Render elegido como alternativa gratis/provisional para mantener Node + PostgreSQL.
+
+
+9. SEO confirmado parcialmente
+------------------------------
+- Titulo SEO confirmado:
+  "Betel Reus | Biserica Betel Reus".
+- Descripcion SEO base confirmada:
+  "Betel Reus este o casa de rugaciune si inchinare in Reus, unde ne adunam pentru a-L glorifica pe Dumnezeu, a asculta Cuvantul si a creste impreuna in Hristos."
+- Palabras clave confirmadas:
+  - Betel Reus.
+  - Biserica romana Reus.
+  - Iglesia rumana en Reus.
+  - Biserica penticostala Reus.
+  - Iglesia evangelica Reus.
+  - Romanian Pentecostal Church Reus.
+
+
+10. Cambios tecnicos recientes resueltos
+----------------------------------------
+- Se redujo la importancia visual de la biblioteca en la landing.
+- Se priorizo la seccion de videos de YouTube.
+- Se ajusto el tamano del carrusel de videos.
+- Se aumento la cantidad de videos del carrusel.
+- Se anadio movimiento automatico suave de derecha a izquierda.
+- Se anadio pausa y reanudacion del carrusel tras quitar el cursor.
+- Se anadio arrastre horizontal con mouse en el carrusel.
+- Se optimizo el guardado de stock para no registrar cada clic como un log separado.
+- Se anadio boton "Guardar cambios de stock".
+- Se hizo desplegable/paginado el historial del panel admin.
+- Se resolvio el problema de que los cambios locales no aparecian entre navegador normal/incognito conectando la app a PostgreSQL.
+- Se resolvio el ultimo TODO sobre lentitud al guardar libro nuevo con UI optimista e importacion multiple.

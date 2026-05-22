@@ -5,13 +5,13 @@ const translations = {
     navVideos: "Predici",
     navContact: "Contact",
     eyebrow: "Biserica penticostala in Reus",
-    heroText: "O comunitate calda, centrata in inchinare, Cuvant si slujire. Urmareste programul, predicile si resursele pentru familie.",
+    heroText: "Betel Reus, o casa de inchinare. O familie in care ne rugam, ascultam Cuvantul si crestem impreuna in Hristos.",
     heroYoutube: "Vezi predici",
     heroSchedule: "Vezi programul",
     verseLabel: "Versetul zilei",
     scheduleEyebrow: "Ne intalnim impreuna",
     scheduleTitle: "Program si evenimente",
-    scheduleText: "Pastreaza aici programul principal al bisericii si evenimentele care trebuie vazute rapid de membrii si vizitatori.",
+    scheduleText: "Programul principal al bisericii pentru membri, familii si vizitatori.",
     saturdayOther: "Alte activitati dupa program",
     libraryEyebrow: "Pentru membri",
     libraryTitle: "Biblioteca Betel",
@@ -36,9 +36,9 @@ const translations = {
     socialTitle: "Ramai aproape de comunitate",
     aboutEyebrow: "Despre noi",
     aboutTitle: "O familie in credinta, in inima orasului Reus",
-    aboutText: "Biserica Betel Reus exista pentru a-L glorifica pe Dumnezeu, a creste in Cuvant si a sluji oamenilor cu dragoste.",
-    contactAddress: "Adresa exacta de completat",
-    contactEmail: "Email / telefon de completat",
+    aboutText: "Biserica Betel este un loc al prezentei lui Dumnezeu, unde vietile sunt transformate prin Duhul Sfant. Aici traim o viata noua, in Hristos si cu Hristos.",
+    contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
+    contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
     reserve: "Rezerva",
     request: "Cere",
     addToCart: "Adauga",
@@ -58,13 +58,13 @@ const translations = {
     navVideos: "Predicaciones",
     navContact: "Contacto",
     eyebrow: "Iglesia pentecostal en Reus",
-    heroText: "Una comunidad cercana, centrada en la adoracion, la Palabra y el servicio. Sigue el horario, las predicaciones y recursos para la familia.",
+    heroText: "Betel Reus, una casa de adoracion. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
     heroYoutube: "Ver predicaciones",
     heroSchedule: "Ver horario",
     verseLabel: "Versiculo del dia",
     scheduleEyebrow: "Nos reunimos juntos",
     scheduleTitle: "Horario y eventos",
-    scheduleText: "Aqui vive el programa principal de la iglesia y los eventos que miembros y visitantes necesitan encontrar rapido.",
+    scheduleText: "El programa principal de la iglesia para miembros, familias y visitantes.",
     saturdayOther: "Otras actividades segun programacion",
     libraryEyebrow: "Para miembros",
     libraryTitle: "Biblioteca Betel",
@@ -89,9 +89,9 @@ const translations = {
     socialTitle: "Permanece cerca de la comunidad",
     aboutEyebrow: "Sobre nosotros",
     aboutTitle: "Una familia en la fe, en el corazon de Reus",
-    aboutText: "Biserica Betel Reus existe para glorificar a Dios, crecer en la Palabra y servir a las personas con amor.",
-    contactAddress: "Direccion exacta pendiente",
-    contactEmail: "Email / telefono pendiente",
+    aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espiritu Santo. Aqui vivimos una vida nueva, en Cristo y con Cristo.",
+    contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
+    contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
     reserve: "Reservar",
     request: "Pedir",
     addToCart: "Anadir",
@@ -612,9 +612,10 @@ function setupAdmin() {
 
   $("#adminBookForm").addEventListener("submit", async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = new FormData(form);
     const editingId = data.get("id");
-    const submitButton = event.currentTarget.querySelector("button[type='submit']");
+    const submitButton = form.querySelector("button[type='submit']");
     const message = $("#adminFormMessage");
     submitButton.disabled = true;
     submitButton.textContent = editingId ? "Actualizando..." : "Guardando...";
@@ -649,24 +650,40 @@ function setupAdmin() {
         }
       }
     } else {
+      const temporaryId = `tmp-${crypto.randomUUID()}`;
+      const optimisticBook = { id: temporaryId, ...payload };
+      books.unshift(optimisticBook);
+      form.reset();
+      form.elements.id.value = "";
+      $("#adminSubmitLabel").textContent = "Guardar libro";
+      submitButton.disabled = false;
+      submitButton.textContent = "Guardar libro";
+      message.textContent = "Libro anadido. Guardando en la base de datos...";
+      saveBooks();
+      renderAdmin();
+
       try {
-        const data = await apiRequest("/api/admin/books", { method: "POST", body: payload });
-        books.unshift(data.book);
+        const response = await apiRequest("/api/admin/books", { method: "POST", body: payload });
+        const index = books.findIndex((item) => item.id === temporaryId);
+        if (index >= 0) books[index] = response.book;
+        message.textContent = "Guardado.";
       } catch (error) {
         if (usingServerData || error.status === 401) {
+          books = books.filter((item) => item.id !== temporaryId);
           message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo guardar en la base de datos.";
-          submitButton.disabled = false;
-          submitButton.textContent = "Guardar libro";
+          saveBooks();
+          renderAdmin();
           return;
         }
-        const book = { id: crypto.randomUUID(), ...payload };
-        books.unshift(book);
-        logAudit("Libro creado", "book", null, book);
+        logAudit("Libro creado", "book", null, optimisticBook);
       }
+      saveBooks();
+      renderAdmin();
+      return;
     }
 
-    event.currentTarget.reset();
-    event.currentTarget.elements.id.value = "";
+    form.reset();
+    form.elements.id.value = "";
     $("#adminSubmitLabel").textContent = "Guardar libro";
     submitButton.disabled = false;
     message.textContent = "Guardado.";
@@ -677,6 +694,7 @@ function setupAdmin() {
   $("#adminSearch").addEventListener("input", renderAdminBooks);
   $("#adminCategoryFilter").addEventListener("change", renderAdminBooks);
   $("#saveStockChanges").addEventListener("click", savePendingStockChanges);
+  $("#importBooks")?.addEventListener("click", importBulkBooks);
   $("#auditPrev").addEventListener("click", () => {
     auditPage = Math.max(0, auditPage - 1);
     renderAuditLog();
@@ -804,6 +822,72 @@ async function savePendingStockChanges() {
     message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo guardar el stock.";
   }
 
+  saveBooks();
+  renderAdmin();
+}
+
+function parseBulkBooksInput(value) {
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [title, author, category = "General", language = "ro", stock = "1", price = "0"] = line.split(";").map((part) => part.trim());
+      return {
+        title,
+        author,
+        category: category || "General",
+        language: language || "ro",
+        stock: Math.max(0, Number(stock) || 0),
+        reserved: 0,
+        price: Math.max(0, Number(String(price).replace(",", ".")) || 0)
+      };
+    })
+    .filter((book) => book.title && book.author);
+}
+
+async function importBulkBooks() {
+  const input = $("#bulkBooksInput");
+  const message = $("#bulkImportMessage");
+  const button = $("#importBooks");
+  const parsedBooks = parseBulkBooksInput(input.value);
+
+  if (parsedBooks.length === 0) {
+    message.textContent = "Anade al menos una linea con titulo y autor.";
+    return;
+  }
+
+  const temporaryBooks = parsedBooks.map((book) => ({ id: `tmp-${crypto.randomUUID()}`, ...book }));
+  const temporaryIds = new Set(temporaryBooks.map((book) => book.id));
+  button.disabled = true;
+  button.textContent = "Importando...";
+  message.textContent = `${temporaryBooks.length} libros anadidos. Guardando en la base de datos...`;
+  books.unshift(...temporaryBooks);
+  saveBooks();
+  renderAdmin();
+
+  try {
+    const response = await apiRequest("/api/admin/books/bulk", {
+      method: "POST",
+      body: { books: parsedBooks }
+    });
+    books = books.filter((book) => !temporaryIds.has(book.id));
+    books.unshift(...response.books);
+    input.value = "";
+    message.textContent = `${response.books.length} libros importados.`;
+    await loadAdminDataFromApi();
+  } catch (error) {
+    if (usingServerData || error.status === 401) {
+      books = books.filter((book) => !temporaryIds.has(book.id));
+      message.textContent = error.status === 401 ? "Codigo admin incorrecto." : "No se pudo importar en la base de datos.";
+    } else {
+      logAudit("Libros importados", "book", null, temporaryBooks);
+      message.textContent = `${temporaryBooks.length} libros importados localmente.`;
+    }
+  }
+
+  button.disabled = false;
+  button.textContent = "Importar libros";
   saveBooks();
   renderAdmin();
 }

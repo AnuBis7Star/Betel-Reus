@@ -599,7 +599,8 @@ mark {
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   min-height: 44px;
   border: 1px solid var(--line);
@@ -607,6 +608,25 @@ select {
   padding: 0 12px;
   background: var(--white);
   color: var(--ink);
+}
+
+textarea {
+  min-height: 140px;
+  padding: 12px;
+  resize: vertical;
+}
+
+.bulk-import {
+  align-self: start;
+}
+
+.bulk-import summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.bulk-import summary::-webkit-details-marker {
+  display: none;
 }
 
 .form-row,
@@ -769,9 +789,29 @@ select {
 }
 
 .social-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 8px;
-  padding: 13px 16px;
+  padding: 11px 14px;
+}
+
+.social-links span {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.identity-verse {
+  margin-top: 16px;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .contact-box {
@@ -780,8 +820,14 @@ select {
   padding: 24px;
 }
 
-.contact-box .button {
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 10px;
+}
+
+.contact-box .button {
   width: fit-content;
 }
 

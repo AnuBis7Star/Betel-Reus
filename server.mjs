@@ -267,6 +267,42 @@ async function createBook(payload) {
   return created;
 }
 
+async function createBooks(payloads) {
+  const books = payloads.map(normalizeBookPayload).filter((book) => book.title && book.author);
+  if (books.length === 0) throw new Error("No valid books provided");
+
+  if (!pool) {
+    const created = books.map((book) => ({ id: randomUUID(), ...book }));
+    memory.books.unshift(...created);
+    await audit("Libros importados", "book", null, null, created);
+    return created;
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const created = [];
+    for (const book of books) {
+      const result = await client.query(
+        "INSERT INTO books (title, author, category, language, stock, reserved, price) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [book.title, book.author, book.category, book.language, book.stock, book.reserved, book.price]
+      );
+      created.push(bookFromRow(result.rows[0]));
+    }
+    await client.query(
+      "INSERT INTO audit_logs (actor, action, entity_type, before_data, after_data) VALUES ($1, $2, $3, $4, $5)",
+      ["admin", "Libros importados", "book", null, created]
+    );
+    await client.query("COMMIT");
+    return created;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 async function updateBook(id, payload) {
   const book = normalizeBookPayload(payload);
   if (!pool) {
@@ -394,6 +430,12 @@ async function serveApi(req, res, url) {
   if (url.pathname === "/api/admin/books" && req.method === "POST") {
     if (!requireAdmin(req, res)) return;
     return sendJson(res, 201, { book: await createBook(await readJson(req)) });
+  }
+
+  if (url.pathname === "/api/admin/books/bulk" && req.method === "POST") {
+    if (!requireAdmin(req, res)) return;
+    const body = await readJson(req);
+    return sendJson(res, 201, { books: await createBooks(body.books || []) });
   }
 
   const bookMatch = url.pathname.match(/^\/api\/admin\/books\/([^/]+)$/);

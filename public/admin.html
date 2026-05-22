@@ -95,6 +95,16 @@
               <span class="form-note" id="adminFormMessage"></span>
             </form>
 
+            <details class="book-form bulk-import">
+              <summary>
+                <h2>Importar varios</h2>
+              </summary>
+              <p>Una linea por libro: titulo; autor; categoria; idioma; stock; precio</p>
+              <textarea id="bulkBooksInput" rows="8" placeholder="Biblia de estudio; Autor; Biblias; ro; 3; 25.00"></textarea>
+              <button class="button primary" type="button" id="importBooks">Importar libros</button>
+              <span class="form-note" id="bulkImportMessage"></span>
+            </details>
+
             <section class="admin-panel">
               <div class="toolbar">
                 <input id="adminSearch" type="search" placeholder="Buscar por titulo, autor o categoria" />
