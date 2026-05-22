@@ -277,25 +277,29 @@ cite {
 
 .faq-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  max-width: 980px;
 }
 
 .faq-grid article {
   display: grid;
-  gap: 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 20px;
-  background: var(--paper);
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
 }
 
 .faq-grid article.wide {
-  grid-column: span 2;
+  grid-column: auto;
+}
+
+.faq-grid h3 {
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
 }
 
 .faq-grid p {
   margin: 0;
+  max-width: 820px;
   color: var(--muted);
   line-height: 1.6;
 }

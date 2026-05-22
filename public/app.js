@@ -445,12 +445,9 @@ function startVideoRotation() {
     const link = event.target.closest(".video-card");
     if (!link) return;
     event.preventDefault();
-    if (dragged) {
-      event.stopPropagation();
-      return;
-    }
-    const opened = window.open(link.href, "_blank", "noopener,noreferrer");
-    if (!opened) window.location.href = link.href;
+    event.stopPropagation();
+    if (dragged) return;
+    window.open(link.href, "_blank", "noopener,noreferrer");
   }, true);
 
   paint();
