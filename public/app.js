@@ -21,7 +21,7 @@ const translations = {
     memberActive: "Membru",
     accessCode: "Cod acces",
     enterLibrary: "Intră în bibliotecă",
-    accessDenied: "Codul nu este corect.",
+    accessDenied: "Codul nu este corect. Verifică-l și încearcă din nou. Dacă nu ai cod, contactează responsabilul bibliotecii.",
     resetLibrary: "Resetează",
     bookTitle: "Titlu",
     bookAuthor: "Autor",
@@ -50,6 +50,7 @@ const translations = {
     cartSent: "Cererea a fost trimisă.",
     returnBook: "Returnează",
     available: "disponibile",
+    unavailable: "indisponibil",
     reserved: "rezervate"
   },
   es: {
@@ -74,7 +75,7 @@ const translations = {
     memberActive: "Miembro",
     accessCode: "Código de acceso",
     enterLibrary: "Entrar en biblioteca",
-    accessDenied: "El código no es correcto.",
+    accessDenied: "El código no es correcto. Revísalo e inténtalo otra vez. Si no tienes código, contacta con el responsable de la biblioteca.",
     resetLibrary: "Reiniciar",
     bookTitle: "Título",
     bookAuthor: "Autor",
@@ -103,15 +104,16 @@ const translations = {
     cartSent: "Pedido enviado al panel.",
     returnBook: "Devolver",
     available: "disponibles",
+    unavailable: "no disponible",
     reserved: "reservados"
   }
 };
 
 const seedBooks = [
-  { id: crypto.randomUUID(), title: "Viața condusă de scopuri", author: "Rick Warren", stock: 4, price: 12.5, reserved: 1 },
-  { id: crypto.randomUUID(), title: "Creștinul autentic", author: "John Stott", stock: 2, price: 9.99, reserved: 0 },
-  { id: crypto.randomUUID(), title: "Rugăciunea", author: "Timothy Keller", stock: 1, price: 14, reserved: 0 },
-  { id: crypto.randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", stock: 6, price: 18, reserved: 2 }
+  { id: crypto.randomUUID(), title: "Viața condusă de scopuri", author: "Rick Warren", category: "Familie", stock: 4, price: 12.5, reserved: 1 },
+  { id: crypto.randomUUID(), title: "Creștinul autentic", author: "John Stott", category: "Teologie", stock: 2, price: 9.99, reserved: 0 },
+  { id: crypto.randomUUID(), title: "Rugăciunea", author: "Timothy Keller", category: "Teologie", stock: 1, price: 14, reserved: 0 },
+  { id: crypto.randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", category: "Copii", stock: 6, price: 18, reserved: 2 }
 ];
 
 let lang = localStorage.getItem("betel-lang") || "ro";
@@ -147,6 +149,8 @@ const statusLabels = {
   collected: "Predată",
   cancelled: "Anulată"
 };
+
+const libraryCategories = ["Teologie", "Familie", "Tineri", "Copii", "Biografii", "Biblii", "Devoționale"];
 
 function saveBooks() {
   sessionStorage.setItem("betel-books", JSON.stringify(books));
@@ -241,12 +245,19 @@ function renderBooks() {
   if (!$("#books")) return;
   const query = $("#bookSearch").value.toLowerCase();
   const filter = $("#bookFilter").value;
+  const categoryFilter = $("#bookCategoryFilter")?.value || "all";
   const t = translations[lang];
+  const categories = [...new Set([...libraryCategories, ...books.map((book) => book.category).filter(Boolean)])].sort();
+  if ($("#bookCategoryFilter")) {
+    $("#bookCategoryFilter").innerHTML = `<option value="all">${lang === "ro" ? "Toate categoriile" : "Todas las categorías"}</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
+    $("#bookCategoryFilter").value = categoryFilter && [...categories, "all"].includes(categoryFilter) ? categoryFilter : "all";
+  }
   const visibleBooks = books.filter((book) => {
-    const matchesQuery = `${book.title} ${book.author}`.toLowerCase().includes(query);
+    const matchesQuery = `${book.title} ${book.author} ${book.category || ""}`.toLowerCase().includes(query);
     const available = book.stock - book.reserved > 0;
     const matchesFilter = filter === "all" || (filter === "available" && available);
-    return matchesQuery && matchesFilter;
+    const matchesCategory = ($("#bookCategoryFilter")?.value || "all") === "all" || book.category === $("#bookCategoryFilter").value;
+    return matchesQuery && matchesFilter && matchesCategory;
   });
 
   $("#books").innerHTML = visibleBooks.map((book) => {
@@ -256,9 +267,10 @@ function renderBooks() {
         <div>
           <h3>${book.title}</h3>
           <p>${book.author}</p>
+          <span class="book-category">${book.category || "General"}</span>
         </div>
         <div class="book-meta">
-          <span>${available} ${t.available}</span>
+          <span>${available > 0 ? `${available} ${t.available}` : t.unavailable}</span>
           <strong>${book.price.toFixed(2)} €</strong>
         </div>
         <div class="book-actions">
@@ -504,6 +516,7 @@ function setupLibrary() {
   $("#confirmCart").addEventListener("click", confirmCart);
   $("#bookSearch").addEventListener("input", renderBooks);
   $("#bookFilter").addEventListener("change", renderBooks);
+  $("#bookCategoryFilter")?.addEventListener("change", renderBooks);
 }
 
 function addToCart(book) {
@@ -1009,6 +1022,73 @@ function renderAuditLog() {
   if ($("#auditNext")) $("#auditNext").disabled = auditPage >= maxPage;
 }
 
+function nextSundayLive(now = new Date()) {
+  const sessions = [
+    { hour: 10, endHour: 12, label: "duminică dimineața" },
+    { hour: 18, endHour: 20, label: "duminică seara" }
+  ];
+
+  for (const session of sessions) {
+    const start = new Date(now);
+    start.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+    start.setHours(session.hour, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(session.endHour, 0, 0, 0);
+    if (now >= start && now < end) return { live: true, end, session };
+    if (start > now) return { live: false, start, session };
+  }
+
+  const next = new Date(now);
+  next.setDate(now.getDate() + ((7 - now.getDay()) % 7 || 7));
+  next.setHours(10, 0, 0, 0);
+  return { live: false, start: next, session: sessions[0] };
+}
+
+function formatTimeDistance(ms) {
+  const totalMinutes = Math.max(0, Math.ceil(ms / 60000));
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
+  const minutes = totalMinutes % 60;
+  const parts = [];
+  if (days) parts.push(`${days} ${days === 1 ? "zi" : "zile"}`);
+  if (hours) parts.push(`${hours} h`);
+  if (minutes || parts.length === 0) parts.push(`${minutes} min`);
+  return parts.join(" ");
+}
+
+function capitalize(value) {
+  return value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
+}
+
+function updateLiveCountdown() {
+  const node = $("#liveCountdown");
+  if (!node) return;
+  const now = new Date();
+  const next = nextSundayLive(now);
+  if (next.live) {
+    node.textContent = `Live acum · până la ${next.end.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" })}`;
+    return;
+  }
+  const day = capitalize(next.start.toLocaleDateString("ro-RO", { weekday: "long" }));
+  node.textContent = `${day}, ${next.start.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" })} · peste ${formatTimeDistance(next.start - now)}`;
+}
+
+function setupContactForm() {
+  const form = $("#contactForm");
+  if (!form) return;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const name = data.get("name").trim();
+    const contact = data.get("contact").trim();
+    const message = data.get("message").trim();
+    const subject = encodeURIComponent(`Mesaj de pe site - ${name}`);
+    const body = encodeURIComponent(`Nume: ${name}\nContact: ${contact}\n\nMesaj:\n${message}`);
+    window.location.href = `mailto:bbetelreus@gmail.com?subject=${subject}&body=${body}`;
+    $("#contactFormMessage").textContent = "Se deschide aplicația de email.";
+  });
+}
+
 $("#langToggle")?.addEventListener("click", () => {
   lang = lang === "ro" ? "es" : "ro";
   localStorage.setItem("betel-lang", lang);
@@ -1024,3 +1104,6 @@ setupAdmin();
 applyLanguage();
 loadVerse();
 loadVideos();
+updateLiveCountdown();
+setInterval(updateLiveCountdown, 60000);
+setupContactForm();

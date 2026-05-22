@@ -28,6 +28,7 @@
           <p class="eyebrow" data-i18n="libraryEyebrow">Pentru membri</p>
           <h1 data-i18n="libraryAccessTitle">Biblioteca Betel</h1>
           <p data-i18n="libraryAccessText">Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.</p>
+          <p class="helper-text">Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Contactează responsabilul bibliotecii sau pastorul Dorel Abuțnăriți.</p>
           <form class="access-form" id="accessForm">
             <label>
               <span data-i18n="memberName">Nume</span>
@@ -35,7 +36,7 @@
             </label>
             <label>
               <span data-i18n="accessCode">Cod acces</span>
-              <input name="code" type="password" autocomplete="off" required placeholder="Cod biblioteca" />
+              <input name="code" type="password" autocomplete="off" required placeholder="Cod bibliotecă" />
             </label>
             <button class="button primary" type="submit" data-i18n="enterLibrary">Intră în bibliotecă</button>
             <span class="form-note" id="accessMessage"></span>
@@ -55,7 +56,10 @@
             <div class="library-results">
               <div class="toolbar">
                 <input id="bookSearch" type="search" placeholder="Caută după titlu sau autor" />
-                <select id="bookFilter" aria-label="Filtru biblioteca">
+                <select id="bookCategoryFilter" aria-label="Filtru categorie">
+                  <option value="all">Toate categoriile</option>
+                </select>
+                <select id="bookFilter" aria-label="Filtru bibliotecă">
                   <option value="all" data-i18n="filterAll">Toate</option>
                   <option value="available" data-i18n="filterAvailable">Disponibile</option>
                 </select>

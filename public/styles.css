@@ -205,6 +205,30 @@ cite {
   font-style: normal;
 }
 
+.live-card {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+  border-top: 1px solid rgba(23, 23, 23, 0.12);
+  padding-top: 18px;
+}
+
+.live-card small {
+  color: var(--olive);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.live-card strong {
+  font-size: 1.4rem;
+}
+
+.live-card a {
+  width: fit-content;
+  color: var(--clay);
+  font-weight: 800;
+}
+
 .section {
   padding: clamp(56px, 8vw, 104px) clamp(18px, 5vw, 76px);
   border-top: 1px solid rgba(23, 23, 23, 0.08);
@@ -247,6 +271,35 @@ cite {
   color: var(--muted);
 }
 
+.first-visit {
+  background: var(--white);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.faq-grid article {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--paper);
+}
+
+.faq-grid article.wide {
+  grid-column: span 2;
+}
+
+.faq-grid p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .library,
 .library-page,
 .admin-page {
@@ -262,6 +315,13 @@ cite {
   display: grid;
   max-width: 680px;
   margin: 0 auto;
+}
+
+.helper-text {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.6;
 }
 
 .library-gate h1,
@@ -676,8 +736,12 @@ textarea {
 .form-row,
 .toolbar {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.library-results .toolbar {
+  grid-template-columns: 1.5fr 1fr 1fr;
 }
 
 .books {
@@ -706,6 +770,11 @@ textarea {
   align-items: center;
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.book-category {
+  color: var(--clay);
+  font-weight: 800;
 }
 
 .book-meta span,
@@ -858,6 +927,25 @@ textarea {
   font-weight: 700;
 }
 
+.contact-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.contact-section > div:first-child {
+  grid-row: span 2;
+}
+
+.contact-box,
+.contact-form,
+.map-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
 .contact-box {
   display: grid;
   gap: 12px;
@@ -873,6 +961,36 @@ textarea {
 
 .contact-box .button {
   width: fit-content;
+}
+
+.map-panel {
+  overflow: hidden;
+  min-height: 320px;
+}
+
+.map-panel iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+}
+
+.contact-form {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+}
+
+.contact-form h3 {
+  font-size: 1.4rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 footer {
@@ -906,10 +1024,15 @@ footer img {
 
   .hero,
   .split,
+  .contact-section,
   .library-layout,
   .admin-grid,
   .admin-bottom {
     grid-template-columns: 1fr;
+  }
+
+  .contact-section > div:first-child {
+    grid-row: auto;
   }
 
   .admin-book-form,
@@ -929,8 +1052,14 @@ footer img {
 
   .books,
   .form-row,
-  .toolbar {
+  .toolbar,
+  .library-results .toolbar,
+  .faq-grid {
     grid-template-columns: 1fr;
+  }
+
+  .faq-grid article.wide {
+    grid-column: auto;
   }
 
   .section-heading,
