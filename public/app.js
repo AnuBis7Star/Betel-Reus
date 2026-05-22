@@ -1,6 +1,7 @@
 const translations = {
   ro: {
     navSchedule: "Program",
+    navFirstVisit: "Prima vizită",
     navLibrary: "Bibliotecă",
     navVideos: "Predici",
     navContact: "Contact",
@@ -8,19 +9,56 @@ const translations = {
     heroText: "Betel Reus, o casă de închinare. O familie în care ne rugăm, ascultăm Cuvântul și creștem împreună în Hristos.",
     heroYoutube: "Vezi predici",
     heroSchedule: "Vezi programul",
+    heroVisit: "Vino duminică la biserică",
+    heroMaps: "Deschide locația în Maps",
     verseLabel: "Versetul zilei",
+    verseLoading: "Se încarcă...",
+    liveLabel: "Următorul live",
+    liveLoading: "Se calculează...",
+    liveYoutube: "Urmărește live pe YouTube",
+    liveNow: "Live acum",
+    liveUntil: "până la",
+    liveIn: "peste",
     scheduleEyebrow: "Ne întâlnim împreună",
     scheduleTitle: "Program și evenimente",
     scheduleText: "Programul principal al bisericii pentru membri, familii și vizitatori.",
     saturdayOther: "Alte activități după program",
+    sunday: "Duminică",
+    wednesday: "Miercuri",
+    friday: "Vineri",
+    saturday: "Sâmbătă",
+    divineService: "Serviciu divin",
+    prayer: "Rugăciune",
+    youth: "Tineret",
+    firstVisitEyebrow: "Prima dată cu noi?",
+    firstVisitTitle: "Informații pentru vizitatori",
+    firstVisitContact: "Contactează-ne",
+    faqParkingTitle: "Unde pot parca?",
+    faqParkingText: "Există parcare pe stradă, în fața bisericii și în zona din apropiere.",
+    faqLanguageTitle: "În ce limbă este serviciul?",
+    faqLanguageText: "Serviciul este în limba română, dar avem sistem de traducere în limba spaniolă.",
+    faqWelcomeTitle: "Pot veni dacă nu sunt român?",
+    faqWelcomeText: "Da. Toată lumea este binevenită la Betel Reus.",
+    faqChildrenTitle: "Există program pentru copii?",
+    faqChildrenText: "Da. Duminica dimineața, între 10:00 și 12:00, avem școală duminicală pentru copii.",
+    faqSundayTitle: "Ce pot aștepta într-o duminică?",
+    faqSundayText: "Programul se împarte, de obicei, în trei părți: un timp de rugăciune, cântări și mesaje scurte; apoi un timp de laudă, unde persoanele pot trimite un mesaj pastorului pentru a participa cu cântări, poezii sau mesaje; iar la final aproximativ o oră de predicare din Cuvântul lui Dumnezeu.",
     libraryEyebrow: "Pentru membri",
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
     libraryAccessText: "Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.",
+    libraryHelperText: "Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Contactează responsabilul bibliotecii sau pastorul Dorel Abuțnăriți.",
     memberName: "Nume",
     memberActive: "Membru",
     accessCode: "Cod acces",
+    memberNamePlaceholder: "Numele tău",
+    libraryCodePlaceholder: "Cod bibliotecă",
+    bookSearchPlaceholder: "Caută după titlu sau autor",
+    bookCategoryFilterLabel: "Filtru categorie",
+    bookAvailabilityFilterLabel: "Filtru bibliotecă",
+    filterAllCategories: "Toate categoriile",
     enterLibrary: "Intră în bibliotecă",
+    exitLibrary: "Ieșire",
     accessDenied: "Codul nu este corect. Verifică-l și încearcă din nou. Dacă nu ai cod, contactează responsabilul bibliotecii.",
     resetLibrary: "Resetează",
     bookTitle: "Titlu",
@@ -39,6 +77,19 @@ const translations = {
     aboutText: "Biserica Betel este un loc al prezenței lui Dumnezeu, unde viețile sunt transformate prin Duhul Sfânt. Aici trăim o viață nouă, în Hristos și cu Hristos.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
     contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
+    contactPastor: "Telefon pastor: Dorel Abuțnăriți",
+    contactTransport: "Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.",
+    contactCall: "Sună-ne",
+    contactSendEmail: "Trimite email",
+    contactMapTitle: "Hartă Betel Reus",
+    contactFormTitle: "Trimite-ne un mesaj",
+    contactFormName: "Nume",
+    contactFormNamePlaceholder: "Numele tău",
+    contactFormContact: "Email sau telefon",
+    contactFormContactPlaceholder: "Cum te putem contacta?",
+    contactFormMessage: "Mesaj",
+    contactFormMessagePlaceholder: "Scrie mesajul tău",
+    contactFormSent: "Se deschide aplicația de email.",
     reserve: "Rezervă",
     request: "Cere",
     addToCart: "Adaugă",
@@ -55,6 +106,7 @@ const translations = {
   },
   es: {
     navSchedule: "Horario",
+    navFirstVisit: "Primera visita",
     navLibrary: "Biblioteca",
     navVideos: "Predicaciones",
     navContact: "Contacto",
@@ -62,19 +114,56 @@ const translations = {
     heroText: "Betel Reus, una casa de adoración. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
     heroYoutube: "Ver predicaciones",
     heroSchedule: "Ver horario",
+    heroVisit: "Ven el domingo a la iglesia",
+    heroMaps: "Abrir ubicación en Maps",
     verseLabel: "Versículo del día",
+    verseLoading: "Cargando...",
+    liveLabel: "Próximo directo",
+    liveLoading: "Calculando...",
+    liveYoutube: "Ver directo en YouTube",
+    liveNow: "En directo ahora",
+    liveUntil: "hasta las",
+    liveIn: "en",
     scheduleEyebrow: "Nos reunimos juntos",
     scheduleTitle: "Horario y eventos",
     scheduleText: "El programa principal de la iglesia para miembros, familias y visitantes.",
     saturdayOther: "Otras actividades según programación",
+    sunday: "Domingo",
+    wednesday: "Miércoles",
+    friday: "Viernes",
+    saturday: "Sábado",
+    divineService: "Servicio divino",
+    prayer: "Oración",
+    youth: "Jóvenes",
+    firstVisitEyebrow: "¿Primera vez con nosotros?",
+    firstVisitTitle: "Información para visitantes",
+    firstVisitContact: "Contacta con nosotros",
+    faqParkingTitle: "¿Dónde puedo aparcar?",
+    faqParkingText: "Hay aparcamiento en la calle, delante de la iglesia y en la zona cercana.",
+    faqLanguageTitle: "¿En qué idioma es el servicio?",
+    faqLanguageText: "El servicio es en rumano, pero disponemos de sistema de traducción al español.",
+    faqWelcomeTitle: "¿Puedo venir si no soy rumano?",
+    faqWelcomeText: "Sí. Todo el mundo es bienvenido en Betel Reus.",
+    faqChildrenTitle: "¿Hay programa para niños?",
+    faqChildrenText: "Sí. Los domingos por la mañana, de 10:00 a 12:00, hay escuela dominical para niños.",
+    faqSundayTitle: "¿Qué puedo esperar un domingo?",
+    faqSundayText: "El programa generalmente se divide en tres partes: primero hay un tiempo de oración, canciones y pequeños mensajes; después hay un momento de alabanza, donde las personas pueden enviar un mensaje al pastor para participar alabando a Dios con canciones, poesías o mensajes; finalmente, hay aproximadamente una hora de predicación de la Palabra de Dios.",
     libraryEyebrow: "Para miembros",
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
     libraryAccessText: "El acceso es para miembros de la comunidad. Introduce tu nombre y el código recibido del responsable de la biblioteca.",
+    libraryHelperText: "La biblioteca está disponible solo para miembros de la iglesia. ¿No tienes código? Contacta con el responsable de la biblioteca o con el pastor Dorel Abuțnăriți.",
     memberName: "Nombre",
     memberActive: "Miembro",
     accessCode: "Código de acceso",
+    memberNamePlaceholder: "Tu nombre",
+    libraryCodePlaceholder: "Código de biblioteca",
+    bookSearchPlaceholder: "Busca por título o autor",
+    bookCategoryFilterLabel: "Filtro de categoría",
+    bookAvailabilityFilterLabel: "Filtro de biblioteca",
+    filterAllCategories: "Todas las categorías",
     enterLibrary: "Entrar en biblioteca",
+    exitLibrary: "Salir",
     accessDenied: "El código no es correcto. Revísalo e inténtalo otra vez. Si no tienes código, contacta con el responsable de la biblioteca.",
     resetLibrary: "Reiniciar",
     bookTitle: "Título",
@@ -93,6 +182,19 @@ const translations = {
     aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espíritu Santo. Aquí vivimos una vida nueva, en Cristo y con Cristo.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
     contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
+    contactPastor: "Teléfono del pastor: Dorel Abuțnăriți",
+    contactTransport: "Parking: plazas en la calle, delante de la iglesia. Transporte público: revisa la ruta local hacia Carrer de Terrassa 33.",
+    contactCall: "Llámanos",
+    contactSendEmail: "Enviar email",
+    contactMapTitle: "Mapa Betel Reus",
+    contactFormTitle: "Envíanos un mensaje",
+    contactFormName: "Nombre",
+    contactFormNamePlaceholder: "Tu nombre",
+    contactFormContact: "Email o teléfono",
+    contactFormContactPlaceholder: "¿Cómo podemos contactarte?",
+    contactFormMessage: "Mensaje",
+    contactFormMessagePlaceholder: "Escribe tu mensaje",
+    contactFormSent: "Se abre la aplicación de email.",
     reserve: "Reservar",
     request: "Pedir",
     addToCart: "Añadir",
@@ -236,9 +338,22 @@ function applyLanguage() {
     const key = node.dataset.i18n;
     if (translations[lang][key]) node.textContent = translations[lang][key];
   });
-  if ($("#bookSearch")) $("#bookSearch").placeholder = lang === "ro" ? "Caută după titlu sau autor" : "Busca por título o autor";
+  $$("[data-i18n-placeholder]").forEach((node) => {
+    const key = node.dataset.i18nPlaceholder;
+    if (translations[lang][key]) node.placeholder = translations[lang][key];
+  });
+  $$("[data-i18n-aria-label]").forEach((node) => {
+    const key = node.dataset.i18nAriaLabel;
+    if (translations[lang][key]) node.setAttribute("aria-label", translations[lang][key]);
+  });
+  $$("[data-i18n-title]").forEach((node) => {
+    const key = node.dataset.i18nTitle;
+    if (translations[lang][key]) node.title = translations[lang][key];
+  });
+  if ($("#bookSearch")) $("#bookSearch").placeholder = translations[lang].bookSearchPlaceholder;
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
+  updateLiveCountdown();
 }
 
 function renderBooks() {
@@ -249,7 +364,7 @@ function renderBooks() {
   const t = translations[lang];
   const categories = [...new Set([...libraryCategories, ...books.map((book) => book.category).filter(Boolean)])].sort();
   if ($("#bookCategoryFilter")) {
-    $("#bookCategoryFilter").innerHTML = `<option value="all">${lang === "ro" ? "Toate categoriile" : "Todas las categorías"}</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
+    $("#bookCategoryFilter").innerHTML = `<option value="all">${translations[lang].filterAllCategories}</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
     $("#bookCategoryFilter").value = categoryFilter && [...categories, "all"].includes(categoryFilter) ? categoryFilter : "all";
   }
   const visibleBooks = books.filter((book) => {
@@ -1047,7 +1162,7 @@ function formatTimeDistance(ms) {
   const hours = Math.floor((totalMinutes % 1440) / 60);
   const minutes = totalMinutes % 60;
   const parts = [];
-  if (days) parts.push(`${days} ${days === 1 ? "zi" : "zile"}`);
+  if (days) parts.push(lang === "ro" ? `${days} ${days === 1 ? "zi" : "zile"}` : `${days} ${days === 1 ? "día" : "días"}`);
   if (hours) parts.push(`${hours} h`);
   if (minutes || parts.length === 0) parts.push(`${minutes} min`);
   return parts.join(" ");
@@ -1062,12 +1177,14 @@ function updateLiveCountdown() {
   if (!node) return;
   const now = new Date();
   const next = nextSundayLive(now);
+  const t = translations[lang];
+  const locale = lang === "ro" ? "ro-RO" : "es-ES";
   if (next.live) {
-    node.textContent = `Live acum · până la ${next.end.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" })}`;
+    node.textContent = `${t.liveNow} · ${t.liveUntil} ${next.end.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}`;
     return;
   }
-  const day = capitalize(next.start.toLocaleDateString("ro-RO", { weekday: "long" }));
-  node.textContent = `${day}, ${next.start.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" })} · peste ${formatTimeDistance(next.start - now)}`;
+  const day = capitalize(next.start.toLocaleDateString(locale, { weekday: "long" }));
+  node.textContent = `${day}, ${next.start.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })} · ${t.liveIn} ${formatTimeDistance(next.start - now)}`;
 }
 
 function setupContactForm() {
@@ -1079,10 +1196,10 @@ function setupContactForm() {
     const name = data.get("name").trim();
     const contact = data.get("contact").trim();
     const message = data.get("message").trim();
-    const subject = encodeURIComponent(`Mesaj de pe site - ${name}`);
-    const body = encodeURIComponent(`Nume: ${name}\nContact: ${contact}\n\nMesaj:\n${message}`);
+    const subject = encodeURIComponent(`${lang === "ro" ? "Mesaj de pe site" : "Mensaje desde la web"} - ${name}`);
+    const body = encodeURIComponent(`${translations[lang].contactFormName}: ${name}\n${translations[lang].contactFormContact}: ${contact}\n\n${translations[lang].contactFormMessage}:\n${message}`);
     window.location.href = `mailto:bbetelreus@gmail.com?subject=${subject}&body=${body}`;
-    $("#contactFormMessage").textContent = "Se deschide aplicația de email.";
+    $("#contactFormMessage").textContent = translations[lang].contactFormSent;
   });
 }
 

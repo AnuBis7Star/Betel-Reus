@@ -15,7 +15,7 @@
       </a>
       <nav class="nav" aria-label="Navigare principală">
         <a href="#program" data-i18n="navSchedule">Program</a>
-        <a href="#prima-vizita">Prima vizită</a>
+        <a href="#prima-vizita" data-i18n="navFirstVisit">Prima vizită</a>
         <a href="#predici" data-i18n="navVideos">Predici</a>
         <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="#contact" data-i18n="navContact">Contact</a>
@@ -30,18 +30,18 @@
           <h1>Betel Reus</h1>
           <p data-i18n="heroText">Betel Reus, o casă de închinare. O familie în care ne rugăm, ascultăm Cuvântul și creștem împreună în Hristos.</p>
           <div class="hero-actions">
-            <a class="button primary" href="#program">Vino duminică la biserică</a>
-            <a class="button secondary" href="https://maps.app.goo.gl/cx4rVZyv5y9qeULV7" target="_blank" rel="noreferrer">Deschide locația în Maps</a>
+            <a class="button primary" href="#program" data-i18n="heroVisit">Vino duminică la biserică</a>
+            <a class="button secondary" href="https://maps.app.goo.gl/cx4rVZyv5y9qeULV7" target="_blank" rel="noreferrer" data-i18n="heroMaps">Deschide locația în Maps</a>
           </div>
         </div>
         <div class="hero-panel" aria-label="Versetul zilei">
           <span data-i18n="verseLabel">Versetul zilei</span>
-          <blockquote id="dailyVerse">Se încarcă...</blockquote>
+          <blockquote id="dailyVerse" data-i18n="verseLoading">Se încarcă...</blockquote>
           <cite id="dailyVerseRef"></cite>
           <div class="live-card">
-            <small>Următorul live</small>
-            <strong id="liveCountdown">Se calculează...</strong>
-            <a href="https://www.youtube.com/@BisericaBetelReus/live" target="_blank" rel="noreferrer">Urmărește live pe YouTube</a>
+            <small data-i18n="liveLabel">Următorul live</small>
+            <strong id="liveCountdown" data-i18n="liveLoading">Se calculează...</strong>
+            <a href="https://www.youtube.com/@BisericaBetelReus/live" target="_blank" rel="noreferrer" data-i18n="liveYoutube">Urmărește live pe YouTube</a>
           </div>
         </div>
       </section>
@@ -65,21 +65,21 @@
         </div>
         <div class="schedule-grid">
           <article>
-            <strong>Duminica</strong>
-            <span>10:00 - 12:00 · Serviciu divin</span>
-            <span>18:00 - 20:00 · Serviciu divin</span>
+            <strong data-i18n="sunday">Duminică</strong>
+            <span>10:00 - 12:00 · <span data-i18n="divineService">Serviciu divin</span></span>
+            <span>18:00 - 20:00 · <span data-i18n="divineService">Serviciu divin</span></span>
           </article>
           <article>
-            <strong>Miercuri</strong>
-            <span>20:00 - 21:30 · Rugăciune</span>
+            <strong data-i18n="wednesday">Miercuri</strong>
+            <span>20:00 - 21:30 · <span data-i18n="prayer">Rugăciune</span></span>
           </article>
           <article>
-            <strong>Vineri</strong>
-            <span>20:00 - 21:30 · Rugăciune</span>
+            <strong data-i18n="friday">Vineri</strong>
+            <span>20:00 - 21:30 · <span data-i18n="prayer">Rugăciune</span></span>
           </article>
           <article>
-            <strong>Sambata</strong>
-            <span>19:00 - 21:00 · Tineret</span>
+            <strong data-i18n="saturday">Sâmbătă</strong>
+            <span>19:00 - 21:00 · <span data-i18n="youth">Tineret</span></span>
             <span data-i18n="saturdayOther">Alte activități după program</span>
           </article>
         </div>
@@ -88,31 +88,31 @@
       <section class="section first-visit" id="prima-vizita">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Prima dată cu noi?</p>
-            <h2>Informații pentru vizitatori</h2>
+            <p class="eyebrow" data-i18n="firstVisitEyebrow">Prima dată cu noi?</p>
+            <h2 data-i18n="firstVisitTitle">Informații pentru vizitatori</h2>
           </div>
-          <a class="button secondary" href="#contact">Contactează-ne</a>
+          <a class="button secondary" href="#contact" data-i18n="firstVisitContact">Contactează-ne</a>
         </div>
         <div class="faq-grid">
           <article>
-            <h3>Unde pot parca?</h3>
-            <p>Există parcare pe stradă, în fața bisericii și în zona din apropiere.</p>
+            <h3 data-i18n="faqParkingTitle">Unde pot parca?</h3>
+            <p data-i18n="faqParkingText">Există parcare pe stradă, în fața bisericii și în zona din apropiere.</p>
           </article>
           <article>
-            <h3>În ce limbă este serviciul?</h3>
-            <p>Serviciul este în limba română, dar avem sistem de traducere în limba spaniolă.</p>
+            <h3 data-i18n="faqLanguageTitle">În ce limbă este serviciul?</h3>
+            <p data-i18n="faqLanguageText">Serviciul este în limba română, dar avem sistem de traducere în limba spaniolă.</p>
           </article>
           <article>
-            <h3>Pot veni dacă nu sunt român?</h3>
-            <p>Da. Toată lumea este binevenită la Betel Reus.</p>
+            <h3 data-i18n="faqWelcomeTitle">Pot veni dacă nu sunt român?</h3>
+            <p data-i18n="faqWelcomeText">Da. Toată lumea este binevenită la Betel Reus.</p>
           </article>
           <article>
-            <h3>Există program pentru copii?</h3>
-            <p>Da. Duminica dimineața, între 10:00 și 12:00, avem școală duminicală pentru copii.</p>
+            <h3 data-i18n="faqChildrenTitle">Există program pentru copii?</h3>
+            <p data-i18n="faqChildrenText">Da. Duminica dimineața, între 10:00 și 12:00, avem școală duminicală pentru copii.</p>
           </article>
           <article class="wide">
-            <h3>Ce pot aștepta într-o duminică?</h3>
-            <p>Programul se împarte, de obicei, în trei părți: un timp de rugăciune, cântări și mesaje scurte; apoi un timp de laudă, unde persoanele pot trimite un mesaj pastorului pentru a participa cu cântări, poezii sau mesaje; iar la final aproximativ o oră de predicare din Cuvântul lui Dumnezeu.</p>
+            <h3 data-i18n="faqSundayTitle">Ce pot aștepta într-o duminică?</h3>
+            <p data-i18n="faqSundayText">Programul se împarte, de obicei, în trei părți: un timp de rugăciune, cântări și mesaje scurte; apoi un timp de laudă, unde persoanele pot trimite un mesaj pastorului pentru a participa cu cântări, poezii sau mesaje; iar la final aproximativ o oră de predicare din Cuvântul lui Dumnezeu.</p>
           </article>
         </div>
       </section>
@@ -142,33 +142,33 @@
           <strong>Betel Reus</strong>
           <span data-i18n="contactAddress">Carrer de Terrassa, 33, 43204 Reus, Tarragona</span>
           <span data-i18n="contactEmail">bbetelreus@gmail.com · +34 605 43 05 73</span>
-          <span>Telefon pastor: Dorel Abuțnăriți</span>
-          <span>Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.</span>
+          <span data-i18n="contactPastor">Telefon pastor: Dorel Abuțnăriți</span>
+          <span data-i18n="contactTransport">Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.</span>
           <div class="contact-actions">
-            <a class="button primary" href="tel:+34605430573">Sună-ne</a>
-            <a class="button secondary" href="mailto:bbetelreus@gmail.com">Trimite email</a>
+            <a class="button primary" href="tel:+34605430573" data-i18n="contactCall">Sună-ne</a>
+            <a class="button secondary" href="mailto:bbetelreus@gmail.com" data-i18n="contactSendEmail">Trimite email</a>
             <a class="button secondary" href="https://wa.me/34605430573" target="_blank" rel="noreferrer">WhatsApp</a>
             <a class="button secondary" href="https://maps.app.goo.gl/cx4rVZyv5y9qeULV7" target="_blank" rel="noreferrer">Maps</a>
           </div>
         </div>
         <div class="map-panel">
-          <iframe title="Hartă Betel Reus" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Carrer%20de%20Terrassa%2033%2C%2043204%20Reus%2C%20Tarragona&output=embed"></iframe>
+          <iframe title="Hartă Betel Reus" data-i18n-title="contactMapTitle" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Carrer%20de%20Terrassa%2033%2C%2043204%20Reus%2C%20Tarragona&output=embed"></iframe>
         </div>
         <form class="contact-form" id="contactForm">
-          <h3>Trimite-ne un mesaj</h3>
+          <h3 data-i18n="contactFormTitle">Trimite-ne un mesaj</h3>
           <label>
-            <span>Nume</span>
-            <input name="name" autocomplete="name" required placeholder="Numele tău" />
+            <span data-i18n="contactFormName">Nume</span>
+            <input name="name" autocomplete="name" required placeholder="Numele tău" data-i18n-placeholder="contactFormNamePlaceholder" />
           </label>
           <label>
-            <span>Email sau telefon</span>
-            <input name="contact" autocomplete="email" required placeholder="Cum te putem contacta?" />
+            <span data-i18n="contactFormContact">Email sau telefon</span>
+            <input name="contact" autocomplete="email" required placeholder="Cum te putem contacta?" data-i18n-placeholder="contactFormContactPlaceholder" />
           </label>
           <label>
-            <span>Mesaj</span>
-            <textarea name="message" required placeholder="Scrie mesajul tău"></textarea>
+            <span data-i18n="contactFormMessage">Mesaj</span>
+            <textarea name="message" required placeholder="Scrie mesajul tău" data-i18n-placeholder="contactFormMessagePlaceholder"></textarea>
           </label>
-          <button class="button primary" type="submit">Trimite email</button>
+          <button class="button primary" type="submit" data-i18n="contactSendEmail">Trimite email</button>
           <span class="form-note" id="contactFormMessage"></span>
         </form>
       </section>

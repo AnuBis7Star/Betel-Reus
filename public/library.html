@@ -15,6 +15,7 @@
       </a>
       <nav class="nav" aria-label="Navigare principală">
         <a href="/#program" data-i18n="navSchedule">Program</a>
+        <a href="/#prima-vizita" data-i18n="navFirstVisit">Prima vizită</a>
         <a href="/#predici" data-i18n="navVideos">Predici</a>
         <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="/#contact" data-i18n="navContact">Contact</a>
@@ -28,15 +29,15 @@
           <p class="eyebrow" data-i18n="libraryEyebrow">Pentru membri</p>
           <h1 data-i18n="libraryAccessTitle">Biblioteca Betel</h1>
           <p data-i18n="libraryAccessText">Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.</p>
-          <p class="helper-text">Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Contactează responsabilul bibliotecii sau pastorul Dorel Abuțnăriți.</p>
+          <p class="helper-text" data-i18n="libraryHelperText">Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Contactează responsabilul bibliotecii sau pastorul Dorel Abuțnăriți.</p>
           <form class="access-form" id="accessForm">
             <label>
               <span data-i18n="memberName">Nume</span>
-              <input name="name" autocomplete="name" required placeholder="Numele tău" />
+              <input name="name" autocomplete="name" required placeholder="Numele tău" data-i18n-placeholder="memberNamePlaceholder" />
             </label>
             <label>
               <span data-i18n="accessCode">Cod acces</span>
-              <input name="code" type="password" autocomplete="off" required placeholder="Cod bibliotecă" />
+              <input name="code" type="password" autocomplete="off" required placeholder="Cod bibliotecă" data-i18n-placeholder="libraryCodePlaceholder" />
             </label>
             <button class="button primary" type="submit" data-i18n="enterLibrary">Intră în bibliotecă</button>
             <span class="form-note" id="accessMessage"></span>
@@ -50,16 +51,16 @@
               <h1 data-i18n="libraryTitle">Biblioteca Betel</h1>
               <p class="member-line"><span data-i18n="memberActive">Membru</span>: <strong id="activeMember"></strong></p>
             </div>
-            <button class="button secondary" type="button" id="exitLibrary">Ieșire</button>
+            <button class="button secondary" type="button" id="exitLibrary" data-i18n="exitLibrary">Ieșire</button>
           </div>
           <div class="library-layout">
             <div class="library-results">
               <div class="toolbar">
-                <input id="bookSearch" type="search" placeholder="Caută după titlu sau autor" />
-                <select id="bookCategoryFilter" aria-label="Filtru categorie">
-                  <option value="all">Toate categoriile</option>
+                <input id="bookSearch" type="search" placeholder="Caută după titlu sau autor" data-i18n-placeholder="bookSearchPlaceholder" />
+                <select id="bookCategoryFilter" aria-label="Filtru categorie" data-i18n-aria-label="bookCategoryFilterLabel">
+                  <option value="all" data-i18n="filterAllCategories">Toate categoriile</option>
                 </select>
-                <select id="bookFilter" aria-label="Filtru bibliotecă">
+                <select id="bookFilter" aria-label="Filtru bibliotecă" data-i18n-aria-label="bookAvailabilityFilterLabel">
                   <option value="all" data-i18n="filterAll">Toate</option>
                   <option value="available" data-i18n="filterAvailable">Disponibile</option>
                 </select>
