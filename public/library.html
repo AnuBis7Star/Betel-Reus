@@ -14,10 +14,17 @@
         <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
       </a>
       <nav class="nav" aria-label="Navigare principală">
+        <a href="/" data-i18n="navHome">Acasă</a>
         <a href="/#program" data-i18n="navSchedule">Program</a>
-        <a href="/#prima-vizita" data-i18n="navFirstVisit">Prima vizită</a>
-        <a href="/#predici" data-i18n="navVideos">Predici</a>
-        <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
+        <div class="nav-menu">
+          <button type="button" data-i18n="navResources">Resurse</button>
+          <div class="nav-submenu">
+            <a href="/#predici" data-i18n="navVideos">Predici</a>
+            <a href="https://www.youtube.com/@BisericaBetelReus" target="_blank" rel="noreferrer" data-i18n="navYoutube">YouTube</a>
+            <a href="https://www.youtube.com/@BisericaBetelReus/live" target="_blank" rel="noreferrer" data-i18n="navLive">Live</a>
+          </div>
+        </div>
+        <a class="nav-library" href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="/#contact" data-i18n="navContact">Contact</a>
       </nav>
       <button class="lang-toggle" type="button" id="langToggle">ES</button>

@@ -1,9 +1,13 @@
 const translations = {
   ro: {
+    navHome: "Acasă",
     navSchedule: "Program",
     navFirstVisit: "Prima vizită",
+    navResources: "Resurse",
     navLibrary: "Bibliotecă",
     navVideos: "Predici",
+    navYoutube: "YouTube",
+    navLive: "Live",
     navContact: "Contact",
     eyebrow: "Biserică penticostală în Reus",
     heroText: "Betel Reus, o casă de închinare. O familie în care ne rugăm, ascultăm Cuvântul și creștem împreună în Hristos.",
@@ -105,10 +109,14 @@ const translations = {
     reserved: "rezervate"
   },
   es: {
+    navHome: "Inicio",
     navSchedule: "Horario",
     navFirstVisit: "Primera visita",
+    navResources: "Recursos",
     navLibrary: "Biblioteca",
     navVideos: "Predicaciones",
+    navYoutube: "YouTube",
+    navLive: "Directo",
     navContact: "Contacto",
     eyebrow: "Iglesia pentecostal en Reus",
     heroText: "Betel Reus, una casa de adoración. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
