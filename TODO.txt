@@ -189,3 +189,69 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Revisar enlaces externos.
 - Revisar textos con acentos/diacriticos correctos en rumano y espanol.
 
+
+13. Pendiente para nivel profesional de produccion
+-------------------------------------------------
+- Sustituir `ADMIN_CODE` por login real para administradores:
+  - Usuarios admin individuales.
+  - Contrasenas hasheadas.
+  - Sesiones seguras.
+  - Roles/permisos.
+- Quitar el fallback temporal `ADMIN-BETEL` del backend antes de publicar oficialmente.
+- Definir login real para miembros o un sistema de identificacion mas serio para la biblioteca.
+- Anadir proteccion anti-spam mas fuerte:
+  - Rate limit persistente o gestionado fuera de memoria.
+  - Captcha para formularios publicos si hay abuso.
+  - Limite de pedidos por usuario/miembro.
+- Preparar emails transaccionales:
+  - Confirmacion de pedido al miembro si se recoge email/telefono.
+  - Aviso al responsable de biblioteca.
+  - Aviso al pastor/responsable para mensajes de contacto.
+- Anadir sistema de backups automaticos de PostgreSQL y probar restauracion.
+- Definir monitorizacion:
+  - Logs de errores.
+  - Alertas si cae la web.
+  - Alertas si falla la base de datos.
+- Revisar privacidad y legal:
+  - Aviso legal.
+  - Politica de privacidad.
+  - Politica de cookies si se usan embeds, analitica o cookies reales.
+  - Consentimiento para guardar datos de pedidos/contacto.
+- Preparar dominio final:
+  - Comprar dominio.
+  - Configurar DNS.
+  - Configurar HTTPS.
+  - Configurar redireccion www/no-www.
+  - Configurar `CORS_ORIGIN` con dominio real.
+- Completar SEO tecnico:
+  - `robots.txt`.
+  - `sitemap.xml`.
+  - Open Graph image.
+  - Metadatos para compartir en WhatsApp/Facebook.
+  - Google Search Console.
+- Hacer auditoria visual y QA final:
+  - Movil real.
+  - Desktop real.
+  - Navegacion con teclado.
+  - Contraste.
+  - Textos largos en botones/cards.
+  - Navegacion completa RO/ES.
+- Revisar performance:
+  - Peso de imagenes.
+  - Cache de assets.
+  - Cache/control de YouTube RSS.
+  - Lighthouse basico.
+- Preparar contenido final:
+  - Fotos reales de la iglesia.
+  - Textos finales revisados por responsables.
+  - Datos de contacto definitivos.
+  - Imagen Open Graph oficial.
+- Preparar gestion profesional de libros:
+  - Importar inventario real.
+  - Definir categorias finales.
+  - Definir responsable de biblioteca.
+  - Exportar pedidos/inventario a CSV si hace falta.
+- Separacion futura completa si crece el proyecto:
+  - Frontend desplegado aparte.
+  - Backend como API en subdominio `api`.
+  - Autenticacion compartida por dominio seguro.
