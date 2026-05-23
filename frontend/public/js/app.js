@@ -1446,6 +1446,42 @@ function setupContactForm() {
   });
 }
 
+function setupNavigationMenu() {
+  const menu = $(".nav-menu");
+  const button = menu?.querySelector("button");
+  const submenu = menu?.querySelector(".nav-submenu");
+  if (!menu || !button || !submenu) return;
+
+  button.setAttribute("aria-expanded", "false");
+
+  const closeMenu = (removeFocus = false) => {
+    menu.classList.remove("is-open");
+    button.setAttribute("aria-expanded", "false");
+    if (removeFocus) button.blur();
+  };
+
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const shouldOpen = !menu.classList.contains("is-open");
+    if (shouldOpen) {
+      menu.classList.add("is-open");
+      button.setAttribute("aria-expanded", "true");
+    } else {
+      closeMenu(true);
+    }
+  });
+
+  submenu.addEventListener("click", closeMenu);
+
+  document.addEventListener("click", (event) => {
+    if (!menu.contains(event.target)) closeMenu(true);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu(true);
+  });
+}
+
 $("#langToggle")?.addEventListener("click", () => {
   lang = lang === "ro" ? "es" : "ro";
   localStorage.setItem("betel-lang", lang);
@@ -1456,6 +1492,7 @@ $("#langToggle")?.addEventListener("click", () => {
 $("#year").textContent = new Date().getFullYear();
 
 startHeroRotation();
+setupNavigationMenu();
 setupLibrary();
 setupAdmin();
 applyLanguage();

@@ -122,7 +122,8 @@ select {
 }
 
 .nav-menu:hover .nav-submenu,
-.nav-menu:focus-within .nav-submenu {
+.nav-menu:focus-within .nav-submenu,
+.nav-menu.is-open .nav-submenu {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, 0);
@@ -1165,7 +1166,8 @@ footer img {
   }
 
   .nav-menu:hover .nav-submenu,
-  .nav-menu:focus-within .nav-submenu {
+  .nav-menu:focus-within .nav-submenu,
+  .nav-menu.is-open .nav-submenu {
     transform: translate(-50%, 0);
   }
 
