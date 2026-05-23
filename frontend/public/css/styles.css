@@ -1122,11 +1122,14 @@ footer img {
     gap: 8px;
     justify-content: flex-start;
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
     padding: 2px 3px 8px;
     font-size: 0.9rem;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
 
   .nav::-webkit-scrollbar {
@@ -1155,14 +1158,15 @@ footer img {
   }
 
   .nav-submenu {
-    top: calc(100% + 8px);
-    left: 0;
-    transform: translateY(-6px);
+    position: fixed;
+    top: 66px;
+    left: 50%;
+    transform: translate(-50%, -6px);
   }
 
   .nav-menu:hover .nav-submenu,
   .nav-menu:focus-within .nav-submenu {
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 
   .nav-submenu a {
