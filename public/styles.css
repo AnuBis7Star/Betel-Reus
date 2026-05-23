@@ -603,31 +603,11 @@ mark {
   color: var(--ink);
 }
 
-.audit-panel summary {
+.audit-heading {
   display: flex;
   align-items: start;
   justify-content: space-between;
   gap: 14px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.audit-panel summary::-webkit-details-marker {
-  display: none;
-}
-
-.audit-panel summary::after {
-  content: "+";
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-
-.audit-panel[open] summary::after {
-  content: "-";
 }
 
 .pagination-controls {

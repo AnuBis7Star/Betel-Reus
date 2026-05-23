@@ -67,6 +67,13 @@ El proyecto usa un servidor Node.js propio con rutas API para:
 
 ```text
 Betel-Reus/
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── routes/
+│   ├── services/
+│   └── utils/
 ├── db/
 │   └── schema.sql
 ├── public/
@@ -81,3 +88,13 @@ Betel-Reus/
 ├── DATABASE_SETUP.md
 ├── TODO.txt
 └── TODO_HECHOS.txt
+```
+
+El servidor principal sigue siendo `server.mjs`, pero la lógica del backend está organizada en `src/`:
+
+- `routes/`: define las rutas API existentes.
+- `controllers/`: traduce cada petición HTTP a llamadas de servicio.
+- `services/`: contiene la lógica de libros, pedidos, auditoría, YouTube y versículo diario.
+- `middleware/`: contiene la protección del panel admin mediante `x-admin-code`.
+- `config/`: centraliza PostgreSQL y el almacenamiento en memoria.
+- `utils/`: respuestas HTTP, estáticos y helpers compartidos.

@@ -170,14 +170,15 @@ const translations = {
     adminPendingRequests: "Cereri în așteptare",
     adminEdit: "Editează",
     adminDelete: "Șterge",
-    adminReady: "Pregătită",
-    adminDelivered: "Predată",
+    adminReady: "În lucru",
+    adminComplete: "Completată",
+    adminDelivered: "Completată",
     adminCancel: "Anulează",
     adminNoRequests: "Nu există cereri active.",
     adminNoHistory: "Încă nu există modificări înregistrate.",
     adminStatusPending: "În așteptare",
-    adminStatusApproved: "Pregătită",
-    adminStatusCollected: "Predată",
+    adminStatusApproved: "În lucru",
+    adminStatusCollected: "Completată",
     adminStatusCancelled: "Anulată",
     adminEntityBook: "carte",
     adminEntityOrder: "cerere",
@@ -362,14 +363,15 @@ const translations = {
     adminPendingRequests: "Pedidos pendientes",
     adminEdit: "Editar",
     adminDelete: "Eliminar",
-    adminReady: "Preparado",
-    adminDelivered: "Entregado",
+    adminReady: "En proceso",
+    adminComplete: "Completado",
+    adminDelivered: "Completado",
     adminCancel: "Cancelar",
     adminNoRequests: "No hay pedidos activos.",
     adminNoHistory: "Todavía no hay cambios registrados.",
     adminStatusPending: "Pendiente",
-    adminStatusApproved: "Preparado",
-    adminStatusCollected: "Entregado",
+    adminStatusApproved: "En proceso",
+    adminStatusCollected: "Completado",
     adminStatusCancelled: "Cancelado",
     adminEntityBook: "libro",
     adminEntityOrder: "pedido",
@@ -399,6 +401,7 @@ let usingServerData = false;
 let currentMemberName = localStorage.getItem("betel-member-name") || "";
 let currentAdminCode = sessionStorage.getItem("betel-admin-code") || "";
 let pendingStockChanges = new Map();
+let processingReservationIds = new Set();
 let auditPage = 0;
 const auditPageSize = 5;
 let videoRotationFrame;
@@ -1101,7 +1104,10 @@ function setupAdmin() {
     if (!button) return;
     const reservation = reservations.find((item) => item.id === button.dataset.id);
     if (!reservation) return;
+    if (processingReservationIds.has(reservation.id)) return;
     const before = { ...reservation };
+    processingReservationIds.add(reservation.id);
+    renderAdminReservations();
     try {
       const data = await apiRequest(`/api/admin/orders/${reservation.id}`, {
         method: "PATCH",
@@ -1120,6 +1126,8 @@ function setupAdmin() {
         saveBooks();
       }
       logAudit(`Cerere marcată ca ${button.dataset.status}`, "reservation", before, { ...reservation });
+    } finally {
+      processingReservationIds.delete(reservation.id);
     }
     saveReservations();
     renderAdminReservations();
@@ -1302,6 +1310,8 @@ function renderAdminReservations() {
     const items = getReservationItems(reservation);
     const title = items.map((item) => `${item.quantity || 1} x ${item.title}`).join(", ");
     const total = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1), 0);
+    const processing = processingReservationIds.has(reservation.id);
+    const disabled = processing ? "disabled" : "";
     return `
     <article class="reservation-card">
       <div>
@@ -1312,9 +1322,8 @@ function renderAdminReservations() {
       </div>
       <mark>${getStatusLabel(reservation.status)}</mark>
       <div class="table-actions">
-        <button type="button" data-id="${reservation.id}" data-status="approved">${tx("adminReady")}</button>
-        <button type="button" data-id="${reservation.id}" data-status="collected">${tx("adminDelivered")}</button>
-        <button type="button" data-id="${reservation.id}" data-status="cancelled">${tx("adminCancel")}</button>
+        <button type="button" data-id="${reservation.id}" data-status="collected" ${disabled}>${tx("adminComplete")}</button>
+        <button type="button" data-id="${reservation.id}" data-status="cancelled" ${disabled}>${tx("adminCancel")}</button>
       </div>
     </article>
   `;

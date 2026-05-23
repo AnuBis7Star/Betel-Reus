@@ -189,14 +189,3 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Revisar enlaces externos.
 - Revisar textos con acentos/diacriticos correctos en rumano y espanol.
 
-
-Trabajar mas el panel de admin. 
-Eliminar el botón "pregatita, dejar como completado, anulada, y ya.
-También cuidado con la implementacion, si se apreta muchas veces un botón, se repite el log en el logaudit, hay que hacer un antispam protocol. (ultime modificar)
-
-ademas quiero que limpies el log que hay ahora, de todas partes, de la data base tambien. no son datos reales. 
-
-Tambien quiero que elimines que sea plegable este historial, dejalo abierto siempre, no tiene mucho sentido que sea plegable.
-
-
-
