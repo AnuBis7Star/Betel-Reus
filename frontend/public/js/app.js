@@ -106,6 +106,8 @@ const translations = {
     cartTotal: "Total",
     confirmCart: "Trimite cererea",
     cartSent: "Cererea a fost trimisă.",
+    cartOpen: "Deschide coșul",
+    cartClose: "Închide coșul",
     returnBook: "Returnează",
     available: "disponibile",
     unavailable: "indisponibil",
@@ -299,6 +301,8 @@ const translations = {
     cartTotal: "Total",
     confirmCart: "Confirmar pedido",
     cartSent: "Pedido enviado al panel.",
+    cartOpen: "Abrir carrito",
+    cartClose: "Cerrar carrito",
     returnBook: "Devolver",
     available: "disponibles",
     unavailable: "no disponible",
@@ -796,6 +800,16 @@ function setupLibrary() {
 
   if (currentMemberName) unlockLibrary();
 
+  const openMobileCart = () => {
+    document.body.classList.add("cart-open");
+    $("#mobileCartToggle")?.setAttribute("aria-expanded", "true");
+  };
+
+  const closeMobileCart = () => {
+    document.body.classList.remove("cart-open");
+    $("#mobileCartToggle")?.setAttribute("aria-expanded", "false");
+  };
+
   $("#accessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -815,6 +829,8 @@ function setupLibrary() {
     localStorage.removeItem("betel-member-name");
     cart = [];
     saveCart();
+    renderCart();
+    closeMobileCart();
     $("#libraryShell")?.classList.add("is-hidden");
     $("#libraryGate")?.classList.remove("is-hidden");
     $("#accessForm").reset();
@@ -839,6 +855,9 @@ function setupLibrary() {
   });
 
   $("#confirmCart").addEventListener("click", confirmCart);
+  $("#mobileCartToggle")?.addEventListener("click", openMobileCart);
+  $("#mobileCartClose")?.addEventListener("click", closeMobileCart);
+  $("#mobileCartBackdrop")?.addEventListener("click", closeMobileCart);
   $("#bookSearch").addEventListener("input", renderBooks);
   $("#bookFilter").addEventListener("change", renderBooks);
   $("#bookCategoryFilter")?.addEventListener("change", renderBooks);
@@ -862,6 +881,9 @@ function addToCart(book) {
 function renderCart() {
   if (!$("#cartItems")) return;
   const t = translations[lang];
+  const itemCount = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  if ($("#mobileCartCount")) $("#mobileCartCount").textContent = String(itemCount);
+  $("#mobileCartToggle")?.classList.toggle("has-items", itemCount > 0);
   if (cart.length === 0) {
     $("#cartItems").innerHTML = `<p>${t.cartEmpty}</p>`;
     $("#cartTotal").textContent = "0.00 €";
@@ -911,6 +933,8 @@ async function confirmCart() {
   cart = [];
   saveCart();
   renderCart();
+  document.body.classList.remove("cart-open");
+  $("#mobileCartToggle")?.setAttribute("aria-expanded", "false");
   $("#cartMessage").textContent = translations[lang].cartSent;
 }
 

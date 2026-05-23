@@ -60,6 +60,11 @@
             </div>
             <button class="button secondary" type="button" id="exitLibrary" data-i18n="exitLibrary">Ieșire</button>
           </div>
+          <button class="mobile-cart-toggle" type="button" id="mobileCartToggle" aria-controls="cartPanel" aria-expanded="false" data-i18n-aria-label="cartOpen" data-i18n-title="cartOpen">
+            <span class="cart-glyph" aria-hidden="true"></span>
+            <strong id="mobileCartCount">0</strong>
+          </button>
+          <div class="mobile-cart-backdrop" id="mobileCartBackdrop"></div>
           <div class="library-layout">
             <div class="library-results">
               <div class="toolbar">
@@ -74,7 +79,8 @@
               </div>
               <div class="books" id="books"></div>
             </div>
-            <aside class="cart-panel">
+            <aside class="cart-panel" id="cartPanel">
+              <button class="cart-close" type="button" id="mobileCartClose" data-i18n-aria-label="cartClose" data-i18n-title="cartClose">×</button>
               <div>
                 <p class="eyebrow" data-i18n="cartEyebrow">Coș</p>
                 <h2 data-i18n="cartTitle">Cererea ta</h2>
