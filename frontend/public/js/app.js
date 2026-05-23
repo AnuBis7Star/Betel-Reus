@@ -1452,10 +1452,19 @@ function setupNavigationMenu() {
   const submenu = menu?.querySelector(".nav-submenu");
   if (!menu || !button || !submenu) return;
 
+  const mobilePanel = submenu.cloneNode(true);
+  mobilePanel.className = "resource-popover";
+  mobilePanel.id = "resourcePopover";
+  mobilePanel.setAttribute("aria-hidden", "true");
+  document.body.append(mobilePanel);
+
+  button.setAttribute("aria-controls", mobilePanel.id);
   button.setAttribute("aria-expanded", "false");
 
   const closeMenu = (removeFocus = false) => {
     menu.classList.remove("is-open");
+    mobilePanel.classList.remove("is-open");
+    mobilePanel.setAttribute("aria-hidden", "true");
     button.setAttribute("aria-expanded", "false");
     if (removeFocus) button.blur();
   };
@@ -1465,6 +1474,8 @@ function setupNavigationMenu() {
     const shouldOpen = !menu.classList.contains("is-open");
     if (shouldOpen) {
       menu.classList.add("is-open");
+      mobilePanel.classList.add("is-open");
+      mobilePanel.setAttribute("aria-hidden", "false");
       button.setAttribute("aria-expanded", "true");
     } else {
       closeMenu(true);
@@ -1472,9 +1483,10 @@ function setupNavigationMenu() {
   });
 
   submenu.addEventListener("click", closeMenu);
+  mobilePanel.addEventListener("click", () => closeMenu(true));
 
   document.addEventListener("click", (event) => {
-    if (!menu.contains(event.target)) closeMenu(true);
+    if (!menu.contains(event.target) && !mobilePanel.contains(event.target)) closeMenu(true);
   });
 
   document.addEventListener("keydown", (event) => {

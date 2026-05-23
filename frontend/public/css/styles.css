@@ -121,6 +121,10 @@ select {
   background: var(--soft);
 }
 
+.resource-popover {
+  display: none;
+}
+
 .nav-menu:hover .nav-submenu,
 .nav-menu:focus-within .nav-submenu,
 .nav-menu.is-open .nav-submenu {
@@ -1159,23 +1163,40 @@ footer img {
   }
 
   .nav-submenu {
+    display: none;
+  }
+
+  .resource-popover {
     position: fixed;
     top: 66px;
     left: 50%;
+    z-index: 80;
+    display: grid;
+    min-width: 170px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 18px 50px rgba(23, 23, 23, 0.16);
+    opacity: 0;
+    pointer-events: none;
     transform: translate(-50%, -6px);
+    transition: opacity 160ms ease, transform 160ms ease;
   }
 
-  .nav-menu:hover .nav-submenu,
-  .nav-menu:focus-within .nav-submenu,
-  .nav-menu.is-open .nav-submenu {
+  .resource-popover.is-open {
+    opacity: 1;
+    pointer-events: auto;
     transform: translate(-50%, 0);
   }
 
-  .nav-submenu a {
+  .resource-popover a {
     display: flex;
     min-height: 40px;
     align-items: center;
     justify-content: center;
+    border-radius: 6px;
+    padding: 10px 12px;
     text-align: center;
   }
 
