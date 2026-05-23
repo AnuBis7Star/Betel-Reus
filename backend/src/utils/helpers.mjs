@@ -43,21 +43,36 @@ function orderFromRow(row) {
 }
 
 function normalizeBookPayload(payload) {
+  const title = String(payload.title || "").trim();
+  const author = String(payload.author || "").trim();
+  const category = String(payload.category || "General").trim() || "General";
+  const language = String(payload.language || "ro").trim().slice(0, 12) || "ro";
+
   return {
-    title: String(payload.title || "").trim(),
-    author: String(payload.author || "").trim(),
-    category: String(payload.category || "General").trim() || "General",
-    language: String(payload.language || "ro"),
+    title: title.slice(0, 180),
+    author: author.slice(0, 180),
+    category: category.slice(0, 80),
+    language,
     stock: Math.max(0, Number(payload.stock || 0)),
     reserved: Math.max(0, Number(payload.reserved || 0)),
     price: Math.max(0, Number(payload.price || 0))
   };
 }
 
+function normalizeText(value, maxLength = 180) {
+  return String(value || "").trim().slice(0, maxLength);
+}
+
+function isValidUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
+}
+
 export {
   bookFromRow,
   escapeHtml,
+  isValidUuid,
   normalizeBookPayload,
+  normalizeText,
   orderFromRow,
   romanianTitleCorrections,
   tagValue

@@ -26,7 +26,7 @@ Opcion recomendada en Render:
 ---------------
 Abre PostgreSQL con pgAdmin4 o el Query Editor que uses y ejecuta:
 
-`db/schema.sql`
+`backend/src/db/schema.sql`
 
 Ese archivo crea:
 - `books`
@@ -104,8 +104,8 @@ la app no esta leyendo `DATABASE_URL`.
 - El pedido se guarda en PostgreSQL.
 - El admin entra en `/admin.html`.
 - El admin ve el pedido aunque este en otro navegador/dispositivo.
-- El admin marca el pedido como preparado, entregado o cancelado.
-- Si marca entregado, se descuenta stock en PostgreSQL.
+- El admin marca el pedido como completado o cancelado.
+- Si marca completado, se descuenta stock en PostgreSQL.
 - El historial se guarda en `audit_logs`.
 
 
@@ -113,6 +113,6 @@ la app no esta leyendo `DATABASE_URL`.
 --------------------------------
 - Sustituir codigo de admin por login real.
 - Decidir si el codigo de biblioteca sigue existiendo o se reemplaza por usuarios.
-- Anadir validaciones mas finas de stock y datos personales.
+- Revisar y endurecer validaciones de stock y datos personales a medida que crezca el uso real.
 - Preparar politica de privacidad.
 - Cambiar contrasenas/codigos antes de ensenar el panel a mas personas.

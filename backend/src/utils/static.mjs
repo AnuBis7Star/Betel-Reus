@@ -4,8 +4,8 @@ import { fileURLToPath } from "node:url";
 
 import { mime } from "./response.mjs";
 
-const root = fileURLToPath(new URL("../..", import.meta.url));
-const publicDir = join(root, "public");
+const root = fileURLToPath(new URL("../../..", import.meta.url));
+const publicDir = join(root, "frontend", "public");
 
 async function serveStatic(pathname, res) {
   const safePath = normalize(decodeURIComponent(pathname)).replace(/^(\.\.[/\\])+/, "");

@@ -67,34 +67,41 @@ El proyecto usa un servidor Node.js propio con rutas API para:
 
 ```text
 Betel-Reus/
-├── src/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── routes/
-│   ├── services/
-│   └── utils/
-├── db/
-│   └── schema.sql
-├── public/
-│   ├── index.html
-│   ├── library.html
-│   ├── admin.html
-│   ├── app.js
-│   ├── styles.css
-│   └── assets/
+├── backend/
+│   ├── src/
+│   │   ├── app.mjs
+│   │   ├── server.mjs
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── db/
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── utils/
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   │   ├── index.html
+│   │   ├── library.html
+│   │   ├── admin.html
+│   │   ├── js/
+│   │   ├── css/
+│   │   └── assets/
+│   └── package.json
 ├── server.mjs
 ├── package.json
 ├── DATABASE_SETUP.md
+├── PRODUCTION.md
 ├── TODO.txt
 └── TODO_HECHOS.txt
 ```
 
-El servidor principal sigue siendo `server.mjs`, pero la lógica del backend está organizada en `src/`:
+La raíz mantiene `npm run dev` y `npm start` para desarrollo y Render. Internamente, `server.mjs` delega en `backend/src/server.mjs`, y el backend sirve los archivos estáticos desde `frontend/public`.
 
-- `routes/`: define las rutas API existentes.
-- `controllers/`: traduce cada petición HTTP a llamadas de servicio.
-- `services/`: contiene la lógica de libros, pedidos, auditoría, YouTube y versículo diario.
-- `middleware/`: contiene la protección del panel admin mediante `x-admin-code`.
-- `config/`: centraliza PostgreSQL y el almacenamiento en memoria.
-- `utils/`: respuestas HTTP, estáticos y helpers compartidos.
+- `backend/src/routes/`: define las rutas API existentes.
+- `backend/src/controllers/`: traduce cada petición HTTP a llamadas de servicio.
+- `backend/src/services/`: contiene la lógica de libros, pedidos, auditoría, YouTube y versículo diario.
+- `backend/src/middleware/`: contiene protección admin, headers de seguridad, CORS y rate limiting.
+- `backend/src/config/`: centraliza PostgreSQL y el almacenamiento en memoria.
+- `backend/src/utils/`: respuestas HTTP, estáticos y helpers compartidos.
+- `frontend/public/`: contiene las vistas HTML, estilos, JS del navegador y assets.

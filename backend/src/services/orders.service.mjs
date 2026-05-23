@@ -3,24 +3,28 @@ import { randomUUID } from "node:crypto";
 import { memory } from "../config/memory.mjs";
 import { pool } from "../config/db.mjs";
 import { audit } from "./audit.service.mjs";
-import { orderFromRow, romanianTitleCorrections } from "../utils/helpers.mjs";
+import { httpError } from "../utils/response.mjs";
+import { isValidUuid, normalizeText, orderFromRow, romanianTitleCorrections } from "../utils/helpers.mjs";
 
 async function createOrder(payload) {
-  const items = Array.isArray(payload.items) ? payload.items : [];
-  if (!payload.member || items.length === 0) throw new Error("member and items are required");
+  const items = Array.isArray(payload.items) ? payload.items.slice(0, 20) : [];
+  const member = normalizeText(payload.member, 120);
+  const contact = normalizeText(payload.contact || "biblioteca", 180) || "biblioteca";
+  if (!member || items.length === 0) throw httpError(400, "member and items are required");
+  if (pool && items.some((item) => !isValidUuid(item.id))) throw httpError(400, "Invalid book id");
 
   if (!pool) {
     const normalizedItems = items.map((item) => {
       const book = memory.books.find((entry) => entry.id === item.id);
-      if (!book) throw new Error(`Book not found: ${item.id}`);
-      const quantity = Number(item.quantity || 1);
-      if (Number(book.stock) - Number(book.reserved) < quantity) throw new Error(`Not enough stock: ${book.title}`);
+      if (!book) throw httpError(404, `Book not found: ${item.id}`);
+      const quantity = Math.max(1, Math.min(20, Number(item.quantity || 1)));
+      if (Number(book.stock) - Number(book.reserved) < quantity) throw httpError(409, `Not enough stock: ${book.title}`);
       return { id: book.id, title: romanianTitleCorrections[book.title] || book.title, quantity, price: book.price };
     });
     const total = normalizedItems.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1), 0);
-    const order = { id: randomUUID(), member: payload.member, contact: payload.contact || "biblioteca", status: "pending", total, fulfilled: false, createdAt: new Date().toISOString(), items: normalizedItems };
+    const order = { id: randomUUID(), member, contact, status: "pending", total, fulfilled: false, createdAt: new Date().toISOString(), items: normalizedItems };
     memory.orders.unshift(order);
-    await audit("Cerere trimisă de membru", "order", order.id, null, order, payload.member);
+    await audit("Cerere trimisă de membru", "order", order.id, null, order, member);
     return order;
   }
 
@@ -33,21 +37,21 @@ async function createOrder(payload) {
 
     for (const item of items) {
       const book = booksById.get(item.id);
-      if (!book) throw new Error(`Book not found: ${item.id}`);
-      const quantity = Number(item.quantity || 1);
-      if (Number(book.stock) - Number(book.reserved) < quantity) throw new Error(`Not enough stock: ${book.title}`);
+      if (!book) throw httpError(404, `Book not found: ${item.id}`);
+      const quantity = Math.max(1, Math.min(20, Number(item.quantity || 1)));
+      if (Number(book.stock) - Number(book.reserved) < quantity) throw httpError(409, `Not enough stock: ${book.title}`);
       total += Number(book.price) * quantity;
     }
 
     const orderResult = await client.query(
       "INSERT INTO orders (member_name, contact, total) VALUES ($1, $2, $3) RETURNING *",
-      [payload.member, payload.contact || "biblioteca", total]
+      [member, contact, total]
     );
     const order = orderResult.rows[0];
 
     for (const item of items) {
       const book = booksById.get(item.id);
-      const quantity = Number(item.quantity || 1);
+      const quantity = Math.max(1, Math.min(20, Number(item.quantity || 1)));
       await client.query(
         "INSERT INTO order_items (order_id, book_id, title, quantity, price) VALUES ($1, $2, $3, $4, $5)",
         [order.id, book.id, romanianTitleCorrections[book.title] || book.title, quantity, book.price]
@@ -56,7 +60,7 @@ async function createOrder(payload) {
 
     await client.query(
       "INSERT INTO audit_logs (actor, action, entity_type, entity_id, after_data) VALUES ($1, $2, $3, $4, $5)",
-      [payload.member, "Cerere trimisă de membru", "order", order.id, { ...payload, total }]
+      [member, "Cerere trimisă de membru", "order", order.id, { member, contact, items, total }]
     );
     await client.query("COMMIT");
     return { ...orderFromRow({ ...order, items }), items };
@@ -91,10 +95,11 @@ async function listOrders(activeOnly = false) {
 }
 
 async function updateOrderStatus(id, status) {
-  if (!["pending", "approved", "collected", "cancelled"].includes(status)) throw new Error("Invalid status");
+  if (pool && !isValidUuid(id)) throw httpError(400, "Invalid order id");
+  if (!["pending", "approved", "collected", "cancelled"].includes(status)) throw httpError(400, "Invalid status");
   if (!pool) {
     const order = memory.orders.find((item) => item.id === id);
-    if (!order) throw new Error("Order not found");
+    if (!order) throw httpError(404, "Order not found");
     if (order.status === status || ["collected", "cancelled"].includes(order.status)) return order;
     const before = { ...order };
     order.status = status;
@@ -113,7 +118,7 @@ async function updateOrderStatus(id, status) {
   try {
     await client.query("BEGIN");
     const orderResult = await client.query("SELECT * FROM orders WHERE id = $1 FOR UPDATE", [id]);
-    if (!orderResult.rowCount) throw new Error("Order not found");
+    if (!orderResult.rowCount) throw httpError(404, "Order not found");
     const before = orderResult.rows[0];
     if (before.status === status || ["collected", "cancelled"].includes(before.status)) {
       await client.query("COMMIT");

@@ -1,3 +1,5 @@
+import { apiRequest as requestApi } from "./api.js";
+
 const translations = {
   ro: {
     navHome: "Acasă",
@@ -437,6 +439,19 @@ const adminEntityKeys = {
 
 const libraryCategories = ["Teologie", "Familie", "Tineri", "Copii", "Biografii", "Biblii", "Devoționale"];
 
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function escapeAttribute(value = "") {
+  return escapeHtml(value);
+}
+
 function tx(key) {
   return translations[lang]?.[key] || translations.ro[key] || key;
 }
@@ -482,21 +497,7 @@ function saveAuditLogs() {
 }
 
 async function apiRequest(path, options = {}) {
-  const headers = { ...(options.headers || {}) };
-  if (options.body && typeof options.body !== "string") {
-    headers["Content-Type"] = "application/json";
-    options.body = JSON.stringify(options.body);
-  }
-  if (path.startsWith("/api/admin/")) headers["x-admin-code"] = currentAdminCode || defaultAdminCode;
-
-  const response = await fetch(path, { ...options, headers });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const error = new Error(data.error || "API request failed");
-    error.status = response.status;
-    throw error;
-  }
-  return data;
+  return requestApi(path, { ...options, adminCode: currentAdminCode || defaultAdminCode });
 }
 
 async function loadBooksFromApi() {
@@ -576,7 +577,7 @@ function renderBooks() {
   const t = translations[lang];
   const categories = [...new Set([...libraryCategories, ...books.map((book) => book.category).filter(Boolean)])].sort();
   if ($("#bookCategoryFilter")) {
-    $("#bookCategoryFilter").innerHTML = `<option value="all">${translations[lang].filterAllCategories}</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
+    $("#bookCategoryFilter").innerHTML = `<option value="all">${translations[lang].filterAllCategories}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(item)}</option>`).join("")}`;
     $("#bookCategoryFilter").value = categoryFilter && [...categories, "all"].includes(categoryFilter) ? categoryFilter : "all";
   }
   const visibleBooks = books.filter((book) => {
@@ -592,9 +593,9 @@ function renderBooks() {
     return `
       <article class="book-card">
         <div>
-          <h3>${book.title}</h3>
-          <p>${book.author}</p>
-          <span class="book-category">${book.category || "General"}</span>
+          <h3>${escapeHtml(book.title)}</h3>
+          <p>${escapeHtml(book.author)}</p>
+          <span class="book-category">${escapeHtml(book.category || "General")}</span>
         </div>
         <div class="book-meta">
           <span>${available > 0 ? `${available} ${t.available}` : t.unavailable}</span>
@@ -640,10 +641,10 @@ async function loadVideos() {
 function renderVideos(videos) {
   const selectedVideos = videos.slice(0, 30);
   const videoCards = selectedVideos.map((video) => `
-    <a class="video-card" href="${video.url}" target="_blank" rel="noreferrer" draggable="false">
-      <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" draggable="false" />
+    <a class="video-card" href="${escapeAttribute(video.url)}" target="_blank" rel="noreferrer" draggable="false">
+      <img src="${escapeAttribute(video.thumbnail)}" alt="${escapeAttribute(video.title)}" loading="lazy" draggable="false" />
       <span>${video.published ? new Date(video.published).toLocaleDateString(lang === "ro" ? "ro-RO" : "es-ES") : "YouTube"}</span>
-      <h3>${video.title}</h3>
+      <h3>${escapeHtml(video.title)}</h3>
     </a>
   `).join("");
   $("#videoRail").innerHTML = `
@@ -872,7 +873,7 @@ function renderCart() {
   $("#cartItems").innerHTML = cart.map((item) => `
     <article class="cart-item">
       <div>
-        <strong>${item.title}</strong>
+        <strong>${escapeHtml(item.title)}</strong>
         <span>${item.quantity} x ${Number(item.price || 0).toFixed(2)} €</span>
       </div>
       <button type="button" data-action="remove-cart" data-id="${item.id}">×</button>
@@ -1270,7 +1271,7 @@ function renderAdminBooks() {
   const query = $("#adminSearch").value.toLowerCase();
   const category = $("#adminCategoryFilter").value;
   const categories = [...new Set(books.map((book) => book.category).filter(Boolean))].sort();
-  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${item}">${item}</option>`).join("")}`;
+  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(item)}</option>`).join("")}`;
   $("#adminCategoryFilter").value = category && [...categories, "all"].includes(category) ? category : "all";
 
   const visibleBooks = books.filter((book) => {
@@ -1285,9 +1286,9 @@ function renderAdminBooks() {
     const stockLabel = originalStock === undefined ? book.stock : `${book.stock}*`;
     return `
       <tr>
-        <td><strong>${book.title}</strong><span>${book.author}</span></td>
-        <td>${book.category || "General"}</td>
-        <td>${book.language || "ro"}</td>
+        <td><strong>${escapeHtml(book.title)}</strong><span>${escapeHtml(book.author)}</span></td>
+        <td>${escapeHtml(book.category || "General")}</td>
+        <td>${escapeHtml(book.language || "ro")}</td>
         <td${stockClass}>${stockLabel}</td>
         <td>${book.reserved || 0}</td>
         <td>${available}</td>
@@ -1315,8 +1316,8 @@ function renderAdminReservations() {
     return `
     <article class="reservation-card">
       <div>
-        <strong>${title}</strong>
-        <span>${reservation.member} · ${reservation.contact}</span>
+        <strong>${escapeHtml(title)}</strong>
+        <span>${escapeHtml(reservation.member)} · ${escapeHtml(reservation.contact)}</span>
         <span>${total.toFixed(2)} €</span>
         <small>${new Date(reservation.createdAt).toLocaleString(lang === "ro" ? "ro-RO" : "es-ES")}</small>
       </div>
@@ -1343,8 +1344,8 @@ function renderAuditLog() {
   const pageLogs = auditLogs.slice(start, start + auditPageSize);
   $("#auditLog").innerHTML = pageLogs.map((log) => `
     <article>
-      <strong>${getAdminActionLabel(log.action)}</strong>
-      <span>${getAdminEntityLabel(log.entity)} · ${log.actor} · ${new Date(log.createdAt).toLocaleString(lang === "ro" ? "ro-RO" : "es-ES")}</span>
+      <strong>${escapeHtml(getAdminActionLabel(log.action))}</strong>
+      <span>${escapeHtml(getAdminEntityLabel(log.entity))} · ${escapeHtml(log.actor)} · ${new Date(log.createdAt).toLocaleString(lang === "ro" ? "ro-RO" : "es-ES")}</span>
     </article>
   `).join("") || `<p>${tx("adminNoHistory")}</p>`;
   if ($("#auditPageInfo")) $("#auditPageInfo").textContent = `${tx("adminPage")} ${auditPage + 1} ${tx("adminPageOf")} ${maxPage + 1}`;

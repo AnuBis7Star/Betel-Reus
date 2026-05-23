@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
-    "dev": "node server.mjs",
-    "start": "node server.mjs"
+    "dev": "node backend/src/server.mjs",
+    "start": "node backend/src/server.mjs",
+    "dev:backend": "node backend/src/server.mjs",
+    "start:backend": "node backend/src/server.mjs",
+    "check": "node --check server.mjs && find backend/src frontend/public/js -name '*.mjs' -o -name '*.js' | xargs -I{} node --check {}"
   },
   "dependencies": {
     "pg": "^8.13.1"

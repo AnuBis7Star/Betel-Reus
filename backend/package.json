@@ -1,0 +1,14 @@
+{
+  "name": "@betel-reus/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.mjs",
+    "start": "node src/server.mjs",
+    "check": "find src -name '*.mjs' | xargs -I{} node --check {}"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

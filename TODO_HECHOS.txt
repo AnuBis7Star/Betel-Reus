@@ -179,3 +179,12 @@ Este documento registra lo que ya esta confirmado, implementado o resuelto. Si a
 - Se anadio proteccion en backend para no volver a registrar ni descontar stock si un pedido ya esta completado/anulado o recibe el mismo estado.
 - Se dejo el historial del panel admin siempre visible, sin desplegable.
 - Se anadio limpieza de historial con `DELETE /api/admin/audit` protegida por `x-admin-code`.
+- Se separo la estructura fisica en `backend/` y `frontend/` manteniendo compatibilidad con `npm run dev` y `npm start` desde la raiz.
+- Se movio el schema SQL a `backend/src/db/schema.sql`.
+- Se anadio `backend/src/app.mjs` para separar app HTTP de arranque del servidor.
+- Se anadio middleware de seguridad con headers, CORS configurable y rate limiting.
+- Se anadio limite de tamano y validacion de JSON en la API.
+- Se reforzaron validaciones de payloads para libros, pedidos y estados.
+- Se anadio `frontend/public/js/api.js` como cliente API reutilizable.
+- Se escapo contenido dinamico renderizado desde DB/YouTube para reducir riesgo de XSS.
+- Se anadio `.env.example`, `backend/.env.example` y `PRODUCTION.md`.
