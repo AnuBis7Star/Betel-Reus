@@ -498,7 +498,7 @@ cite {
 
 .admin-grid .admin-panel {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1;
 }
 
 .admin-panel {
@@ -772,10 +772,10 @@ textarea {
 }
 
 .bulk-import {
-  grid-column: 1;
+  grid-column: 1 / -1;
   grid-row: 2;
   align-self: start;
-  padding: 16px;
+  padding: 22px;
 }
 
 .bulk-import summary {
@@ -807,7 +807,10 @@ textarea {
 }
 
 .bulk-import textarea {
-  min-height: 100px;
+  width: 100%;
+  min-height: 220px;
+  overflow: auto;
+  white-space: pre;
 }
 
 .bulk-import .button {

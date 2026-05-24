@@ -165,6 +165,7 @@ const translations = {
     adminStockSaving: "Se salvează stocul...",
     adminStockSaved: "Stoc salvat.",
     adminAddBulkLine: "Adaugă cel puțin o linie cu titlu și autor.",
+    adminBulkInvalidLine: "Linie incompletă",
     adminImporting: "Se importă...",
     adminBooksAddedSaving: "cărți adăugate. Se salvează în baza de date...",
     adminBooksImported: "cărți importate.",
@@ -360,6 +361,7 @@ const translations = {
     adminStockSaving: "Guardando stock...",
     adminStockSaved: "Stock guardado.",
     adminAddBulkLine: "Añade al menos una línea con título y autor.",
+    adminBulkInvalidLine: "Línea incompleta",
     adminImporting: "Importando...",
     adminBooksAddedSaving: "libros añadidos. Guardando en la base de datos...",
     adminBooksImported: "libros importados.",
@@ -1209,61 +1211,78 @@ async function savePendingStockChanges() {
   renderAdmin();
 }
 
+function normalizeBulkLanguage(value) {
+  const normalized = String(value || "ro").trim().toLowerCase();
+  const compact = normalized.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (["ro", "romana", "romanian", "rumano", "rumana", "română"].includes(normalized) || ["ro", "romana", "romanian", "rumano", "rumana"].includes(compact)) return "ro";
+  if (["es", "spaniola", "spanish", "espanol", "español", "castellano", "sp"].includes(normalized) || ["es", "spaniola", "spanish", "espanol", "castellano", "sp"].includes(compact)) return "es";
+  if (["en", "engleza", "english", "ingles", "inglés"].includes(normalized) || ["en", "engleza", "english", "ingles"].includes(compact)) return "en";
+  return normalized || "ro";
+}
+
 function parseBulkBooksInput(value) {
-  return value
+  const invalidLines = [];
+  const books = value
     .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const [title, author, category = "General", language = "ro", stock = "1", price = "0"] = line.split(";").map((part) => part.trim());
+    .map((line, index) => ({ line: line.trim(), number: index + 1 }))
+    .filter((item) => item.line)
+    .map((item) => {
+      const parts = item.line.split(";").map((part) => part.trim());
+      const [title, author, category = "General", language = "ro", stock = "1", price = "0"] = parts;
+      if (!title || !author) {
+        invalidLines.push(item.number);
+        return null;
+      }
       return {
         title,
         author,
         category: category || "General",
-        language: language || "ro",
+        language: normalizeBulkLanguage(language),
         stock: Math.max(0, Number(stock) || 0),
         reserved: 0,
         price: Math.max(0, Number(String(price).replace(",", ".")) || 0)
       };
     })
-    .filter((book) => book.title && book.author);
+    .filter(Boolean);
+
+  return { books, invalidLines };
 }
 
 async function importBulkBooks() {
   const input = $("#bulkBooksInput");
   const message = $("#bulkImportMessage");
   const button = $("#importBooks");
-  const parsedBooks = parseBulkBooksInput(input.value);
+  const { books: parsedBooks, invalidLines } = parseBulkBooksInput(input.value);
+
+  if (invalidLines.length > 0) {
+    message.textContent = `${tx("adminBulkInvalidLine")}: ${invalidLines.join(", ")}. ${tx("adminBulkHelp")}`;
+    return;
+  }
 
   if (parsedBooks.length === 0) {
     message.textContent = tx("adminAddBulkLine");
     return;
   }
 
-  const temporaryBooks = parsedBooks.map((book) => ({ id: `tmp-${crypto.randomUUID()}`, ...book }));
-  const temporaryIds = new Set(temporaryBooks.map((book) => book.id));
   button.disabled = true;
   button.textContent = tx("adminImporting");
-  message.textContent = `${temporaryBooks.length} ${tx("adminBooksAddedSaving")}`;
-  books.unshift(...temporaryBooks);
-  saveBooks();
-  renderAdmin();
+  message.textContent = `${parsedBooks.length} ${tx("adminBooksAddedSaving")}`;
 
   try {
     const response = await apiRequest("/api/admin/books/bulk", {
       method: "POST",
       body: { books: parsedBooks }
     });
-    books = books.filter((book) => !temporaryIds.has(book.id));
     books.unshift(...response.books);
     input.value = "";
     message.textContent = `${response.books.length} ${tx("adminBooksImported")}`;
     await loadAdminDataFromApi();
   } catch (error) {
     if (usingServerData || error.status === 401) {
-      books = books.filter((book) => !temporaryIds.has(book.id));
-      message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminDbImportError");
+      message.textContent = error.status === 401 ? tx("adminAuthError") : `${tx("adminDbImportError")} ${error.message || ""}`.trim();
     } else {
+      const temporaryBooks = parsedBooks.map((book) => ({ id: `tmp-${crypto.randomUUID()}`, ...book }));
+      books.unshift(...temporaryBooks);
       logAudit("Cărți importate", "book", null, temporaryBooks);
       message.textContent = `${temporaryBooks.length} ${tx("adminBooksImportedLocal")}`;
     }
