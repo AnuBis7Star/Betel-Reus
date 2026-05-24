@@ -55,7 +55,7 @@ async function createBooks(payloads) {
     }
     await client.query(
       "INSERT INTO audit_logs (actor, action, entity_type, before_data, after_data) VALUES ($1, $2, $3, $4, $5)",
-      ["admin", "Cărți importate", "book", null, created]
+      ["admin", "Cărți importate", "book", null, JSON.stringify(created)]
     );
     await client.query("COMMIT");
     return created;

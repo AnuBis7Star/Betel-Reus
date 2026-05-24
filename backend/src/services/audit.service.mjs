@@ -7,7 +7,7 @@ async function audit(action, entityType, entityId, beforeData, afterData, actor 
   if (pool) {
     await pool.query(
       "INSERT INTO audit_logs (actor, action, entity_type, entity_id, before_data, after_data) VALUES ($1, $2, $3, $4, $5, $6)",
-      [actor, action, entityType, entityId, beforeData, afterData]
+      [actor, action, entityType, entityId, beforeData == null ? null : JSON.stringify(beforeData), afterData == null ? null : JSON.stringify(afterData)]
     );
     return;
   }
