@@ -1534,16 +1534,19 @@ footer img {
   top: 8px;
   right: 8px;
   display: grid;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   place-items: center;
-  border: 1px solid rgba(255, 246, 232, 0.26);
-  border-radius: 50%;
-  background: rgba(127, 9, 11, 0.84);
-  color: var(--volley-cream);
+  border: 0;
+  background: transparent;
+  color: rgba(255, 246, 232, 0.72);
   font-size: 1.15rem;
   font-weight: 950;
   line-height: 1;
+}
+
+.volley-remove-player:hover {
+  color: var(--volley-cream);
 }
 
 .volley-add-player {
