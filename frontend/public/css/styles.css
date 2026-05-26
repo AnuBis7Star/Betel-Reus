@@ -1196,12 +1196,15 @@ footer img {
   color: var(--volley-cream);
   font-weight: 1000;
   line-height: 0.92;
+  overflow-wrap: normal;
+  text-wrap: balance;
+  word-break: normal;
 }
 
 .volley-hero h1 {
   display: grid;
   gap: 4px;
-  font-size: clamp(3.65rem, 8vw, 7rem);
+  font-size: clamp(3.4rem, 7.1vw, 6.25rem);
 }
 
 .volley-hero h1 span {
@@ -1209,7 +1212,7 @@ footer img {
 }
 
 .volley-section h2 {
-  font-size: clamp(2.6rem, 6vw, 5.7rem);
+  font-size: clamp(2.55rem, 4.8vw, 4.8rem);
 }
 
 .volley-hero p:not(.volley-kicker),
@@ -1348,8 +1351,14 @@ footer img {
 
 .volley-info,
 .volley-registration {
-  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
   align-items: start;
+}
+
+.volley-registration h2 {
+  max-width: 620px;
+  font-size: clamp(2.5rem, 4.3vw, 4.2rem);
+  line-height: 0.96;
 }
 
 .volley-facts,
@@ -1498,7 +1507,13 @@ footer img {
   }
 
   .volley-hero h1 {
-    font-size: clamp(3.1rem, 15vw, 4.8rem);
+    font-size: clamp(2.9rem, 13vw, 4.25rem);
+  }
+
+  .volley-section h2,
+  .volley-registration h2 {
+    font-size: clamp(2.35rem, 10vw, 3.35rem);
+    line-height: 1;
   }
 
   .volley-actions,
