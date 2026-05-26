@@ -4,6 +4,7 @@ const translations = {
   ro: {
     navHome: "Acasă",
     navSchedule: "Program",
+    navEvents: "Evenimente",
     navFirstVisit: "Prima vizită",
     navResources: "Resurse",
     navLibrary: "Bibliotecă",
@@ -17,7 +18,6 @@ const translations = {
     heroYoutube: "Vezi predici",
     heroSchedule: "Vezi programul",
     heroVisit: "Vino duminică la biserică",
-    heroEvents: "Evenimente",
     heroMaps: "Deschide locația în Maps",
     verseLabel: "Versetul zilei",
     verseLoading: "Se încarcă...",
@@ -206,6 +206,7 @@ const translations = {
   es: {
     navHome: "Inicio",
     navSchedule: "Horario",
+    navEvents: "Eventos",
     navFirstVisit: "Primera visita",
     navResources: "Recursos",
     navLibrary: "Biblioteca",
@@ -219,7 +220,6 @@ const translations = {
     heroYoutube: "Ver predicaciones",
     heroSchedule: "Ver horario",
     heroVisit: "Ven el domingo a la iglesia",
-    heroEvents: "Eventos",
     heroMaps: "Abrir ubicación en Maps",
     verseLabel: "Versículo del día",
     verseLoading: "Cargando...",
