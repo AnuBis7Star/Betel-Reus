@@ -4,7 +4,6 @@ const translations = {
   ro: {
     navHome: "Acasă",
     navSchedule: "Program",
-    navEvents: "Evenimente",
     navFirstVisit: "Prima vizită",
     navResources: "Resurse",
     navLibrary: "Bibliotecă",
@@ -206,7 +205,6 @@ const translations = {
   es: {
     navHome: "Inicio",
     navSchedule: "Horario",
-    navEvents: "Eventos",
     navFirstVisit: "Primera visita",
     navResources: "Recursos",
     navLibrary: "Biblioteca",

@@ -7,6 +7,7 @@ import { httpError } from "../utils/response.mjs";
 import { isValidUuid, normalizeText } from "../utils/helpers.mjs";
 
 let schemaReady = false;
+const minimumPlayers = 6;
 
 async function ensureVolleySchema(client = pool) {
   if (!client || schemaReady) return;
@@ -36,6 +37,14 @@ function normalizePlayers(value) {
   return [...new Set(list.map((item) => normalizeText(item, 120)).filter(Boolean))].slice(0, 16);
 }
 
+function comparableTeamName(value = "") {
+  return normalizeText(value, 120)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
 function normalizeVolleyPayload(payload = {}, existing = {}) {
   const teamName = normalizeText(payload.teamName ?? payload.team ?? existing.teamName, 120);
   const representativeName = normalizeText(payload.representativeName ?? payload.representative ?? existing.representativeName, 120);
@@ -46,6 +55,32 @@ function normalizeVolleyPayload(payload = {}, existing = {}) {
   if (!["pending", "approved", "rejected"].includes(status)) throw httpError(400, "Invalid registration status");
 
   return { teamName, representativeName, players, notes, status };
+}
+
+async function ensureUniqueTeamName(teamName, currentId = null) {
+  const comparable = comparableTeamName(teamName);
+  if (!comparable) return;
+
+  if (!pool) {
+    const duplicate = memory.volleyRegistrations.find((item) =>
+      item.id !== currentId && comparableTeamName(item.teamName) === comparable
+    );
+    if (duplicate) throw httpError(409, "A team with this name is already registered");
+    return;
+  }
+
+  await ensureVolleySchema();
+  const result = await pool.query(
+    "SELECT id FROM volley_registrations WHERE lower(trim(team_name)) = lower(trim($1)) AND ($2::uuid IS NULL OR id <> $2::uuid) LIMIT 1",
+    [teamName, currentId]
+  );
+  if (result.rowCount) throw httpError(409, "A team with this name is already registered");
+}
+
+function validateVolleyRegistration(registration) {
+  if (!registration.teamName) throw httpError(400, "Team name is required");
+  if (!registration.representativeName) throw httpError(400, "Representative name is required");
+  if (registration.players.length < minimumPlayers) throw httpError(400, `At least ${minimumPlayers} players are required`);
 }
 
 function volleyRegistrationFromRow(row) {
@@ -62,10 +97,10 @@ function volleyRegistrationFromRow(row) {
 }
 
 async function createVolleyRegistration(payload) {
+  if (normalizeText(payload.website, 80)) throw httpError(400, "Invalid registration");
   const registration = normalizeVolleyPayload(payload);
-  if (!registration.teamName || !registration.representativeName || registration.players.length === 0) {
-    throw httpError(400, "team, representative and players are required");
-  }
+  validateVolleyRegistration(registration);
+  await ensureUniqueTeamName(registration.teamName);
   registration.status = "pending";
 
   if (!pool) {
@@ -107,6 +142,8 @@ async function updateVolleyRegistration(id, payload) {
     if (index === -1) throw httpError(404, "Registration not found");
     const before = { ...memory.volleyRegistrations[index] };
     const updated = { ...before, ...normalizeVolleyPayload(payload, before), updatedAt: new Date().toISOString() };
+    validateVolleyRegistration(updated);
+    await ensureUniqueTeamName(updated.teamName, id);
     memory.volleyRegistrations[index] = updated;
     await audit("Înscriere volley actualizată", "volley", id, before, updated);
     return updated;
@@ -117,6 +154,8 @@ async function updateVolleyRegistration(id, payload) {
   if (!beforeResult.rowCount) throw httpError(404, "Registration not found");
   const before = volleyRegistrationFromRow(beforeResult.rows[0]);
   const updatedPayload = normalizeVolleyPayload(payload, before);
+  validateVolleyRegistration(updatedPayload);
+  await ensureUniqueTeamName(updatedPayload.teamName, id);
   const result = await pool.query(
     "UPDATE volley_registrations SET team_name = $1, representative_name = $2, players = $3, notes = $4, status = $5, updated_at = now() WHERE id = $6 RETURNING *",
     [updatedPayload.teamName, updatedPayload.representativeName, JSON.stringify(updatedPayload.players), updatedPayload.notes, updatedPayload.status, id]

@@ -6,6 +6,7 @@ const teamsContainer = document.querySelector("#volleyTeams");
 const playerGrid = document.querySelector("#volleyPlayerGrid");
 const addPlayerButton = document.querySelector("#addVolleyPlayer");
 const minimumPlayers = 6;
+const teamNameCache = new Set();
 
 function escapeHtml(value = "") {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
@@ -22,6 +23,15 @@ function playerValues() {
   return [...new Set([...playerGrid.querySelectorAll("input[name='players[]']")]
     .map((input) => input.value.trim())
     .filter(Boolean))];
+}
+
+function normalizeComparable(value = "") {
+  return String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
 }
 
 function createPlayerCard(index, value = "") {
@@ -63,6 +73,8 @@ function resetPlayerGrid() {
 
 function renderTeams(teams) {
   if (!teamsContainer) return;
+  teamNameCache.clear();
+  teams.forEach((team) => teamNameCache.add(normalizeComparable(team.teamName)));
   teamsContainer.innerHTML = teams.map((team) => `
     <article>
       <span>${team.players.length} jugadores</span>
@@ -92,11 +104,32 @@ form?.addEventListener("submit", async (event) => {
     representativeName: data.get("representative").trim(),
     teamName: data.get("team").trim(),
     players,
-    notes: data.get("notes").trim()
+    notes: data.get("notes").trim(),
+    website: data.get("website")?.trim() || ""
   };
 
-  if (!payload.representativeName || !payload.teamName || players.length < minimumPlayers) {
-    setMessage("Añade el representante, el nombre del equipo y al menos 6 jugadores.", "error");
+  if (payload.website) {
+    setMessage("No se pudo enviar la inscripción. Inténtalo de nuevo.", "error");
+    return;
+  }
+
+  if (!payload.representativeName) {
+    setMessage("Añade el nombre del representante del equipo.", "error");
+    return;
+  }
+
+  if (!payload.teamName) {
+    setMessage("Añade el nombre del equipo.", "error");
+    return;
+  }
+
+  if (teamNameCache.has(normalizeComparable(payload.teamName))) {
+    setMessage("Ya existe un equipo aceptado con ese nombre. Usa otro nombre o contacta con la organización.", "error");
+    return;
+  }
+
+  if (players.length < minimumPlayers) {
+    setMessage("Añade al menos 6 jugadores con nombre y apellidos.", "error");
     return;
   }
 
@@ -108,8 +141,14 @@ form?.addEventListener("submit", async (event) => {
     resetPlayerGrid();
     setMessage("Inscripción enviada correctamente. Queda pendiente de aprobación.", "success");
     await loadApprovedTeams();
-  } catch {
-    setMessage("No se pudo enviar la inscripción. Inténtalo de nuevo.", "error");
+  } catch (error) {
+    if (error.status === 409) {
+      setMessage("Ya existe una inscripción con ese nombre de equipo. Usa otro nombre o contacta con la organización.", "error");
+    } else if (error.status === 429) {
+      setMessage("Has enviado demasiadas solicitudes seguidas. Espera un minuto e inténtalo de nuevo.", "error");
+    } else {
+      setMessage("No se pudo enviar la inscripción. Revisa los datos e inténtalo de nuevo.", "error");
+    }
   } finally {
     submitButton.disabled = false;
   }

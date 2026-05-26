@@ -1347,6 +1347,7 @@ footer img {
 .volley-section {
   width: min(1180px, calc(100% - 36px));
   margin: 0 auto;
+  scroll-margin-top: 92px;
 }
 
 .volley-hero {
@@ -1532,6 +1533,15 @@ footer img {
   padding: 22px;
 }
 
+.volley-hidden-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .volley-form label {
   display: grid;
   gap: 8px;
@@ -1668,6 +1678,14 @@ footer img {
   border-color: rgba(240, 94, 104, 0.58);
   background: rgba(240, 94, 104, 0.16);
   color: #ffd5d8;
+}
+
+.volley-legal-note {
+  margin: 0;
+  max-width: none !important;
+  color: rgba(255, 246, 232, 0.58) !important;
+  font-size: 0.78rem !important;
+  line-height: 1.5 !important;
 }
 
 .volley-footer {
