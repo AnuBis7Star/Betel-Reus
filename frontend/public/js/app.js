@@ -993,7 +993,7 @@ function setupAdmin() {
     $("#adminAccessForm").reset();
   });
 
-  $("#adminBookForm").addEventListener("submit", async (event) => {
+  $("#adminBookForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -1074,21 +1074,21 @@ function setupAdmin() {
     renderAdmin();
   });
 
-  $("#adminSearch").addEventListener("input", renderAdminBooks);
-  $("#adminCategoryFilter").addEventListener("change", renderAdminBooks);
-  $("#saveStockChanges").addEventListener("click", savePendingStockChanges);
+  $("#adminSearch")?.addEventListener("input", renderAdminBooks);
+  $("#adminCategoryFilter")?.addEventListener("change", renderAdminBooks);
+  $("#saveStockChanges")?.addEventListener("click", savePendingStockChanges);
   $("#importBooks")?.addEventListener("click", importBulkBooks);
-  $("#auditPrev").addEventListener("click", () => {
+  $("#auditPrev")?.addEventListener("click", () => {
     auditPage = Math.max(0, auditPage - 1);
     renderAuditLog();
   });
-  $("#auditNext").addEventListener("click", () => {
+  $("#auditNext")?.addEventListener("click", () => {
     const maxPage = Math.max(0, Math.ceil(auditLogs.length / auditPageSize) - 1);
     auditPage = Math.min(maxPage, auditPage + 1);
     renderAuditLog();
   });
 
-  $("#adminBooks").addEventListener("click", async (event) => {
+  $("#adminBooks")?.addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
     const book = books.find((item) => item.id === button.dataset.id);
@@ -1163,7 +1163,7 @@ function setupAdmin() {
     }
   });
 
-  $("#reservationsList").addEventListener("click", async (event) => {
+  $("#reservationsList")?.addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
     const reservation = reservations.find((item) => item.id === button.dataset.id);

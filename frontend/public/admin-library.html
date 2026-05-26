@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administrare Bibliotecă Betel Reus</title>
+    <meta name="description" content="Panou privat pentru gestionarea inventarului, cererilor și istoricului Bibliotecii Betel Reus." />
+    <link rel="icon" href="/assets/icon-dark.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Biserica Betel Reus">
+        <img src="/assets/logo-dark.png" alt="Biserica Betel Reus" />
+      </a>
+      <nav class="nav" aria-label="Navigare administrare">
+        <a href="/" data-i18n="navHome">Acasă</a>
+        <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
+        <a href="/admin.html" data-i18n="navAdmin">Panou</a>
+      </nav>
+      <button class="lang-toggle" type="button" id="langToggle">ES</button>
+    </header>
+
+    <main>
+      <section class="section admin-page">
+        <div class="library-gate" id="adminGate">
+          <p class="eyebrow" data-i18n="adminPrivatePanel">Panou privat</p>
+          <h1 data-i18n="adminGateTitle">Control bibliotecă</h1>
+          <p data-i18n="adminGateText">Introdu codul privat de administrare pentru a gestiona cărți, cereri și istoric.</p>
+          <form class="access-form" id="adminAccessForm">
+            <label>
+              <span data-i18n="adminCodeLabel">Cod administrare</span>
+              <input name="code" type="password" autocomplete="off" required placeholder="Cod privat" data-i18n-placeholder="adminCodePlaceholder" />
+            </label>
+            <button class="button primary" type="submit" data-i18n="adminEnter">Intră în panou</button>
+            <span class="form-note" id="adminAccessMessage"></span>
+          </form>
+        </div>
+
+        <div class="admin-shell is-hidden" id="adminShell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="adminLibraryEyebrow">Biblioteca Betel</p>
+              <h1 data-i18n="adminControlTitle">Panou de control</h1>
+            </div>
+            <div class="header-actions">
+              <a class="button secondary" href="/admin.html">Toate secțiunile</a>
+              <a class="button secondary" href="/library.html" data-i18n="adminViewLibrary">Vezi biblioteca</a>
+              <button class="button secondary" type="button" id="exitAdmin" data-i18n="exitLibrary">Ieșire</button>
+            </div>
+          </div>
+
+          <div class="admin-stats" id="adminStats"></div>
+
+          <div class="admin-grid">
+            <form class="book-form admin-book-form" id="adminBookForm">
+              <input type="hidden" name="id" />
+              <h2 data-i18n="adminBookFormTitle">Carte</h2>
+              <label>
+                <span data-i18n="bookTitle">Titlu</span>
+                <input name="title" required placeholder="Titlul cărții" data-i18n-placeholder="adminTitlePlaceholder" />
+              </label>
+              <label>
+                <span data-i18n="bookAuthor">Autor</span>
+                <input name="author" required placeholder="Autor" data-i18n-placeholder="bookAuthor" />
+              </label>
+              <label>
+                <span data-i18n="adminCategoryLabel">Categorie</span>
+                <input name="category" placeholder="Biblii, Familie, Tineri..." data-i18n-placeholder="adminCategoryPlaceholder" />
+              </label>
+              <div class="form-row">
+                <label>
+                  <span data-i18n="adminLanguageLabel">Limbă</span>
+                  <select name="language">
+                    <option value="ro" data-i18n="adminRomanian">Română</option>
+                    <option value="es" data-i18n="adminSpanish">Spaniolă</option>
+                    <option value="en" data-i18n="adminEnglish">Engleză</option>
+                  </select>
+                </label>
+                <label>
+                  <span data-i18n="bookPrice">Preț</span>
+                  <input name="price" type="number" min="0" step="0.01" value="0" required />
+                </label>
+              </div>
+              <div class="form-row">
+                <label>
+                  <span data-i18n="bookStock">Stoc</span>
+                  <input name="stock" type="number" min="0" value="1" required />
+                </label>
+                <label>
+                  <span data-i18n="filterReserved">Rezervate</span>
+                  <input name="reserved" type="number" min="0" value="0" required />
+                </label>
+              </div>
+              <button class="button primary" type="submit" id="adminSubmitLabel" data-i18n="adminSaveBook">Salvează cartea</button>
+              <span class="form-note" id="adminFormMessage"></span>
+            </form>
+
+            <details class="book-form bulk-import">
+              <summary>
+                <h2 data-i18n="adminBulkTitle">Importă mai multe</h2>
+              </summary>
+              <p data-i18n="adminBulkHelp">O linie pentru fiecare carte: titlu; autor; categorie; limbă; stoc; preț</p>
+              <textarea id="bulkBooksInput" rows="8" placeholder="Biblia de studiu; Autor; Biblii; ro; 3; 25.00" data-i18n-placeholder="adminBulkPlaceholder"></textarea>
+              <button class="button primary" type="button" id="importBooks" data-i18n="adminImportBooks">Importă cărți</button>
+              <span class="form-note" id="bulkImportMessage"></span>
+            </details>
+
+            <section class="admin-panel">
+              <div class="toolbar">
+                <input id="adminSearch" type="search" placeholder="Caută după titlu, autor sau categorie" data-i18n-placeholder="adminSearchPlaceholder" />
+                <select id="adminCategoryFilter" aria-label="Filtrează după categorie" data-i18n-aria-label="bookCategoryFilterLabel">
+                  <option value="all" data-i18n="filterAllCategories">Toate categoriile</option>
+                </select>
+              </div>
+              <div class="panel-actions">
+                <button class="button secondary" type="button" id="saveStockChanges" disabled data-i18n="adminSaveStockChanges">Salvează modificările de stoc</button>
+                <span class="form-note" id="stockChangesMessage"></span>
+              </div>
+              <div class="table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="adminTableBook">Carte</th>
+                      <th data-i18n="adminCategoryLabel">Categorie</th>
+                      <th data-i18n="adminLanguageLabel">Limbă</th>
+                      <th data-i18n="bookStock">Stoc</th>
+                      <th data-i18n="adminReservedShort">Rezerv.</th>
+                      <th data-i18n="adminAvailableShort">Disp.</th>
+                      <th data-i18n="bookPrice">Preț</th>
+                      <th data-i18n="adminActions">Acțiuni</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminBooks"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <div class="admin-bottom">
+            <section class="admin-panel">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="adminRequestsEyebrow">Cereri</p>
+                  <h2 data-i18n="adminRequestsTitle">În așteptare și stare</h2>
+                </div>
+              </div>
+              <div class="reservations-list" id="reservationsList"></div>
+            </section>
+
+            <section class="admin-panel audit-panel">
+              <div class="audit-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="adminHistoryEyebrow">Istoric</p>
+                  <h2 data-i18n="adminHistoryTitle">Ultimele modificări</h2>
+                </div>
+              </div>
+              <div class="audit-log" id="auditLog"></div>
+              <div class="pagination-controls">
+                <button type="button" id="auditPrev" data-i18n="adminPrev">Înapoi</button>
+                <span id="auditPageInfo">Pagina 1</span>
+                <button type="button" id="auditNext" data-i18n="adminNext">Înainte</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <img src="/assets/icon-dark.png" alt="" />
+      <span>© <span id="year"></span> Biserica Betel Reus</span>
+    </footer>
+
+    <script src="/js/app.js" type="module"></script>
+  </body>
+</html>

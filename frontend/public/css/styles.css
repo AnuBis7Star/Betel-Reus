@@ -485,6 +485,49 @@ cite {
   line-height: 1;
 }
 
+.admin-module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-module-card {
+  display: grid;
+  gap: 12px;
+  min-height: 210px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  background: var(--white);
+}
+
+.admin-module-card span {
+  color: var(--clay);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-module-card strong {
+  max-width: 14ch;
+  font-size: clamp(1.75rem, 3vw, 3rem);
+  line-height: 0.98;
+}
+
+.admin-module-card small {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.admin-module-card:not(.is-disabled):hover {
+  border-color: var(--ink);
+}
+
+.admin-module-card.is-disabled {
+  opacity: 0.58;
+}
+
 .admin-grid {
   display: grid;
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
@@ -1650,6 +1693,7 @@ footer img {
   .split,
   .contact-section,
   .library-layout,
+  .admin-module-grid,
   .admin-grid,
   .admin-bottom {
     grid-template-columns: 1fr;

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Panou Administrare Betel Reus</title>
-    <meta name="description" content="Panou privat Betel Reus pentru acces la modulele de administrare." />
+    <title>Administrare Torneo Volley Betel Reus</title>
+    <meta name="description" content="Panou privat pentru gestionarea înscrierilor la torneo volley Betel Reus." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
@@ -15,8 +15,8 @@
       </a>
       <nav class="nav" aria-label="Navigare administrare">
         <a href="/" data-i18n="navHome">Acasă</a>
-        <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="/admin.html" data-i18n="navAdmin">Panou</a>
+        <a href="/volley.html">Volley</a>
       </nav>
       <button class="lang-toggle" type="button" id="langToggle">ES</button>
     </header>
@@ -25,8 +25,8 @@
       <section class="section admin-page">
         <div class="library-gate" id="adminGate">
           <p class="eyebrow" data-i18n="adminPrivatePanel">Panou privat</p>
-          <h1>Administrare</h1>
-          <p>Introdu codul privat pentru a alege ce secțiune vrei să gestionezi.</p>
+          <h1>Torneo volley</h1>
+          <p>Introdu codul privat pentru a gestiona echipele înscrise.</p>
           <form class="access-form" id="adminAccessForm">
             <label>
               <span data-i18n="adminCodeLabel">Cod administrare</span>
@@ -40,29 +40,40 @@
         <div class="admin-shell is-hidden" id="adminShell">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Panou privat</p>
-              <h1>Alege secțiunea</h1>
+              <p class="eyebrow">Torneo volley</p>
+              <h1>Inscrieri echipe</h1>
             </div>
-            <button class="button secondary" type="button" id="exitAdmin" data-i18n="exitLibrary">Ieșire</button>
+            <div class="header-actions">
+              <a class="button secondary" href="/admin.html">Toate secțiunile</a>
+              <a class="button secondary" href="/volley.html">Vezi pagina volley</a>
+              <button class="button secondary" type="button" id="exitAdmin" data-i18n="exitLibrary">Ieșire</button>
+            </div>
           </div>
 
-          <div class="admin-module-grid">
-            <a class="admin-module-card" href="/admin-library.html">
-              <span>Bibliotecă</span>
-              <strong>Cărți, stoc, cereri și istoric</strong>
-              <small>Gestionează inventarul bibliotecii și comenzile membrilor.</small>
-            </a>
-            <a class="admin-module-card" href="/admin-volley.html">
-              <span>Torneo volley</span>
-              <strong>Inscrieri, echipe și aprobare</strong>
-              <small>Editează echipele înscrise și aprobă ce apare public.</small>
-            </a>
-            <article class="admin-module-card is-disabled">
-              <span>Viitor</span>
-              <strong>Alt modul</strong>
-              <small>Spațiu pregătit pentru următoarea secțiune.</small>
-            </article>
-          </div>
+          <section class="admin-panel volley-admin-panel">
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow">Torneo volley</p>
+                <h2>Equipos e inscripciones</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table volley-admin-table">
+                <thead>
+                  <tr>
+                    <th>Equipo</th>
+                    <th>Representante</th>
+                    <th>Jugadores</th>
+                    <th>Estado</th>
+                    <th>Notas</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="volleyRegistrationsList"></tbody>
+              </table>
+            </div>
+            <span class="form-note" id="volleyAdminMessage"></span>
+          </section>
         </div>
       </section>
     </main>
