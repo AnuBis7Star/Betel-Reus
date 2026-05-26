@@ -1485,7 +1485,8 @@ footer img {
 }
 
 .volley-facts,
-.volley-rule-list {
+.volley-rule-list,
+.volley-regulation-grid {
   display: grid;
   gap: 12px;
 }
@@ -1496,6 +1497,7 @@ footer img {
 
 .volley-facts article,
 .volley-rule-list article,
+.volley-regulation-grid article,
 .volley-form {
   border: 1px solid rgba(255, 246, 232, 0.16);
   border-radius: 8px;
@@ -1525,14 +1527,20 @@ footer img {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.volley-rule-list article {
+.volley-rule-list article,
+.volley-regulation-grid article {
   padding: 22px;
 }
 
-.volley-rule-list h3 {
+.volley-rule-list h3,
+.volley-regulation-grid h3 {
   margin: 0 0 10px;
   color: var(--volley-yellow);
   font-size: 1.45rem;
+}
+
+.volley-regulation-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .volley-form {
@@ -1713,7 +1721,8 @@ footer img {
   .volley-hero,
   .volley-info,
   .volley-registration,
-  .volley-rule-list {
+  .volley-rule-list,
+  .volley-regulation-grid {
     grid-template-columns: 1fr;
   }
 
