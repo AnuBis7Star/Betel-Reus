@@ -3,13 +3,56 @@ import { apiRequest } from "./api.js";
 const form = document.querySelector("#volleyRegistrationForm");
 const message = document.querySelector("#volleyFormMessage");
 const teamsContainer = document.querySelector("#volleyTeams");
+const playerGrid = document.querySelector("#volleyPlayerGrid");
+const addPlayerButton = document.querySelector("#addVolleyPlayer");
+const minimumPlayers = 6;
 
 function escapeHtml(value = "") {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
 
-function playersFromText(value = "") {
-  return [...new Set(String(value).split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean))];
+function setMessage(text, state = "") {
+  if (!message) return;
+  message.textContent = text;
+  message.className = `volley-form-note${state ? ` is-${state}` : ""}`;
+}
+
+function playerValues() {
+  if (!playerGrid) return [];
+  return [...new Set([...playerGrid.querySelectorAll("input[name='players[]']")]
+    .map((input) => input.value.trim())
+    .filter(Boolean))];
+}
+
+function createPlayerCard(index, value = "") {
+  const label = document.createElement("label");
+  label.className = "volley-player-card";
+  label.innerHTML = `
+    <span>Jugador ${index + 1}</span>
+    <input name="players[]" placeholder="Nombre y apellidos" value="${escapeHtml(value)}" />
+  `;
+  return label;
+}
+
+function renumberPlayers() {
+  if (!playerGrid) return;
+  [...playerGrid.querySelectorAll(".volley-player-card span")].forEach((label, index) => {
+    label.textContent = `Jugador ${index + 1}`;
+  });
+}
+
+function addPlayer(value = "") {
+  if (!playerGrid) return;
+  playerGrid.append(createPlayerCard(playerGrid.children.length, value));
+}
+
+function resetPlayerGrid() {
+  if (!playerGrid) return;
+  playerGrid.innerHTML = "";
+  for (let index = 0; index < minimumPlayers; index += 1) {
+    addPlayer();
+  }
+  renumberPlayers();
 }
 
 function renderTeams(teams) {
@@ -38,7 +81,7 @@ form?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = form.querySelector("button[type='submit']");
   const data = new FormData(form);
-  const players = playersFromText(data.get("players"));
+  const players = playerValues();
   const payload = {
     representativeName: data.get("representative").trim(),
     teamName: data.get("team").trim(),
@@ -46,23 +89,32 @@ form?.addEventListener("submit", async (event) => {
     notes: data.get("notes").trim()
   };
 
-  if (!payload.representativeName || !payload.teamName || players.length === 0) {
-    message.textContent = "Añade el representante, el nombre del equipo y al menos un jugador.";
+  if (!payload.representativeName || !payload.teamName || players.length < minimumPlayers) {
+    setMessage("Añade el representante, el nombre del equipo y al menos 6 jugadores.", "error");
     return;
   }
 
   submitButton.disabled = true;
-  message.textContent = "Enviando inscripción...";
+  setMessage("Enviando inscripción...", "loading");
   try {
     await apiRequest("/api/volley/registrations", { method: "POST", body: payload });
     form.reset();
-    message.textContent = "Inscripción enviada. Queda pendiente de aprobación.";
+    resetPlayerGrid();
+    setMessage("Inscripción enviada correctamente. Queda pendiente de aprobación.", "success");
     await loadApprovedTeams();
   } catch {
-    message.textContent = "No se pudo enviar la inscripción. Inténtalo de nuevo.";
+    setMessage("No se pudo enviar la inscripción. Inténtalo de nuevo.", "error");
   } finally {
     submitButton.disabled = false;
   }
 });
 
+addPlayerButton?.addEventListener("click", () => {
+  addPlayer();
+  renumberPlayers();
+  const inputs = playerGrid?.querySelectorAll("input[name='players[]']");
+  inputs?.[inputs.length - 1]?.focus();
+});
+
+resetPlayerGrid();
 loadApprovedTeams();

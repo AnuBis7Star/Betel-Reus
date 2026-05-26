@@ -99,10 +99,14 @@
             <span>Nombre del equipo</span>
             <input name="team" placeholder="Nombre del equipo" />
           </label>
-          <label>
-            <span>Jugadores</span>
-            <textarea name="players" placeholder="Un jugador por línea"></textarea>
-          </label>
+          <div class="volley-players-field">
+            <div class="volley-field-heading">
+              <span>Jugadores</span>
+              <small>Mínimo 6 jugadores</small>
+            </div>
+            <div class="volley-player-grid" id="volleyPlayerGrid"></div>
+            <button class="volley-add-player" id="addVolleyPlayer" type="button">+ Añadir jugador</button>
+          </div>
           <label>
             <span>Notas</span>
             <textarea name="notes" placeholder="Comentarios, dudas o necesidades del equipo"></textarea>
