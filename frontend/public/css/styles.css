@@ -1518,6 +1518,7 @@ footer img {
 }
 
 .volley-player-card {
+  position: relative;
   border: 1px solid rgba(255, 246, 232, 0.18);
   border-radius: 8px;
   padding: 10px;
@@ -1526,6 +1527,23 @@ footer img {
 
 .volley-player-card input {
   min-height: 44px;
+}
+
+.volley-remove-player {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid rgba(255, 246, 232, 0.26);
+  border-radius: 50%;
+  background: rgba(127, 9, 11, 0.84);
+  color: var(--volley-cream);
+  font-size: 1.15rem;
+  font-weight: 950;
+  line-height: 1;
 }
 
 .volley-add-player {

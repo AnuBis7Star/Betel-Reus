@@ -27,8 +27,10 @@ function playerValues() {
 function createPlayerCard(index, value = "") {
   const label = document.createElement("label");
   label.className = "volley-player-card";
+  const canRemove = index >= minimumPlayers;
   label.innerHTML = `
     <span>Jugador ${index + 1}</span>
+    ${canRemove ? '<button class="volley-remove-player" type="button" aria-label="Eliminar jugador">×</button>' : ""}
     <input name="players[]" placeholder="Nombre y apellidos" value="${escapeHtml(value)}" />
   `;
   return label;
@@ -36,8 +38,12 @@ function createPlayerCard(index, value = "") {
 
 function renumberPlayers() {
   if (!playerGrid) return;
-  [...playerGrid.querySelectorAll(".volley-player-card span")].forEach((label, index) => {
-    label.textContent = `Jugador ${index + 1}`;
+  [...playerGrid.querySelectorAll(".volley-player-card")].forEach((card, index) => {
+    card.querySelector("span").textContent = `Jugador ${index + 1}`;
+    card.querySelector(".volley-remove-player")?.remove();
+    if (index >= minimumPlayers) {
+      card.insertAdjacentHTML("beforeend", '<button class="volley-remove-player" type="button" aria-label="Eliminar jugador">×</button>');
+    }
   });
 }
 
@@ -114,6 +120,13 @@ addPlayerButton?.addEventListener("click", () => {
   renumberPlayers();
   const inputs = playerGrid?.querySelectorAll("input[name='players[]']");
   inputs?.[inputs.length - 1]?.focus();
+});
+
+playerGrid?.addEventListener("click", (event) => {
+  const removeButton = event.target.closest(".volley-remove-player");
+  if (!removeButton) return;
+  removeButton.closest(".volley-player-card")?.remove();
+  renumberPlayers();
 });
 
 resetPlayerGrid();
