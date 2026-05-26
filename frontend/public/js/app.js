@@ -118,6 +118,19 @@ const translations = {
     unavailable: "indisponibil",
     reserved: "rezervate",
     adminPrivatePanel: "Panou privat",
+    adminHomeTitle: "Administrare",
+    adminHomeText: "Introdu codul privat pentru a alege ce secțiune vrei să gestionezi.",
+    adminChooseSection: "Alege secțiunea",
+    adminAllSections: "Toate secțiunile",
+    adminModuleLibraryTitle: "Bibliotecă",
+    adminModuleLibrarySummary: "Cărți, stoc, cereri și istoric",
+    adminModuleLibraryText: "Gestionează inventarul bibliotecii și comenzile membrilor.",
+    adminModuleVolleyTitle: "Turneu volley",
+    adminModuleVolleySummary: "Înscrieri, echipe și aprobare",
+    adminModuleVolleyText: "Editează echipele înscrise și aprobă ce apare public.",
+    adminModuleFutureTitle: "Viitor",
+    adminModuleFutureSummary: "Alt modul",
+    adminModuleFutureText: "Spațiu pregătit pentru următoarea secțiune.",
     adminGateTitle: "Control bibliotecă",
     adminGateText: "Introdu codul privat de administrare pentru a gestiona cărți, cereri și istoric.",
     adminCodeLabel: "Cod administrare",
@@ -126,6 +139,27 @@ const translations = {
     adminLibraryEyebrow: "Biblioteca Betel",
     adminControlTitle: "Panou de control",
     adminViewLibrary: "Vezi biblioteca",
+    adminVolleyPageTitle: "Turneu volley",
+    adminVolleyGateText: "Introdu codul privat pentru a gestiona echipele înscrise.",
+    adminViewVolley: "Vezi pagina volley",
+    adminVolleyRegistrationsTitle: "Înscrieri echipe",
+    adminVolleyTableTitle: "Echipe și înscrieri",
+    adminVolleyTeam: "Echipă",
+    adminVolleyRepresentative: "Reprezentant",
+    adminVolleyPlayers: "Jucători",
+    adminVolleyStatus: "Stare",
+    adminVolleyNotes: "Note",
+    adminVolleySave: "Salvează",
+    adminVolleyApprove: "Acceptă",
+    adminVolleyReject: "Respinge",
+    adminVolleyPending: "În așteptare",
+    adminVolleyApproved: "Acceptat",
+    adminVolleyRejected: "Respins",
+    adminVolleyEmpty: "Încă nu există înscrieri la volley.",
+    adminVolleyDeleted: "Înscriere ștearsă.",
+    adminVolleySavedMessage: "Înscriere salvată.",
+    adminVolleyStatusUpdated: "Stare actualizată.",
+    adminVolleySaveError: "Nu s-a putut salva înscrierea.",
     adminBookFormTitle: "Carte",
     adminTitlePlaceholder: "Titlul cărții",
     adminCategoryLabel: "Categorie",
@@ -319,6 +353,19 @@ const translations = {
     unavailable: "no disponible",
     reserved: "reservados",
     adminPrivatePanel: "Panel privado",
+    adminHomeTitle: "Administración",
+    adminHomeText: "Introduce el código privado para elegir qué sección quieres gestionar.",
+    adminChooseSection: "Elige la sección",
+    adminAllSections: "Todas las secciones",
+    adminModuleLibraryTitle: "Biblioteca",
+    adminModuleLibrarySummary: "Libros, stock, pedidos e historial",
+    adminModuleLibraryText: "Gestiona el inventario de la biblioteca y los pedidos de los miembros.",
+    adminModuleVolleyTitle: "Torneo volley",
+    adminModuleVolleySummary: "Inscripciones, equipos y aprobación",
+    adminModuleVolleyText: "Edita los equipos inscritos y aprueba lo que aparece públicamente.",
+    adminModuleFutureTitle: "Futuro",
+    adminModuleFutureSummary: "Otro módulo",
+    adminModuleFutureText: "Espacio preparado para la próxima sección.",
     adminGateTitle: "Control de biblioteca",
     adminGateText: "Introduce el código privado de administración para gestionar libros, pedidos e historial.",
     adminCodeLabel: "Código de administración",
@@ -327,6 +374,27 @@ const translations = {
     adminLibraryEyebrow: "Biblioteca Betel",
     adminControlTitle: "Panel de control",
     adminViewLibrary: "Ver biblioteca",
+    adminVolleyPageTitle: "Torneo volley",
+    adminVolleyGateText: "Introduce el código privado para gestionar los equipos inscritos.",
+    adminViewVolley: "Ver página volley",
+    adminVolleyRegistrationsTitle: "Inscripciones de equipos",
+    adminVolleyTableTitle: "Equipos e inscripciones",
+    adminVolleyTeam: "Equipo",
+    adminVolleyRepresentative: "Representante",
+    adminVolleyPlayers: "Jugadores",
+    adminVolleyStatus: "Estado",
+    adminVolleyNotes: "Notas",
+    adminVolleySave: "Guardar",
+    adminVolleyApprove: "Aceptar",
+    adminVolleyReject: "Rechazar",
+    adminVolleyPending: "Pendiente",
+    adminVolleyApproved: "Aceptado",
+    adminVolleyRejected: "Rechazado",
+    adminVolleyEmpty: "Todavía no hay inscripciones de volley.",
+    adminVolleyDeleted: "Inscripción eliminada.",
+    adminVolleySavedMessage: "Inscripción guardada.",
+    adminVolleyStatusUpdated: "Estado actualizado.",
+    adminVolleySaveError: "No se pudo guardar la inscripción.",
     adminBookFormTitle: "Libro",
     adminTitlePlaceholder: "Título del libro",
     adminCategoryLabel: "Categoría",
@@ -1152,7 +1220,7 @@ function setupAdmin() {
       if (action === "delete") {
         await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "DELETE" });
         volleyRegistrations = volleyRegistrations.filter((item) => item.id !== registration.id);
-        message.textContent = "Inscripción eliminada.";
+        message.textContent = tx("adminVolleyDeleted");
       } else {
         const status = action === "approve" ? "approved" : action === "reject" ? "rejected" : row.querySelector("[data-field='status']").value;
         const payload = {
@@ -1164,12 +1232,12 @@ function setupAdmin() {
         };
         const data = await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "PATCH", body: payload });
         Object.assign(registration, data.registration);
-        message.textContent = action === "save" ? "Inscripción guardada." : "Estado actualizado.";
+        message.textContent = action === "save" ? tx("adminVolleySavedMessage") : tx("adminVolleyStatusUpdated");
       }
       renderAdminVolleyRegistrations();
       renderAuditLog();
     } catch (error) {
-      message.textContent = error.status === 401 ? tx("adminAuthError") : "No se pudo guardar la inscripción.";
+      message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminVolleySaveError");
     }
   });
 
@@ -1424,9 +1492,9 @@ function renderAdminReservations() {
 
 function getVolleyStatusLabel(status) {
   return {
-    pending: "Pendiente",
-    approved: "Aceptado",
-    rejected: "Rechazado"
+    pending: tx("adminVolleyPending"),
+    approved: tx("adminVolleyApproved"),
+    rejected: tx("adminVolleyRejected")
   }[status] || status;
 }
 
@@ -1440,20 +1508,20 @@ function renderAdminVolleyRegistrations() {
       <td>
         <span class="volley-status ${escapeAttribute(registration.status)}">${escapeHtml(getVolleyStatusLabel(registration.status))}</span>
         <select data-field="status">
-          <option value="pending" ${registration.status === "pending" ? "selected" : ""}>Pendiente</option>
-          <option value="approved" ${registration.status === "approved" ? "selected" : ""}>Aceptado</option>
-          <option value="rejected" ${registration.status === "rejected" ? "selected" : ""}>Rechazado</option>
+          <option value="pending" ${registration.status === "pending" ? "selected" : ""}>${tx("adminVolleyPending")}</option>
+          <option value="approved" ${registration.status === "approved" ? "selected" : ""}>${tx("adminVolleyApproved")}</option>
+          <option value="rejected" ${registration.status === "rejected" ? "selected" : ""}>${tx("adminVolleyRejected")}</option>
         </select>
       </td>
       <td><textarea data-field="notes">${escapeHtml(registration.notes || "")}</textarea></td>
       <td class="table-actions">
-        <button type="button" data-action="save" data-id="${registration.id}">Guardar</button>
-        <button type="button" data-action="approve" data-id="${registration.id}">Aceptar</button>
-        <button type="button" data-action="reject" data-id="${registration.id}">Rechazar</button>
-        <button type="button" data-action="delete" data-id="${registration.id}">Borrar</button>
+        <button type="button" data-action="save" data-id="${registration.id}">${tx("adminVolleySave")}</button>
+        <button type="button" data-action="approve" data-id="${registration.id}">${tx("adminVolleyApprove")}</button>
+        <button type="button" data-action="reject" data-id="${registration.id}">${tx("adminVolleyReject")}</button>
+        <button type="button" data-action="delete" data-id="${registration.id}">${tx("adminDelete")}</button>
       </td>
     </tr>
-  `).join("") || `<tr><td colspan="6">Todavía no hay inscripciones de volley.</td></tr>`;
+  `).join("") || `<tr><td colspan="6">${tx("adminVolleyEmpty")}</td></tr>`;
 }
 
 function getReservationItems(reservation) {

@@ -25,8 +25,8 @@
       <section class="section admin-page">
         <div class="library-gate" id="adminGate">
           <p class="eyebrow" data-i18n="adminPrivatePanel">Panou privat</p>
-          <h1>Administrare</h1>
-          <p>Introdu codul privat pentru a alege ce secțiune vrei să gestionezi.</p>
+          <h1 data-i18n="adminHomeTitle">Administrare</h1>
+          <p data-i18n="adminHomeText">Introdu codul privat pentru a alege ce secțiune vrei să gestionezi.</p>
           <form class="access-form" id="adminAccessForm">
             <label>
               <span data-i18n="adminCodeLabel">Cod administrare</span>
@@ -40,27 +40,27 @@
         <div class="admin-shell is-hidden" id="adminShell">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Panou privat</p>
-              <h1>Alege secțiunea</h1>
+              <p class="eyebrow" data-i18n="adminPrivatePanel">Panou privat</p>
+              <h1 data-i18n="adminChooseSection">Alege secțiunea</h1>
             </div>
             <button class="button secondary" type="button" id="exitAdmin" data-i18n="exitLibrary">Ieșire</button>
           </div>
 
           <div class="admin-module-grid">
             <a class="admin-module-card" href="/admin-library.html">
-              <span>Bibliotecă</span>
-              <strong>Cărți, stoc, cereri și istoric</strong>
-              <small>Gestionează inventarul bibliotecii și comenzile membrilor.</small>
+              <span data-i18n="adminModuleLibraryTitle">Bibliotecă</span>
+              <strong data-i18n="adminModuleLibrarySummary">Cărți, stoc, cereri și istoric</strong>
+              <small data-i18n="adminModuleLibraryText">Gestionează inventarul bibliotecii și comenzile membrilor.</small>
             </a>
             <a class="admin-module-card" href="/admin-volley.html">
-              <span>Torneo volley</span>
-              <strong>Inscrieri, echipe și aprobare</strong>
-              <small>Editează echipele înscrise și aprobă ce apare public.</small>
+              <span data-i18n="adminModuleVolleyTitle">Turneu volley</span>
+              <strong data-i18n="adminModuleVolleySummary">Înscrieri, echipe și aprobare</strong>
+              <small data-i18n="adminModuleVolleyText">Editează echipele înscrise și aprobă ce apare public.</small>
             </a>
             <article class="admin-module-card is-disabled">
-              <span>Viitor</span>
-              <strong>Alt modul</strong>
-              <small>Spațiu pregătit pentru următoarea secțiune.</small>
+              <span data-i18n="adminModuleFutureTitle">Viitor</span>
+              <strong data-i18n="adminModuleFutureSummary">Alt modul</strong>
+              <small data-i18n="adminModuleFutureText">Spațiu pregătit pentru următoarea secțiune.</small>
             </article>
           </div>
         </div>

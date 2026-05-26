@@ -1328,6 +1328,13 @@ footer img {
   letter-spacing: 0.02em;
 }
 
+.volley-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .volley-brand img,
 .volley-footer img {
   width: 38px;
@@ -1341,6 +1348,7 @@ footer img {
   border-radius: 999px;
   padding: 0 16px;
   background: rgba(255, 246, 232, 0.08);
+  font: inherit;
 }
 
 .volley-hero,
