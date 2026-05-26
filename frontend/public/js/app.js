@@ -429,6 +429,7 @@ const heroImages = [
 
 let reservations = [];
 let auditLogs = [];
+let volleyRegistrations = [];
 
 const statusLabelKeys = {
   pending: "adminStatusPending",
@@ -521,12 +522,14 @@ async function loadBooksFromApi() {
 
 async function loadAdminDataFromApi(throwOnError = false) {
   try {
-    const [ordersData, auditData] = await Promise.all([
+    const [ordersData, auditData, volleyData] = await Promise.all([
       apiRequest("/api/admin/orders?active=true"),
-      apiRequest("/api/admin/audit")
+      apiRequest("/api/admin/audit"),
+      apiRequest("/api/admin/volley/registrations")
     ]);
     reservations = ordersData.orders;
     auditLogs = auditData.auditLogs;
+    volleyRegistrations = volleyData.registrations || [];
     saveReservations();
     saveAuditLogs();
   } catch (error) {
@@ -1126,6 +1129,40 @@ function setupAdmin() {
     renderAdmin();
   });
 
+  $("#volleyRegistrationsList")?.addEventListener("click", async (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    const row = button.closest("tr");
+    const registration = volleyRegistrations.find((item) => item.id === button.dataset.id);
+    if (!row || !registration) return;
+    const message = $("#volleyAdminMessage");
+    const action = button.dataset.action;
+
+    try {
+      if (action === "delete") {
+        await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "DELETE" });
+        volleyRegistrations = volleyRegistrations.filter((item) => item.id !== registration.id);
+        message.textContent = "Inscripción eliminada.";
+      } else {
+        const status = action === "approve" ? "approved" : action === "reject" ? "rejected" : row.querySelector("[data-field='status']").value;
+        const payload = {
+          teamName: row.querySelector("[data-field='teamName']").value.trim(),
+          representativeName: row.querySelector("[data-field='representativeName']").value.trim(),
+          players: row.querySelector("[data-field='players']").value.split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean),
+          notes: row.querySelector("[data-field='notes']").value.trim(),
+          status
+        };
+        const data = await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "PATCH", body: payload });
+        Object.assign(registration, data.registration);
+        message.textContent = action === "save" ? "Inscripción guardada." : "Estado actualizado.";
+      }
+      renderAdminVolleyRegistrations();
+      renderAuditLog();
+    } catch (error) {
+      message.textContent = error.status === 401 ? tx("adminAuthError") : "No se pudo guardar la inscripción.";
+    }
+  });
+
   $("#reservationsList").addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
@@ -1167,6 +1204,7 @@ function setupAdmin() {
 function renderAdmin() {
   renderAdminStats();
   renderAdminBooks();
+  renderAdminVolleyRegistrations();
   renderAdminReservations();
   renderAuditLog();
   updateStockSaveButton();
@@ -1372,6 +1410,40 @@ function renderAdminReservations() {
     </article>
   `;
   }).join("") || `<p>${tx("adminNoRequests")}</p>`;
+}
+
+function getVolleyStatusLabel(status) {
+  return {
+    pending: "Pendiente",
+    approved: "Aceptado",
+    rejected: "Rechazado"
+  }[status] || status;
+}
+
+function renderAdminVolleyRegistrations() {
+  if (!$("#volleyRegistrationsList")) return;
+  $("#volleyRegistrationsList").innerHTML = volleyRegistrations.map((registration) => `
+    <tr>
+      <td><input data-field="teamName" value="${escapeAttribute(registration.teamName)}" /></td>
+      <td><input data-field="representativeName" value="${escapeAttribute(registration.representativeName)}" /></td>
+      <td><textarea data-field="players">${escapeHtml((registration.players || []).join("\n"))}</textarea></td>
+      <td>
+        <span class="volley-status ${escapeAttribute(registration.status)}">${escapeHtml(getVolleyStatusLabel(registration.status))}</span>
+        <select data-field="status">
+          <option value="pending" ${registration.status === "pending" ? "selected" : ""}>Pendiente</option>
+          <option value="approved" ${registration.status === "approved" ? "selected" : ""}>Aceptado</option>
+          <option value="rejected" ${registration.status === "rejected" ? "selected" : ""}>Rechazado</option>
+        </select>
+      </td>
+      <td><textarea data-field="notes">${escapeHtml(registration.notes || "")}</textarea></td>
+      <td class="table-actions">
+        <button type="button" data-action="save" data-id="${registration.id}">Guardar</button>
+        <button type="button" data-action="approve" data-id="${registration.id}">Aceptar</button>
+        <button type="button" data-action="reject" data-id="${registration.id}">Rechazar</button>
+        <button type="button" data-action="delete" data-id="${registration.id}">Borrar</button>
+      </td>
+    </tr>
+  `).join("") || `<tr><td colspan="6">Todavía no hay inscripciones de volley.</td></tr>`;
 }
 
 function getReservationItems(reservation) {

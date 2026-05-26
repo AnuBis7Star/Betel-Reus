@@ -45,10 +45,22 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS volley_registrations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  team_name TEXT NOT NULL,
+  representative_name TEXT NOT NULL,
+  players JSONB NOT NULL DEFAULT '[]'::jsonb,
+  notes TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE INDEX IF NOT EXISTS idx_books_active_title ON books(active, title);
 CREATE INDEX IF NOT EXISTS idx_orders_status_created_at ON orders(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_volley_registrations_status_created_at ON volley_registrations(status, created_at DESC);
 
 INSERT INTO books (title, author, category, language, price, stock, reserved)
 VALUES

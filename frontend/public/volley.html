@@ -84,20 +84,16 @@
         <div class="volley-form-copy">
           <p class="volley-kicker">Preinscripción</p>
           <h2>Inscripción de equipo</h2>
-          <p>Formulario visual de fase 1. Todavía no envía datos ni inicia sesión con Google.</p>
+          <p>El representante deja los datos del equipo. La inscripción aparecerá públicamente cuando el administrador la apruebe.</p>
         </div>
-        <form class="volley-form">
+        <form class="volley-form" id="volleyRegistrationForm">
           <button class="google-button" type="button" disabled>
             <span>G</span>
-            Iniciar sesión con Google
+            Inicio con Google pendiente
           </button>
           <label>
             <span>Nombre del representante</span>
             <input name="representative" placeholder="Nombre y apellidos" />
-          </label>
-          <label>
-            <span>Email de contacto</span>
-            <input name="email" type="email" placeholder="correo@ejemplo.com" />
           </label>
           <label>
             <span>Nombre del equipo</span>
@@ -111,9 +107,18 @@
             <span>Notas</span>
             <textarea name="notes" placeholder="Comentarios, dudas o necesidades del equipo"></textarea>
           </label>
-          <button class="volley-button primary" type="button" disabled>Enviar inscripción</button>
-          <p class="volley-form-note">Pendiente de conectar con login, base de datos y confirmación automática.</p>
+          <button class="volley-button primary" type="submit">Enviar inscripción</button>
+          <p class="volley-form-note" id="volleyFormMessage">El equipo quedará pendiente de aprobación.</p>
         </form>
+      </section>
+
+      <section class="volley-section volley-teams-section">
+        <div>
+          <p class="volley-kicker">Equipos confirmados</p>
+          <h2>Equipos inscritos</h2>
+          <p>Solo aparecen los equipos aceptados por el administrador.</p>
+        </div>
+        <div class="volley-teams" id="volleyTeams"></div>
       </section>
     </main>
 
@@ -121,5 +126,6 @@
       <img src="/assets/icon-light.png" alt="" />
       <span>© 2026 Biserica Betel Reus</span>
     </footer>
+    <script src="/js/volley.js" type="module"></script>
   </body>
 </html>

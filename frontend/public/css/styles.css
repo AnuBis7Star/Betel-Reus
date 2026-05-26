@@ -575,6 +575,81 @@ cite {
   margin-top: 18px;
 }
 
+.volley-admin-panel {
+  grid-column: 1 / -1;
+}
+
+.volley-admin-table {
+  min-width: 1080px;
+}
+
+.volley-admin-table input,
+.volley-admin-table select,
+.volley-admin-table textarea {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--white);
+}
+
+.volley-admin-table textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+
+.volley-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  border-radius: 999px;
+  padding: 0 10px;
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.volley-status.approved {
+  background: #dcebd8;
+  color: #304d2b;
+}
+
+.volley-status.rejected {
+  background: #f0d7d0;
+  color: #773327;
+}
+
+.volley-teams {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.volley-teams article {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  padding: 18px;
+  background: rgba(22, 6, 8, 0.38);
+}
+
+.volley-teams h3 {
+  margin: 0;
+  color: var(--volley-cream);
+  font-size: 1.6rem;
+  overflow-wrap: normal;
+}
+
+.volley-teams span,
+.volley-teams small {
+  color: rgba(255, 246, 232, 0.68);
+  font-weight: 800;
+}
+
 .reservations-list,
 .audit-log {
   display: grid;
@@ -1454,6 +1529,10 @@ footer img {
   }
 
   .volley-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-teams {
     grid-template-columns: 1fr;
   }
 
