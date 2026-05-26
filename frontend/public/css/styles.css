@@ -1102,6 +1102,429 @@ footer img {
   object-fit: contain;
 }
 
+.volley-page {
+  --volley-red: #7f090b;
+  --volley-deep: #160608;
+  --volley-yellow: #ffd21d;
+  --volley-cream: #fff6e8;
+  --volley-blue: #173765;
+  --volley-pink: #f05e68;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 210, 29, 0.16), transparent 24%),
+    radial-gradient(circle at 80% 22%, rgba(240, 94, 104, 0.18), transparent 25%),
+    linear-gradient(135deg, #65080a 0%, #9b0d12 48%, #470406 100%);
+  color: var(--volley-cream);
+}
+
+.volley-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 72px;
+  padding: 14px clamp(18px, 4vw, 54px);
+  border-bottom: 1px solid rgba(255, 246, 232, 0.16);
+  background: rgba(22, 6, 8, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.volley-brand,
+.volley-header-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--volley-cream);
+  font-weight: 900;
+}
+
+.volley-brand {
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.volley-brand img,
+.volley-footer img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.volley-header-link {
+  min-height: 40px;
+  border: 1px solid rgba(255, 246, 232, 0.28);
+  border-radius: 999px;
+  padding: 0 16px;
+  background: rgba(255, 246, 232, 0.08);
+}
+
+.volley-hero,
+.volley-section {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+}
+
+.volley-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 480px);
+  gap: clamp(28px, 5vw, 70px);
+  align-items: center;
+  min-height: calc(100vh - 72px);
+  padding: clamp(42px, 7vw, 86px) 0;
+}
+
+.volley-hero-copy {
+  display: grid;
+  gap: 22px;
+}
+
+.volley-kicker {
+  margin: 0;
+  color: var(--volley-yellow);
+  font-size: 0.86rem;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.volley-hero h1,
+.volley-section h2 {
+  margin: 0;
+  max-width: 760px;
+  color: var(--volley-cream);
+  font-weight: 1000;
+  line-height: 0.92;
+}
+
+.volley-hero h1 {
+  display: grid;
+  gap: 4px;
+  font-size: clamp(3.65rem, 8vw, 7rem);
+}
+
+.volley-hero h1 span {
+  display: block;
+}
+
+.volley-section h2 {
+  font-size: clamp(2.6rem, 6vw, 5.7rem);
+}
+
+.volley-hero p:not(.volley-kicker),
+.volley-section p {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(255, 246, 232, 0.84);
+  font-size: clamp(1.08rem, 2vw, 1.32rem);
+  line-height: 1.55;
+}
+
+.volley-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.volley-button,
+.google-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  border-radius: 999px;
+  padding: 0 22px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.volley-button.primary {
+  border: 2px solid var(--volley-yellow);
+  background: var(--volley-yellow);
+  color: var(--volley-deep);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
+}
+
+.volley-button.secondary {
+  border: 1px solid rgba(255, 246, 232, 0.34);
+  background: rgba(255, 246, 232, 0.1);
+  color: var(--volley-cream);
+}
+
+.volley-poster {
+  position: relative;
+  display: grid;
+  min-height: 580px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 246, 232, 0.08) 1px, transparent 1px) 0 0 / 16px 16px,
+    radial-gradient(circle at 72% 15%, var(--volley-cream) 0 18px, transparent 19px),
+    radial-gradient(circle at 15% 15%, var(--volley-cream) 0 18px, transparent 19px),
+    linear-gradient(145deg, #940d11, #65070a);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+}
+
+.volley-poster::before {
+  content: "";
+  position: absolute;
+  inset: 11% 16%;
+  border: 22px solid rgba(255, 246, 232, 0.82);
+  border-top: 0;
+  transform: skewX(-4deg);
+}
+
+.volley-ball {
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background:
+    linear-gradient(145deg, transparent 45%, rgba(23, 55, 101, 0.98) 46% 58%, transparent 59%),
+    linear-gradient(34deg, transparent 42%, rgba(255, 210, 29, 0.96) 43% 58%, transparent 59%),
+    radial-gradient(circle, #ffef72, #f5b900);
+  transform: translateX(-50%) rotate(-16deg);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+}
+
+.volley-player {
+  position: absolute;
+  z-index: 2;
+  width: 130px;
+  height: 250px;
+  background: var(--volley-cream);
+  clip-path: polygon(45% 0, 60% 4%, 65% 22%, 100% 12%, 76% 31%, 66% 47%, 88% 76%, 70% 78%, 51% 55%, 37% 96%, 20% 96%, 32% 49%, 0 78%, 0 58%, 28% 34%, 25% 18%);
+}
+
+.volley-player.left {
+  left: 13%;
+  top: 16%;
+  transform: rotate(-14deg);
+}
+
+.volley-player.right {
+  right: 10%;
+  top: 15%;
+  transform: scaleX(-1) rotate(-12deg);
+}
+
+.volley-poster strong,
+.volley-poster span {
+  position: relative;
+  z-index: 3;
+  color: var(--volley-yellow);
+  text-align: center;
+  text-shadow: 0 8px 0 rgba(22, 6, 8, 0.34);
+  transform: rotate(-4deg);
+}
+
+.volley-poster strong {
+  align-self: end;
+  margin-bottom: 126px;
+  font-size: clamp(2.9rem, 4.9vw, 4.35rem);
+  font-weight: 1000;
+  line-height: 0.8;
+}
+
+.volley-poster span {
+  position: absolute;
+  bottom: 78px;
+  font-size: clamp(1.85rem, 3.7vw, 3.3rem);
+  font-weight: 1000;
+  font-style: italic;
+}
+
+.volley-section {
+  display: grid;
+  gap: 28px;
+  padding: clamp(48px, 7vw, 86px) 0;
+  border-top: 1px solid rgba(255, 246, 232, 0.16);
+}
+
+.volley-info,
+.volley-registration {
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
+  align-items: start;
+}
+
+.volley-facts,
+.volley-rule-list {
+  display: grid;
+  gap: 12px;
+}
+
+.volley-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.volley-facts article,
+.volley-rule-list article,
+.volley-form {
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  background: rgba(22, 6, 8, 0.38);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.volley-facts article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.volley-facts span {
+  color: rgba(255, 246, 232, 0.64);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.volley-facts strong {
+  color: var(--volley-cream);
+  font-size: 1.25rem;
+}
+
+.volley-rule-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.volley-rule-list article {
+  padding: 22px;
+}
+
+.volley-rule-list h3 {
+  margin: 0 0 10px;
+  color: var(--volley-yellow);
+  font-size: 1.45rem;
+}
+
+.volley-form {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.volley-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.volley-form span {
+  color: rgba(255, 246, 232, 0.72);
+  font-weight: 900;
+}
+
+.volley-form input,
+.volley-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 246, 232, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 246, 232, 0.96);
+  color: var(--volley-deep);
+}
+
+.volley-form textarea {
+  min-height: 120px;
+}
+
+.google-button {
+  width: 100%;
+  border: 1px solid rgba(255, 246, 232, 0.24);
+  background: rgba(255, 246, 232, 0.12);
+  color: rgba(255, 246, 232, 0.68);
+}
+
+.google-button span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--volley-cream);
+  color: var(--volley-blue);
+}
+
+.volley-form-note {
+  font-size: 0.92rem !important;
+}
+
+.volley-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 246, 232, 0.16);
+  color: rgba(255, 246, 232, 0.72);
+}
+
+@media (max-width: 900px) {
+  .volley-header {
+    position: static;
+  }
+
+  .volley-hero,
+  .volley-info,
+  .volley-registration,
+  .volley-rule-list {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-hero {
+    min-height: auto;
+  }
+
+  .volley-poster {
+    min-height: 480px;
+  }
+}
+
+@media (max-width: 560px) {
+  .volley-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .volley-hero,
+  .volley-section {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .volley-hero h1 {
+    font-size: clamp(3.1rem, 15vw, 4.8rem);
+  }
+
+  .volley-actions,
+  .volley-button {
+    width: 100%;
+  }
+
+  .volley-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-poster {
+    min-height: 430px;
+  }
+
+  .volley-ball {
+    width: 180px;
+    height: 180px;
+  }
+
+  .volley-player {
+    width: 104px;
+    height: 205px;
+  }
+}
+
 @media (max-width: 860px) {
   .site-header {
     display: flex;

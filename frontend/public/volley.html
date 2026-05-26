@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Volleyball Tournament Reus | Betel Reus</title>
+    <meta name="description" content="Página local de información e inscripción para el torneo de volley organizado en Reus." />
+    <link rel="icon" href="/assets/icon-dark.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="volley-page">
+    <header class="volley-header">
+      <a class="volley-brand" href="/" aria-label="Biserica Betel Reus">
+        <img src="/assets/icon-light.png" alt="" />
+        <span>Betel Reus · Tinerii</span>
+      </a>
+      <a class="volley-header-link" href="https://www.instagram.com/tineriibetelreus/" target="_blank" rel="noreferrer">@tineriibetelreus</a>
+    </header>
+
+    <main>
+      <section class="volley-hero">
+        <div class="volley-hero-copy">
+          <p class="volley-kicker">Reus · 13 Junio 2026 · 10:00</p>
+          <h1><span>Volleyball</span><span>Tournament</span></h1>
+          <p>Un día deportivo para reunir equipos, amigos y jóvenes en un ambiente sano, competitivo y lleno de energía.</p>
+          <div class="volley-actions">
+            <a class="volley-button primary" href="#inscripcion">Inscribir equipo</a>
+            <a class="volley-button secondary" href="#info">Ver información</a>
+          </div>
+        </div>
+        <div class="volley-poster" aria-label="Volleyball Tournament">
+          <div class="volley-ball"></div>
+          <div class="volley-player left"></div>
+          <div class="volley-player right"></div>
+          <strong>VOLLEYBALL</strong>
+          <span>TOURNAMENT</span>
+        </div>
+      </section>
+
+      <section class="volley-section volley-info" id="info">
+        <div>
+          <p class="volley-kicker">Información principal</p>
+          <h2>Torneo de volley en Reus</h2>
+          <p>Esta página está en fase local. La información final de ubicación, normas y sistema de inscripción se confirmará antes de publicarla.</p>
+        </div>
+        <div class="volley-facts">
+          <article>
+            <span>Fecha</span>
+            <strong>13 Junio 2026</strong>
+          </article>
+          <article>
+            <span>Hora</span>
+            <strong>10:00</strong>
+          </article>
+          <article>
+            <span>Contacto</span>
+            <strong>@tineriibetelreus</strong>
+          </article>
+          <article>
+            <span>Ubicación</span>
+            <strong>Por confirmar</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="volley-section volley-rules">
+        <div>
+          <p class="volley-kicker">Formato inicial</p>
+          <h2>Qué falta por cerrar</h2>
+        </div>
+        <div class="volley-rule-list">
+          <article>
+            <h3>Equipos</h3>
+            <p>Número de jugadores por equipo, suplentes y edad mínima pendiente de confirmar.</p>
+          </article>
+          <article>
+            <h3>Calendario</h3>
+            <p>El sistema de grupos, eliminatorias y horarios se definirá según el número de equipos inscritos.</p>
+          </article>
+          <article>
+            <h3>Inscripción</h3>
+            <p>La versión final podrá guardar inscripciones en base de datos y validar al representante con Google.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="volley-section volley-registration" id="inscripcion">
+        <div class="volley-form-copy">
+          <p class="volley-kicker">Preinscripción</p>
+          <h2>Inscripción de equipo</h2>
+          <p>Formulario visual de fase 1. Todavía no envía datos ni inicia sesión con Google.</p>
+        </div>
+        <form class="volley-form">
+          <button class="google-button" type="button" disabled>
+            <span>G</span>
+            Iniciar sesión con Google
+          </button>
+          <label>
+            <span>Nombre del representante</span>
+            <input name="representative" placeholder="Nombre y apellidos" />
+          </label>
+          <label>
+            <span>Email de contacto</span>
+            <input name="email" type="email" placeholder="correo@ejemplo.com" />
+          </label>
+          <label>
+            <span>Nombre del equipo</span>
+            <input name="team" placeholder="Nombre del equipo" />
+          </label>
+          <label>
+            <span>Jugadores</span>
+            <textarea name="players" placeholder="Un jugador por línea"></textarea>
+          </label>
+          <label>
+            <span>Notas</span>
+            <textarea name="notes" placeholder="Comentarios, dudas o necesidades del equipo"></textarea>
+          </label>
+          <button class="volley-button primary" type="button" disabled>Enviar inscripción</button>
+          <p class="volley-form-note">Pendiente de conectar con login, base de datos y confirmación automática.</p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="volley-footer">
+      <img src="/assets/icon-light.png" alt="" />
+      <span>© 2026 Biserica Betel Reus</span>
+    </footer>
+  </body>
+</html>
