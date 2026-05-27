@@ -191,6 +191,55 @@ function setMessage(text, state = "") {
   message.className = `volley-form-note${state ? ` is-${state}` : ""}`;
 }
 
+let revealObserver = null;
+const revealSelectors = [
+  ".volley-section > div",
+  ".volley-facts article",
+  ".volley-rule-list article",
+  ".volley-regulation-grid article",
+  ".volley-form",
+  ".volley-teams article"
+];
+
+function prepareRevealElements(root = document) {
+  if (!revealObserver) return;
+  root.querySelectorAll(revealSelectors.join(",")).forEach((element, index) => {
+    if (element.classList.contains("reveal-on-scroll")) return;
+    element.classList.add("reveal-on-scroll");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
+    revealObserver.observe(element);
+  });
+}
+
+function setupVolleyEffects() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".volley-hero-copy > *, .volley-poster").forEach((element) => {
+      element.style.animation = "none";
+    });
+    document.querySelectorAll(revealSelectors.join(",")).forEach((element) => {
+      element.classList.add("reveal-on-scroll", "is-visible");
+    });
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(revealSelectors.join(",")).forEach((element) => {
+      element.classList.add("reveal-on-scroll", "is-visible");
+    });
+    return;
+  }
+
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      revealObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+
+  prepareRevealElements();
+}
+
 function applyLanguage() {
   document.documentElement.lang = lang;
   document.title = tx("volleyPageTitle");
@@ -280,6 +329,7 @@ function renderTeams(teams) {
       <small>${team.players.map(escapeHtml).join(", ")}</small>
     </article>
   `).join("") || `<p>${tx("volleyNoTeams")}</p>`;
+  prepareRevealElements(teamsContainer);
 }
 
 async function loadApprovedTeams() {
@@ -366,6 +416,7 @@ playerGrid?.addEventListener("click", (event) => {
 });
 
 resetPlayerGrid();
+setupVolleyEffects();
 applyLanguage();
 
 document.querySelector("#langToggle")?.addEventListener("click", () => {

@@ -657,25 +657,29 @@ function applyLanguage() {
 }
 
 let revealObserver = null;
+const publicRevealSelectors = [
+  ".section-heading",
+  ".split > div",
+  ".schedule-grid article",
+  ".event-card",
+  ".faq-grid article",
+  ".social-band > div",
+  ".social-links a",
+  ".about-block",
+  ".contact-form",
+  ".contact-box",
+  ".map-panel",
+  ".video-card",
+  ".library-gate",
+  ".library-shell .section-heading",
+  ".library-results .toolbar",
+  ".book-card"
+];
 
 function prepareRevealElements(root = document) {
   if (!revealObserver) return;
-  const selectors = [
-    ".section-heading",
-    ".split > div",
-    ".schedule-grid article",
-    ".event-card",
-    ".faq-grid article",
-    ".social-band > div",
-    ".social-links a",
-    ".about-block",
-    ".contact-form",
-    ".contact-box",
-    ".map-panel",
-    ".video-card"
-  ];
 
-  root.querySelectorAll(selectors.join(",")).forEach((element, index) => {
+  root.querySelectorAll(publicRevealSelectors.join(",")).forEach((element, index) => {
     if (element.classList.contains("reveal-on-scroll")) return;
     element.classList.add("reveal-on-scroll");
     element.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
@@ -684,16 +688,20 @@ function prepareRevealElements(root = document) {
 }
 
 function setupLandingEffects() {
-  if (!document.querySelector(".hero")) return;
+  if (document.querySelector(".admin-page")) return;
+  if (!document.querySelector(".hero, .library-page")) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.querySelectorAll(".hero-copy > *, .hero-panel").forEach((element) => {
       element.style.animation = "none";
+    });
+    document.querySelectorAll(publicRevealSelectors.join(",")).forEach((element) => {
+      element.classList.add("reveal-on-scroll", "is-visible");
     });
     return;
   }
 
   if (!("IntersectionObserver" in window)) {
-    document.querySelectorAll(".section-heading, .split > div, .schedule-grid article, .event-card, .faq-grid article, .social-band > div, .social-links a, .about-block, .contact-form, .contact-box, .map-panel, .video-card").forEach((element) => {
+    document.querySelectorAll(publicRevealSelectors.join(",")).forEach((element) => {
       element.classList.add("reveal-on-scroll", "is-visible");
     });
     return;
@@ -748,6 +756,7 @@ function renderBooks() {
       </article>
     `;
   }).join("");
+  prepareRevealElements($("#books"));
 }
 
 async function loadVerse() {
@@ -935,6 +944,7 @@ async function unlockLibrary() {
   $("#libraryShell")?.classList.remove("is-hidden");
   if ($("#activeMember")) $("#activeMember").textContent = currentMemberName;
   await loadBooksFromApi();
+  prepareRevealElements($("#libraryShell"));
   renderBooks();
   renderCart();
 }

@@ -1171,6 +1171,19 @@ textarea {
   padding: 18px;
 }
 
+.book-card {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+.book-card:hover {
+  border-color: rgba(23, 23, 23, 0.22);
+  box-shadow: 0 16px 38px rgba(23, 23, 23, 0.08);
+  transform: translateY(-2px);
+}
+
 .book-card p {
   margin: 8px 0 0;
   font-size: 0.95rem;
@@ -1536,6 +1549,22 @@ footer img {
   gap: 22px;
 }
 
+.volley-hero-copy > * {
+  animation: heroItemIn 680ms ease both;
+}
+
+.volley-hero-copy > :nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.volley-hero-copy > :nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.volley-hero-copy > :nth-child(4) {
+  animation-delay: 230ms;
+}
+
 .volley-kicker {
   margin: 0;
   color: var(--volley-yellow);
@@ -1619,6 +1648,7 @@ footer img {
   justify-content: center;
   min-height: 0;
   overflow: visible;
+  animation: heroPanelIn 760ms ease 180ms both;
 }
 
 .volley-poster img {
@@ -1667,6 +1697,25 @@ footer img {
   border-radius: 8px;
   background: rgba(22, 6, 8, 0.38);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.volley-facts article,
+.volley-rule-list article,
+.volley-regulation-grid article,
+.volley-form,
+.volley-teams article {
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.volley-facts article:hover,
+.volley-rule-list article:hover,
+.volley-regulation-grid article:hover,
+.volley-form:hover,
+.volley-teams article:hover {
+  transform: translateY(-2px);
 }
 
 .volley-facts article {
