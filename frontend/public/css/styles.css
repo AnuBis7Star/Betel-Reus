@@ -154,6 +154,7 @@ select {
   justify-content: center;
   padding: 0 18px;
   font-weight: 700;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .button.primary {
@@ -166,6 +167,11 @@ select {
 .lang-toggle:hover,
 .book-actions button:hover:not(:disabled) {
   border-color: var(--ink);
+}
+
+.button:hover,
+.lang-toggle:hover {
+  transform: translateY(-1px);
 }
 
 .hero {
@@ -184,6 +190,22 @@ select {
 
 .hero-copy {
   max-width: 760px;
+}
+
+.hero-copy > * {
+  animation: heroItemIn 680ms ease both;
+}
+
+.hero-copy > :nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.hero-copy > :nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.hero-copy > :nth-child(4) {
+  animation-delay: 230ms;
 }
 
 .eyebrow {
@@ -238,6 +260,8 @@ h3 {
 }
 
 .hero-panel {
+  position: relative;
+  overflow: hidden;
   align-self: end;
   border: 1px solid rgba(23, 23, 23, 0.12);
   border-radius: 8px;
@@ -245,6 +269,56 @@ h3 {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
   box-shadow: 0 24px 80px rgba(23, 23, 23, 0.1);
+  animation: heroPanelIn 760ms ease 180ms both;
+}
+
+@keyframes heroItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.verse-reveal > * {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.verse-reveal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(100deg, rgba(23, 23, 23, 0.96), rgba(54, 42, 31, 0.94));
+  transform: translateX(0);
+  transition: transform 680ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.verse-reveal.is-revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.verse-reveal.is-revealed::after {
+  transform: translateX(102%);
 }
 
 .hero-panel span {
@@ -291,9 +365,54 @@ cite {
   font-weight: 800;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .verse-reveal > *,
+  .verse-reveal::after {
+    transition: none;
+  }
+
+  .verse-reveal::after {
+    display: none;
+  }
+
+  .verse-reveal > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .section {
   padding: clamp(56px, 8vw, 104px) clamp(18px, 5vw, 76px);
   border-top: 1px solid rgba(23, 23, 23, 0.08);
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 620ms ease,
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .split {
@@ -335,6 +454,29 @@ cite {
 
 .event-card {
   border-radius: 8px;
+}
+
+.schedule-grid article,
+.faq-grid article,
+.social-links a,
+.contact-box,
+.contact-form,
+.map-panel,
+.volley-event-card {
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.schedule-grid article:hover,
+.faq-grid article:hover,
+.social-links a:hover,
+.contact-box:hover,
+.contact-form:hover,
+.map-panel:hover,
+.volley-event-card:hover {
+  transform: translateY(-2px);
 }
 
 .volley-event-card {
@@ -485,6 +627,51 @@ cite {
   min-height: 20px;
   color: #8a3324;
   font-weight: 700;
+}
+
+.auth-page {
+  position: relative;
+}
+
+.auth-loading {
+  display: none;
+  max-width: 680px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: var(--white);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.auth-loading::before {
+  content: "";
+  display: inline-block;
+  width: 0.82em;
+  height: 0.82em;
+  margin-right: 10px;
+  border: 2px solid var(--line);
+  border-top-color: var(--ink);
+  border-radius: 999px;
+  vertical-align: -0.12em;
+  animation: authSpin 720ms linear infinite;
+}
+
+.is-auth-checking > .auth-loading {
+  display: block;
+}
+
+.is-auth-checking > .library-gate,
+.is-auth-checking > .library-shell,
+.is-auth-checking > .admin-shell {
+  display: none !important;
+}
+
+@keyframes authSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .is-hidden {
@@ -1029,6 +1216,19 @@ textarea {
   padding: 18px;
 }
 
+.book-card {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+.book-card:hover {
+  border-color: rgba(23, 23, 23, 0.22);
+  box-shadow: 0 16px 38px rgba(23, 23, 23, 0.08);
+  transform: translateY(-2px);
+}
+
 .book-card p {
   margin: 8px 0 0;
   font-size: 0.95rem;
@@ -1394,6 +1594,22 @@ footer img {
   gap: 22px;
 }
 
+.volley-hero-copy > * {
+  animation: heroItemIn 680ms ease both;
+}
+
+.volley-hero-copy > :nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.volley-hero-copy > :nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.volley-hero-copy > :nth-child(4) {
+  animation-delay: 230ms;
+}
+
 .volley-kicker {
   margin: 0;
   color: var(--volley-yellow);
@@ -1477,6 +1693,7 @@ footer img {
   justify-content: center;
   min-height: 0;
   overflow: visible;
+  animation: heroPanelIn 760ms ease 180ms both;
 }
 
 .volley-poster img {
@@ -1525,6 +1742,25 @@ footer img {
   border-radius: 8px;
   background: rgba(22, 6, 8, 0.38);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.volley-facts article,
+.volley-rule-list article,
+.volley-regulation-grid article,
+.volley-form,
+.volley-teams article {
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.volley-facts article:hover,
+.volley-rule-list article:hover,
+.volley-regulation-grid article:hover,
+.volley-form:hover,
+.volley-teams article:hover {
+  transform: translateY(-2px);
 }
 
 .volley-facts article {

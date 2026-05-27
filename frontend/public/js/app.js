@@ -20,6 +20,7 @@ const translations = {
     heroMaps: "Deschide locația în Maps",
     verseLabel: "Versetul zilei",
     verseLoading: "Se încarcă...",
+    authChecking: "Se încarcă...",
     liveLabel: "Următorul live",
     liveLoading: "Se calculează...",
     liveYoutube: "Urmărește live pe YouTube",
@@ -59,7 +60,7 @@ const translations = {
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
     libraryAccessText: "Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.",
-    libraryHelperText: "Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Contactează responsabilul bibliotecii sau pastorul Dorel Abuțnăriți.",
+    libraryHelperText: "Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Trimite un mesaj sau contactează-l pe Alin Enrique Nascutiu.",
     memberName: "Nume",
     memberActive: "Membru",
     accessCode: "Cod acces",
@@ -71,7 +72,7 @@ const translations = {
     filterAllCategories: "Toate categoriile",
     enterLibrary: "Intră în bibliotecă",
     exitLibrary: "Ieșire",
-    accessDenied: "Codul nu este corect. Verifică-l și încearcă din nou. Dacă nu ai cod, contactează responsabilul bibliotecii.",
+    accessDenied: "Codul nu este corect. Verifică-l și încearcă din nou. Dacă nu ai cod, trimite un mesaj sau contactează-l pe Alin Enrique Nascutiu.",
     resetLibrary: "Resetează",
     bookTitle: "Titlu",
     bookAuthor: "Autor",
@@ -255,6 +256,7 @@ const translations = {
     heroMaps: "Abrir ubicación en Maps",
     verseLabel: "Versículo del día",
     verseLoading: "Cargando...",
+    authChecking: "Cargando...",
     liveLabel: "Próximo directo",
     liveLoading: "Calculando...",
     liveYoutube: "Ver directo en YouTube",
@@ -294,7 +296,7 @@ const translations = {
     libraryTitle: "Biblioteca Betel",
     libraryAccessTitle: "Biblioteca Betel",
     libraryAccessText: "El acceso es para miembros de la comunidad. Introduce tu nombre y el código recibido del responsable de la biblioteca.",
-    libraryHelperText: "La biblioteca está disponible solo para miembros de la iglesia. ¿No tienes código? Contacta con el responsable de la biblioteca o con el pastor Dorel Abuțnăriți.",
+    libraryHelperText: "La biblioteca está disponible solo para miembros de la iglesia. ¿No tienes código? Envía un mensaje o contacta con Alin Enrique Nascutiu.",
     memberName: "Nombre",
     memberActive: "Miembro",
     accessCode: "Código de acceso",
@@ -306,7 +308,7 @@ const translations = {
     filterAllCategories: "Todas las categorías",
     enterLibrary: "Entrar en biblioteca",
     exitLibrary: "Salir",
-    accessDenied: "El código no es correcto. Revísalo e inténtalo otra vez. Si no tienes código, contacta con el responsable de la biblioteca.",
+    accessDenied: "El código no es correcto. Revísalo e inténtalo otra vez. Si no tienes código, envía un mensaje o contacta con Alin Enrique Nascutiu.",
     resetLibrary: "Reiniciar",
     bookTitle: "Título",
     bookAuthor: "Autor",
@@ -656,6 +658,68 @@ function applyLanguage() {
   updateLiveCountdown();
 }
 
+let revealObserver = null;
+const publicRevealSelectors = [
+  ".section-heading",
+  ".split > div",
+  ".schedule-grid article",
+  ".event-card",
+  ".faq-grid article",
+  ".social-band > div",
+  ".social-links a",
+  ".about-block",
+  ".contact-form",
+  ".contact-box",
+  ".map-panel",
+  ".video-card",
+  ".library-gate",
+  ".library-shell .section-heading",
+  ".library-results .toolbar",
+  ".book-card"
+];
+
+function prepareRevealElements(root = document) {
+  if (!revealObserver) return;
+
+  root.querySelectorAll(publicRevealSelectors.join(",")).forEach((element, index) => {
+    if (element.classList.contains("reveal-on-scroll")) return;
+    element.classList.add("reveal-on-scroll");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
+    revealObserver.observe(element);
+  });
+}
+
+function setupLandingEffects() {
+  if (document.querySelector(".admin-page")) return;
+  if (!document.querySelector(".hero, .library-page")) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".hero-copy > *, .hero-panel").forEach((element) => {
+      element.style.animation = "none";
+    });
+    document.querySelectorAll(publicRevealSelectors.join(",")).forEach((element) => {
+      element.classList.add("reveal-on-scroll", "is-visible");
+    });
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(publicRevealSelectors.join(",")).forEach((element) => {
+      element.classList.add("reveal-on-scroll", "is-visible");
+    });
+    return;
+  }
+
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      revealObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+
+  prepareRevealElements();
+}
+
 function renderBooks() {
   if (!$("#books")) return;
   const query = $("#bookSearch").value.toLowerCase();
@@ -694,10 +758,13 @@ function renderBooks() {
       </article>
     `;
   }).join("");
+  prepareRevealElements($("#books"));
 }
 
 async function loadVerse() {
   if (!$("#dailyVerse")) return;
+  const versePanel = document.querySelector(".verse-reveal");
+  versePanel?.classList.remove("is-revealed");
   try {
     const data = await fetch("/api/verse").then((res) => res.json());
     $("#dailyVerse").textContent = data.verse[lang] || data.verse.ro;
@@ -706,6 +773,10 @@ async function loadVerse() {
     $("#dailyVerse").textContent = lang === "ro" ? "Domnul este Păstorul meu." : "El Señor es mi pastor.";
     $("#dailyVerseRef").textContent = "Psalmul 23:1";
   }
+  window.setTimeout(() => {
+    versePanel?.classList.remove("is-loading");
+    versePanel?.classList.add("is-revealed");
+  }, 120);
 }
 
 async function loadVideos() {
@@ -741,6 +812,7 @@ function renderVideos(videos) {
     </div>
   `;
   startVideoRotation();
+  prepareRevealElements($("#videoRail"));
 }
 
 function startHeroRotation() {
@@ -870,18 +942,32 @@ function startVideoRotation() {
 }
 
 async function unlockLibrary() {
+  const authPage = $("#libraryAuthPage");
   $("#libraryGate")?.classList.add("is-hidden");
   $("#libraryShell")?.classList.remove("is-hidden");
   if ($("#activeMember")) $("#activeMember").textContent = currentMemberName;
   await loadBooksFromApi();
+  prepareRevealElements($("#libraryShell"));
   renderBooks();
   renderCart();
+  authPage?.classList.remove("is-auth-checking");
 }
 
 function setupLibrary() {
   if (!$("#libraryGate")) return;
+  const authPage = $("#libraryAuthPage");
 
-  if (currentMemberName) unlockLibrary();
+  if (currentMemberName) {
+    unlockLibrary().catch(() => {
+      currentMemberName = "";
+      localStorage.removeItem("betel-member-name");
+      $("#libraryShell")?.classList.add("is-hidden");
+      $("#libraryGate")?.classList.remove("is-hidden");
+      authPage?.classList.remove("is-auth-checking");
+    });
+  } else {
+    authPage?.classList.remove("is-auth-checking");
+  }
 
   const openMobileCart = () => {
     document.body.classList.add("cart-open");
@@ -1022,6 +1108,7 @@ async function confirmCart() {
 }
 
 async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
+  const authPage = $("#adminAuthPage");
   currentAdminCode = code;
   await loadBooksFromApi();
   await loadAdminDataFromApi(true);
@@ -1030,10 +1117,12 @@ async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
   $("#adminGate")?.classList.add("is-hidden");
   $("#adminShell")?.classList.remove("is-hidden");
   renderAdmin();
+  authPage?.classList.remove("is-auth-checking");
 }
 
 function setupAdmin() {
   if (!$("#adminGate")) return;
+  const authPage = $("#adminAuthPage");
 
   const expiresAt = Number(sessionStorage.getItem("betel-admin-expires-at") || 0);
   if (currentAdminCode && expiresAt > Date.now()) {
@@ -1042,11 +1131,13 @@ function setupAdmin() {
       sessionStorage.removeItem("betel-admin-code");
       sessionStorage.removeItem("betel-admin-expires-at");
       $("#adminAccessMessage").textContent = tx("adminReenterCode");
+      authPage?.classList.remove("is-auth-checking");
     });
   } else {
     sessionStorage.removeItem("betel-admin-code");
     sessionStorage.removeItem("betel-admin-expires-at");
     currentAdminCode = "";
+    authPage?.classList.remove("is-auth-checking");
   }
 
   $("#adminAccessForm").addEventListener("submit", async (event) => {
@@ -1676,6 +1767,7 @@ startHeroRotation();
 setupNavigationMenu();
 setupLibrary();
 setupAdmin();
+setupLandingEffects();
 applyLanguage();
 loadVerse();
 loadVideos();
