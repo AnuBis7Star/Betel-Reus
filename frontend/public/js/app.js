@@ -20,6 +20,7 @@ const translations = {
     heroMaps: "Deschide locația în Maps",
     verseLabel: "Versetul zilei",
     verseLoading: "Se încarcă...",
+    authChecking: "Se încarcă...",
     liveLabel: "Următorul live",
     liveLoading: "Se calculează...",
     liveYoutube: "Urmărește live pe YouTube",
@@ -255,6 +256,7 @@ const translations = {
     heroMaps: "Abrir ubicación en Maps",
     verseLabel: "Versículo del día",
     verseLoading: "Cargando...",
+    authChecking: "Cargando...",
     liveLabel: "Próximo directo",
     liveLoading: "Calculando...",
     liveYoutube: "Ver directo en YouTube",
@@ -940,6 +942,7 @@ function startVideoRotation() {
 }
 
 async function unlockLibrary() {
+  const authPage = $("#libraryAuthPage");
   $("#libraryGate")?.classList.add("is-hidden");
   $("#libraryShell")?.classList.remove("is-hidden");
   if ($("#activeMember")) $("#activeMember").textContent = currentMemberName;
@@ -947,12 +950,24 @@ async function unlockLibrary() {
   prepareRevealElements($("#libraryShell"));
   renderBooks();
   renderCart();
+  authPage?.classList.remove("is-auth-checking");
 }
 
 function setupLibrary() {
   if (!$("#libraryGate")) return;
+  const authPage = $("#libraryAuthPage");
 
-  if (currentMemberName) unlockLibrary();
+  if (currentMemberName) {
+    unlockLibrary().catch(() => {
+      currentMemberName = "";
+      localStorage.removeItem("betel-member-name");
+      $("#libraryShell")?.classList.add("is-hidden");
+      $("#libraryGate")?.classList.remove("is-hidden");
+      authPage?.classList.remove("is-auth-checking");
+    });
+  } else {
+    authPage?.classList.remove("is-auth-checking");
+  }
 
   const openMobileCart = () => {
     document.body.classList.add("cart-open");
@@ -1093,6 +1108,7 @@ async function confirmCart() {
 }
 
 async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
+  const authPage = $("#adminAuthPage");
   currentAdminCode = code;
   await loadBooksFromApi();
   await loadAdminDataFromApi(true);
@@ -1101,10 +1117,12 @@ async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
   $("#adminGate")?.classList.add("is-hidden");
   $("#adminShell")?.classList.remove("is-hidden");
   renderAdmin();
+  authPage?.classList.remove("is-auth-checking");
 }
 
 function setupAdmin() {
   if (!$("#adminGate")) return;
+  const authPage = $("#adminAuthPage");
 
   const expiresAt = Number(sessionStorage.getItem("betel-admin-expires-at") || 0);
   if (currentAdminCode && expiresAt > Date.now()) {
@@ -1113,11 +1131,13 @@ function setupAdmin() {
       sessionStorage.removeItem("betel-admin-code");
       sessionStorage.removeItem("betel-admin-expires-at");
       $("#adminAccessMessage").textContent = tx("adminReenterCode");
+      authPage?.classList.remove("is-auth-checking");
     });
   } else {
     sessionStorage.removeItem("betel-admin-code");
     sessionStorage.removeItem("betel-admin-expires-at");
     currentAdminCode = "";
+    authPage?.classList.remove("is-auth-checking");
   }
 
   $("#adminAccessForm").addEventListener("submit", async (event) => {

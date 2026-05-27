@@ -629,6 +629,51 @@ cite {
   font-weight: 700;
 }
 
+.auth-page {
+  position: relative;
+}
+
+.auth-loading {
+  display: none;
+  max-width: 680px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: var(--white);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.auth-loading::before {
+  content: "";
+  display: inline-block;
+  width: 0.82em;
+  height: 0.82em;
+  margin-right: 10px;
+  border: 2px solid var(--line);
+  border-top-color: var(--ink);
+  border-radius: 999px;
+  vertical-align: -0.12em;
+  animation: authSpin 720ms linear infinite;
+}
+
+.is-auth-checking > .auth-loading {
+  display: block;
+}
+
+.is-auth-checking > .library-gate,
+.is-auth-checking > .library-shell,
+.is-auth-checking > .admin-shell {
+  display: none !important;
+}
+
+@keyframes authSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .is-hidden {
   display: none !important;
 }
