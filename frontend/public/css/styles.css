@@ -1759,17 +1759,49 @@ footer img {
 
 @media (max-width: 560px) {
   .volley-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    min-height: 58px;
+    overflow: hidden;
+    padding: 10px 12px;
   }
 
   .volley-nav {
     display: none;
   }
 
+  .volley-brand {
+    flex: 0 0 auto;
+  }
+
+  .volley-brand span {
+    display: none;
+  }
+
+  .volley-brand img {
+    width: 34px;
+    height: 34px;
+  }
+
   .volley-header-actions {
-    width: 100%;
-    justify-content: flex-start;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  .volley-header-actions a {
+    overflow: hidden;
+    min-width: 0;
+    max-width: calc(100vw - 112px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .volley-header-link {
+    min-height: 34px;
+    padding: 0 10px;
   }
 
   .volley-hero,
