@@ -238,6 +238,8 @@ h3 {
 }
 
 .hero-panel {
+  position: relative;
+  overflow: hidden;
   align-self: end;
   border: 1px solid rgba(23, 23, 23, 0.12);
   border-radius: 8px;
@@ -245,6 +247,31 @@ h3 {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
   box-shadow: 0 24px 80px rgba(23, 23, 23, 0.1);
+}
+
+.verse-reveal > * {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.verse-reveal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(100deg, rgba(23, 23, 23, 0.96), rgba(54, 42, 31, 0.94));
+  transform: translateX(0);
+  transition: transform 680ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.verse-reveal.is-revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.verse-reveal.is-revealed::after {
+  transform: translateX(102%);
 }
 
 .hero-panel span {
@@ -289,6 +316,22 @@ cite {
   width: fit-content;
   color: var(--clay);
   font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verse-reveal > *,
+  .verse-reveal::after {
+    transition: none;
+  }
+
+  .verse-reveal::after {
+    display: none;
+  }
+
+  .verse-reveal > * {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .section {

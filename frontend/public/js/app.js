@@ -698,6 +698,8 @@ function renderBooks() {
 
 async function loadVerse() {
   if (!$("#dailyVerse")) return;
+  const versePanel = document.querySelector(".verse-reveal");
+  versePanel?.classList.remove("is-revealed");
   try {
     const data = await fetch("/api/verse").then((res) => res.json());
     $("#dailyVerse").textContent = data.verse[lang] || data.verse.ro;
@@ -706,6 +708,10 @@ async function loadVerse() {
     $("#dailyVerse").textContent = lang === "ro" ? "Domnul este Păstorul meu." : "El Señor es mi pastor.";
     $("#dailyVerseRef").textContent = "Psalmul 23:1";
   }
+  window.setTimeout(() => {
+    versePanel?.classList.remove("is-loading");
+    versePanel?.classList.add("is-revealed");
+  }, 120);
 }
 
 async function loadVideos() {
