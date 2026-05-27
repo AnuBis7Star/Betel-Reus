@@ -308,6 +308,11 @@ cite {
   gap: 12px;
 }
 
+.program-column {
+  display: grid;
+  gap: 16px;
+}
+
 .schedule-grid article,
 .contact-box,
 .book-form,
@@ -326,6 +331,66 @@ cite {
 
 .schedule-grid article strong {
   grid-row: 1 / span 2;
+}
+
+.event-card {
+  border-radius: 8px;
+}
+
+.volley-event-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 0.42fr);
+  gap: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 210, 29, 0.22);
+  padding: clamp(18px, 3vw, 26px);
+  background:
+    linear-gradient(135deg, rgba(127, 9, 11, 0.98), rgba(28, 7, 9, 0.96)),
+    #7f090b;
+  color: #fff6e8;
+}
+
+.volley-event-card .eyebrow {
+  margin-bottom: 8px;
+  color: #ffd21d;
+}
+
+.volley-event-card h3 {
+  margin-bottom: 10px;
+  color: #fff6e8;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  line-height: 0.98;
+}
+
+.volley-event-card p {
+  margin: 0 0 12px;
+  color: rgba(255, 246, 232, 0.78);
+}
+
+.volley-event-card strong {
+  display: block;
+  margin-bottom: 16px;
+  color: #ffd21d;
+  font-size: 0.98rem;
+}
+
+.volley-event-card img {
+  align-self: end;
+  width: 100%;
+  max-height: 170px;
+  object-fit: contain;
+}
+
+.volley-event-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  border-radius: 999px;
+  padding: 0 16px;
+  background: #ffd21d;
+  color: #160608;
+  font-weight: 950;
 }
 
 .schedule-grid span,
@@ -485,6 +550,49 @@ cite {
   line-height: 1;
 }
 
+.admin-module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-module-card {
+  display: grid;
+  gap: 12px;
+  min-height: 210px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  background: var(--white);
+}
+
+.admin-module-card span {
+  color: var(--clay);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-module-card strong {
+  max-width: 14ch;
+  font-size: clamp(1.75rem, 3vw, 3rem);
+  line-height: 0.98;
+}
+
+.admin-module-card small {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.admin-module-card:not(.is-disabled):hover {
+  border-color: var(--ink);
+}
+
+.admin-module-card.is-disabled {
+  opacity: 0.58;
+}
+
 .admin-grid {
   display: grid;
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
@@ -573,6 +681,81 @@ cite {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
   gap: 18px;
   margin-top: 18px;
+}
+
+.volley-admin-panel {
+  grid-column: 1 / -1;
+}
+
+.volley-admin-table {
+  min-width: 1080px;
+}
+
+.volley-admin-table input,
+.volley-admin-table select,
+.volley-admin-table textarea {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--white);
+}
+
+.volley-admin-table textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+
+.volley-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  border-radius: 999px;
+  padding: 0 10px;
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.volley-status.approved {
+  background: #dcebd8;
+  color: #304d2b;
+}
+
+.volley-status.rejected {
+  background: #f0d7d0;
+  color: #773327;
+}
+
+.volley-teams {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.volley-teams article {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  padding: 18px;
+  background: rgba(22, 6, 8, 0.38);
+}
+
+.volley-teams h3 {
+  margin: 0;
+  color: var(--volley-cream);
+  font-size: 1.6rem;
+  overflow-wrap: normal;
+}
+
+.volley-teams span,
+.volley-teams small {
+  color: rgba(255, 246, 232, 0.68);
+  font-weight: 800;
 }
 
 .reservations-list,
@@ -1102,6 +1285,505 @@ footer img {
   object-fit: contain;
 }
 
+.volley-page {
+  --volley-red: #7f090b;
+  --volley-deep: #160608;
+  --volley-yellow: #ffd21d;
+  --volley-cream: #fff6e8;
+  --volley-blue: #173765;
+  --volley-pink: #f05e68;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 210, 29, 0.16), transparent 24%),
+    radial-gradient(circle at 80% 22%, rgba(240, 94, 104, 0.18), transparent 25%),
+    linear-gradient(135deg, #65080a 0%, #9b0d12 48%, #470406 100%);
+  color: var(--volley-cream);
+}
+
+.volley-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 72px;
+  padding: 14px clamp(18px, 4vw, 54px);
+  border-bottom: 1px solid rgba(255, 246, 232, 0.16);
+  background: rgba(22, 6, 8, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.volley-brand,
+.volley-header-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--volley-cream);
+  font-weight: 900;
+}
+
+.volley-brand {
+  gap: 10px;
+  letter-spacing: 0.02em;
+}
+
+.volley-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.volley-brand img,
+.volley-footer img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.volley-header-link {
+  min-height: 40px;
+  border: 1px solid rgba(255, 246, 232, 0.28);
+  border-radius: 999px;
+  padding: 0 16px;
+  background: rgba(255, 246, 232, 0.08);
+  font: inherit;
+}
+
+.volley-hero,
+.volley-section {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+  scroll-margin-top: 92px;
+}
+
+.volley-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(420px, 560px);
+  gap: clamp(28px, 5vw, 70px);
+  align-items: center;
+  min-height: calc(100vh - 72px);
+  padding: clamp(42px, 7vw, 86px) 0;
+}
+
+.volley-hero-copy {
+  display: grid;
+  gap: 22px;
+}
+
+.volley-kicker {
+  margin: 0;
+  color: var(--volley-yellow);
+  font-size: 0.86rem;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.volley-hero h1,
+.volley-section h2 {
+  margin: 0;
+  max-width: 760px;
+  color: var(--volley-cream);
+  font-weight: 1000;
+  line-height: 0.92;
+  overflow-wrap: normal;
+  text-wrap: balance;
+  word-break: normal;
+}
+
+.volley-hero h1 {
+  display: grid;
+  gap: 4px;
+  font-size: clamp(3.4rem, 7.1vw, 6.25rem);
+}
+
+.volley-hero h1 span {
+  display: block;
+}
+
+.volley-section h2 {
+  font-size: clamp(2.55rem, 4.8vw, 4.8rem);
+}
+
+.volley-hero p:not(.volley-kicker),
+.volley-section p {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(255, 246, 232, 0.84);
+  font-size: clamp(1.08rem, 2vw, 1.32rem);
+  line-height: 1.55;
+}
+
+.volley-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.volley-button,
+.google-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  border-radius: 999px;
+  padding: 0 22px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.volley-button.primary {
+  border: 2px solid var(--volley-yellow);
+  background: var(--volley-yellow);
+  color: var(--volley-deep);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
+}
+
+.volley-button.secondary {
+  border: 1px solid rgba(255, 246, 232, 0.34);
+  background: rgba(255, 246, 232, 0.1);
+  color: var(--volley-cream);
+}
+
+.volley-poster {
+  position: relative;
+  aspect-ratio: 112 / 76;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: visible;
+}
+
+.volley-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.volley-section {
+  display: grid;
+  gap: 28px;
+  padding: clamp(48px, 7vw, 86px) 0;
+  border-top: 1px solid rgba(255, 246, 232, 0.16);
+}
+
+.volley-info,
+.volley-registration {
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  align-items: start;
+}
+
+.volley-registration h2 {
+  max-width: 620px;
+  font-size: clamp(2.5rem, 4.3vw, 4.2rem);
+  line-height: 0.96;
+}
+
+.volley-facts,
+.volley-rule-list,
+.volley-regulation-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.volley-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.volley-facts article,
+.volley-rule-list article,
+.volley-regulation-grid article,
+.volley-form {
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  background: rgba(22, 6, 8, 0.38);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.volley-facts article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.volley-facts span {
+  color: rgba(255, 246, 232, 0.64);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.volley-facts strong {
+  color: var(--volley-cream);
+  font-size: 1.25rem;
+}
+
+.volley-rule-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.volley-rule-list article,
+.volley-regulation-grid article {
+  padding: 22px;
+}
+
+.volley-rule-list h3,
+.volley-regulation-grid h3 {
+  margin: 0 0 10px;
+  color: var(--volley-yellow);
+  font-size: 1.45rem;
+}
+
+.volley-regulation-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.volley-form {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.volley-hidden-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.volley-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.volley-form span,
+.volley-field-heading span {
+  color: rgba(255, 246, 232, 0.72);
+  font-weight: 900;
+}
+
+.volley-form input,
+.volley-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 246, 232, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 246, 232, 0.96);
+  color: var(--volley-deep);
+}
+
+.volley-form textarea {
+  min-height: 120px;
+}
+
+.volley-players-field {
+  display: grid;
+  gap: 12px;
+}
+
+.volley-field-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.volley-field-heading small {
+  color: rgba(255, 246, 232, 0.58);
+  font-weight: 800;
+}
+
+.volley-player-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.volley-player-card {
+  position: relative;
+  border: 1px solid rgba(255, 246, 232, 0.18);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 246, 232, 0.08);
+}
+
+.volley-player-card input {
+  min-height: 44px;
+}
+
+.volley-remove-player {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 246, 232, 0.72);
+  font-size: 1.15rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.volley-remove-player:hover {
+  color: var(--volley-cream);
+}
+
+.volley-add-player {
+  justify-self: start;
+  min-height: 44px;
+  border: 1px solid rgba(255, 246, 232, 0.28);
+  border-radius: 999px;
+  padding: 0 16px;
+  background: rgba(255, 246, 232, 0.12);
+  color: var(--volley-cream);
+  font-weight: 950;
+}
+
+.google-button {
+  width: 100%;
+  border: 1px solid rgba(255, 246, 232, 0.24);
+  background: rgba(255, 246, 232, 0.12);
+  color: rgba(255, 246, 232, 0.68);
+}
+
+.google-button span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--volley-cream);
+  color: var(--volley-blue);
+}
+
+.volley-form-note {
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 246, 232, 0.08);
+  color: rgba(255, 246, 232, 0.78);
+  font-size: 0.92rem !important;
+  font-weight: 850;
+}
+
+.volley-form-note.is-loading {
+  border-color: rgba(255, 210, 29, 0.4);
+  background: rgba(255, 210, 29, 0.12);
+  color: var(--volley-yellow);
+}
+
+.volley-form-note.is-success {
+  border-color: rgba(76, 175, 80, 0.52);
+  background: rgba(76, 175, 80, 0.18);
+  color: #d8ffd9;
+}
+
+.volley-form-note.is-error {
+  border-color: rgba(240, 94, 104, 0.58);
+  background: rgba(240, 94, 104, 0.16);
+  color: #ffd5d8;
+}
+
+.volley-legal-note {
+  margin: 0;
+  max-width: none !important;
+  color: rgba(255, 246, 232, 0.58) !important;
+  font-size: 0.78rem !important;
+  line-height: 1.5 !important;
+}
+
+.volley-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 246, 232, 0.16);
+  color: rgba(255, 246, 232, 0.72);
+}
+
+@media (max-width: 900px) {
+  .volley-header {
+    position: static;
+  }
+
+  .volley-hero,
+  .volley-info,
+  .volley-registration,
+  .volley-rule-list,
+  .volley-regulation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-hero {
+    min-height: auto;
+  }
+
+  .volley-poster {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .volley-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .volley-hero,
+  .volley-section {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .volley-hero h1 {
+    font-size: clamp(2.9rem, 13vw, 4.25rem);
+  }
+
+  .volley-section h2,
+  .volley-registration h2 {
+    font-size: clamp(2.35rem, 10vw, 3.35rem);
+    line-height: 1;
+  }
+
+  .volley-actions,
+  .volley-button {
+    width: 100%;
+  }
+
+  .volley-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-player-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-field-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .volley-teams {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-poster {
+    min-height: 0;
+  }
+}
+
 @media (max-width: 860px) {
   .site-header {
     display: flex;
@@ -1211,6 +1893,7 @@ footer img {
   .split,
   .contact-section,
   .library-layout,
+  .admin-module-grid,
   .admin-grid,
   .admin-bottom {
     grid-template-columns: 1fr;
@@ -1263,6 +1946,16 @@ footer img {
 
   .schedule-grid article strong {
     grid-row: auto;
+  }
+
+  .volley-event-card {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-event-card img {
+    max-height: 150px;
+    justify-self: end;
+    width: min(220px, 70%);
   }
 
   .book-actions {

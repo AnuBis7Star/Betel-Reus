@@ -42,6 +42,7 @@ function clientIp(req) {
 function rateProfile(req, url) {
   const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS || 60000);
   if (url.pathname.startsWith("/api/admin/")) return { name: "admin", limit: Number(process.env.ADMIN_RATE_LIMIT_MAX || 120), windowMs };
+  if (url.pathname === "/api/volley/registrations") return { name: "volley", limit: Number(process.env.VOLLEY_RATE_LIMIT_MAX || 6), windowMs };
   if (url.pathname === "/api/orders") return { name: "orders", limit: Number(process.env.ORDER_RATE_LIMIT_MAX || 12), windowMs };
   return { name: "api", limit: Number(process.env.RATE_LIMIT_MAX || 240), windowMs };
 }
