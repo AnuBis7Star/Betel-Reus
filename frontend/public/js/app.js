@@ -656,6 +656,60 @@ function applyLanguage() {
   updateLiveCountdown();
 }
 
+let revealObserver = null;
+
+function prepareRevealElements(root = document) {
+  if (!revealObserver) return;
+  const selectors = [
+    ".section-heading",
+    ".split > div",
+    ".schedule-grid article",
+    ".event-card",
+    ".faq-grid article",
+    ".social-band > div",
+    ".social-links a",
+    ".about-block",
+    ".contact-form",
+    ".contact-box",
+    ".map-panel",
+    ".video-card"
+  ];
+
+  root.querySelectorAll(selectors.join(",")).forEach((element, index) => {
+    if (element.classList.contains("reveal-on-scroll")) return;
+    element.classList.add("reveal-on-scroll");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
+    revealObserver.observe(element);
+  });
+}
+
+function setupLandingEffects() {
+  if (!document.querySelector(".hero")) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".hero-copy > *, .hero-panel").forEach((element) => {
+      element.style.animation = "none";
+    });
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".section-heading, .split > div, .schedule-grid article, .event-card, .faq-grid article, .social-band > div, .social-links a, .about-block, .contact-form, .contact-box, .map-panel, .video-card").forEach((element) => {
+      element.classList.add("reveal-on-scroll", "is-visible");
+    });
+    return;
+  }
+
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      revealObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+
+  prepareRevealElements();
+}
+
 function renderBooks() {
   if (!$("#books")) return;
   const query = $("#bookSearch").value.toLowerCase();
@@ -747,6 +801,7 @@ function renderVideos(videos) {
     </div>
   `;
   startVideoRotation();
+  prepareRevealElements($("#videoRail"));
 }
 
 function startHeroRotation() {
@@ -1682,6 +1737,7 @@ startHeroRotation();
 setupNavigationMenu();
 setupLibrary();
 setupAdmin();
+setupLandingEffects();
 applyLanguage();
 loadVerse();
 loadVideos();
