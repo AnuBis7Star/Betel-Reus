@@ -1316,7 +1316,8 @@ footer img {
 }
 
 .volley-brand,
-.volley-header-link {
+.volley-header-link,
+.volley-nav-link {
   display: inline-flex;
   align-items: center;
   color: var(--volley-cream);
@@ -1333,6 +1334,27 @@ footer img {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
+}
+
+.volley-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.volley-nav-link {
+  min-height: 36px;
+  border-radius: 999px;
+  padding: 0 12px;
+  color: rgba(255, 246, 232, 0.8);
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.volley-nav-link:hover {
+  background: rgba(255, 246, 232, 0.1);
+  color: var(--volley-cream);
 }
 
 .volley-brand img,
@@ -1739,6 +1761,12 @@ footer img {
   .volley-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .volley-nav,
+  .volley-header-actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .volley-hero,
