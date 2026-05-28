@@ -6,7 +6,7 @@ const teamsContainer = document.querySelector("#volleyTeams");
 const playerGrid = document.querySelector("#volleyPlayerGrid");
 const addPlayerButton = document.querySelector("#addVolleyPlayer");
 const colorGrid = document.querySelector("#volleyColorGrid");
-const colorSelect = document.querySelector("#shirtColorSelect");
+const extraColorGrid = document.querySelector("#volleyExtraColorGrid");
 const colorSummary = document.querySelector("#volleyColorSummary");
 const minimumPlayers = 6;
 const teamNameCache = new Set();
@@ -74,7 +74,6 @@ const translations = {
     volleyShirtColorLimit: "Maximum 5 echipe pe culoare",
     volleyShirtColorHelp: "Toți jucătorii echipei ar trebui să vină, pe cât posibil, cu tricou de aceeași culoare. Culorile complete apar dezactivate.",
     volleyMoreColorsLabel: "Mai multe culori",
-    volleySelectColorPlaceholder: "Alege o culoare",
     volleyNoColorSelected: "Alege culoarea tricoului echipei.",
     volleyColorSelected: "Ai ales {color}. Mai sunt {remaining} loc(uri) pentru această culoare.",
     volleyColorFull: "Culoarea {color} este completă.",
@@ -168,7 +167,6 @@ const translations = {
     volleyShirtColorLimit: "Máximo 5 equipos por color",
     volleyShirtColorHelp: "Todos los jugadores del equipo deberían venir, en la medida de lo posible, con una camiseta del mismo color. Los colores completos aparecen deshabilitados.",
     volleyMoreColorsLabel: "Más colores",
-    volleySelectColorPlaceholder: "Elige un color",
     volleyNoColorSelected: "Elige el color de camiseta del equipo.",
     volleyColorSelected: "Has escogido {color}. Quedan {remaining} plaza(s) para este color.",
     volleyColorFull: "El color {color} está completo.",
@@ -314,7 +312,6 @@ function selectedColor() {
 function setSelectedColor(colorId) {
   const color = shirtColors.find((item) => item.id === colorId);
   selectedShirtColor = color && !color.full ? color.id : "";
-  if (colorSelect) colorSelect.value = selectedShirtColor;
   renderColorPicker();
 }
 
@@ -332,29 +329,27 @@ function renderColorSummary() {
 }
 
 function renderColorPicker() {
-  if (!colorGrid || !colorSelect || !shirtColors.length) return;
+  if (!colorGrid || !extraColorGrid || !shirtColors.length) return;
   const featuredColors = shirtColors.slice(0, 8);
-  colorGrid.innerHTML = featuredColors.map((color) => {
+  const extraColors = shirtColors.slice(8);
+  const colorButton = (color, isCompact = false) => {
     const selected = color.id === selectedShirtColor;
     const label = colorName(color);
     return `
-      <button class="volley-color-option${selected ? " is-selected" : ""}${color.full ? " is-full" : ""}" type="button" data-color="${escapeHtml(color.id)}" ${color.full ? "disabled" : ""}>
+      <button class="volley-color-option${isCompact ? " is-compact" : ""}${selected ? " is-selected" : ""}${color.full ? " is-full" : ""}" type="button" data-color="${escapeHtml(color.id)}" ${color.full ? "disabled" : ""}>
         <span class="volley-color-swatch" style="--shirt-color: ${escapeHtml(color.hex)}"></span>
         <strong>${escapeHtml(label)}</strong>
         <small>${color.full ? tx("volleyColorComplete") : formatTx("volleyColorAvailability", { remaining: color.remaining, capacity: color.capacity })}</small>
       </button>
     `;
-  }).join("");
-  colorSelect.innerHTML = `<option value="">${tx("volleySelectColorPlaceholder")}</option>${shirtColors.map((color) => `
-    <option value="${escapeHtml(color.id)}" ${color.full ? "disabled" : ""} ${color.id === selectedShirtColor ? "selected" : ""}>
-      ${escapeHtml(colorName(color))} - ${color.full ? tx("volleyColorComplete") : formatTx("volleyColorAvailability", { remaining: color.remaining, capacity: color.capacity })}
-    </option>
-  `).join("")}`;
+  };
+  colorGrid.innerHTML = featuredColors.map((color) => colorButton(color)).join("");
+  extraColorGrid.innerHTML = extraColors.map((color) => colorButton(color, true)).join("");
   renderColorSummary();
 }
 
 async function loadColorAvailability() {
-  if (!colorGrid || !colorSelect) return;
+  if (!colorGrid || !extraColorGrid) return;
   try {
     const data = await apiRequest("/api/volley/colors");
     shirtColors = data.colors || [];
@@ -526,8 +521,10 @@ colorGrid?.addEventListener("click", (event) => {
   setSelectedColor(button.dataset.color);
 });
 
-colorSelect?.addEventListener("change", () => {
-  setSelectedColor(colorSelect.value);
+extraColorGrid?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-color]");
+  if (!button || button.disabled) return;
+  setSelectedColor(button.dataset.color);
 });
 
 addPlayerButton?.addEventListener("click", () => {

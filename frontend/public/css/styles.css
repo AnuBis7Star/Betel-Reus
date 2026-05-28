@@ -1918,19 +1918,30 @@ footer img {
   box-shadow: 0 0 0 1px rgba(22, 6, 8, 0.2);
 }
 
-.volley-color-select {
+.volley-more-colors {
   display: grid;
   gap: 8px;
 }
 
-.volley-color-select select {
-  width: 100%;
-  min-height: 48px;
-  border: 1px solid rgba(255, 246, 232, 0.2);
-  border-radius: 8px;
-  padding: 12px;
-  background: rgba(255, 246, 232, 0.96);
-  color: var(--volley-deep);
+.volley-extra-color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.volley-color-option.is-compact {
+  grid-template-columns: 32px minmax(0, 1fr);
+  min-height: 70px;
+  padding: 10px;
+}
+
+.volley-color-option.is-compact .volley-color-swatch {
+  width: 30px;
+  height: 30px;
+}
+
+.volley-color-option.is-compact small {
+  display: none;
 }
 
 .volley-color-summary {
@@ -2074,7 +2085,8 @@ footer img {
   .volley-registration,
   .volley-rule-list,
   .volley-regulation-grid,
-  .volley-color-grid {
+  .volley-color-grid,
+  .volley-extra-color-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2160,6 +2172,10 @@ footer img {
 
   .volley-player-grid {
     grid-template-columns: 1fr;
+  }
+
+  .volley-extra-color-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .volley-field-heading {

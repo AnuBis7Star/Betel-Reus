@@ -13,7 +13,7 @@ const immutableTypes = new Set([".png", ".jpg", ".jpeg", ".svg"]);
 function cacheControl(ext) {
   if (ext === ".html") return "no-cache";
   if (immutableTypes.has(ext)) return "public, max-age=31536000, immutable";
-  if (ext === ".css" || ext === ".js") return "public, max-age=3600, must-revalidate";
+  if (ext === ".css" || ext === ".js") return "no-cache";
   return "public, max-age=300";
 }
 
