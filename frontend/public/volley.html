@@ -143,6 +143,19 @@
             <span data-i18n="volleyTeamNameLabel">Numele echipei</span>
             <input name="team" placeholder="Numele echipei" data-i18n-placeholder="volleyTeamNamePlaceholder" />
           </label>
+          <div class="volley-color-field">
+            <div class="volley-field-heading">
+              <span data-i18n="volleyShirtColorLabel">Culoarea tricoului</span>
+              <small data-i18n="volleyShirtColorLimit">Maximum 5 echipe pe culoare</small>
+            </div>
+            <p class="volley-color-help" data-i18n="volleyShirtColorHelp">Toți jucătorii echipei ar trebui să vină, pe cât posibil, cu tricou de aceeași culoare. Culorile complete apar dezactivate.</p>
+            <div class="volley-color-grid" id="volleyColorGrid"></div>
+            <label class="volley-color-select">
+              <span data-i18n="volleyMoreColorsLabel">Mai multe culori</span>
+              <select name="shirtColor" id="shirtColorSelect" data-i18n-aria-label="volleyShirtColorLabel"></select>
+            </label>
+            <p class="volley-color-summary" id="volleyColorSummary" data-i18n="volleyNoColorSelected">Alege culoarea tricoului echipei.</p>
+          </div>
           <div class="volley-players-field">
             <div class="volley-field-heading">
               <span data-i18n="volleyPlayersLabel">Jucători</span>

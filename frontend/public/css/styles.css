@@ -1847,6 +1847,99 @@ footer img {
   gap: 12px;
 }
 
+.volley-color-field {
+  display: grid;
+  gap: 14px;
+}
+
+.volley-color-help {
+  margin: 0;
+  border: 1px solid rgba(255, 210, 29, 0.28);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 210, 29, 0.08);
+  color: rgba(255, 246, 232, 0.82) !important;
+  font-size: 0.98rem !important;
+  line-height: 1.55 !important;
+}
+
+.volley-color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.volley-color-option {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 4px 12px;
+  min-height: 94px;
+  align-items: center;
+  border: 1px solid rgba(255, 246, 232, 0.22);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 246, 232, 0.08);
+  color: var(--volley-cream);
+  text-align: left;
+}
+
+.volley-color-option strong,
+.volley-color-option small {
+  min-width: 0;
+}
+
+.volley-color-option strong {
+  font-size: 1.08rem;
+}
+
+.volley-color-option small {
+  color: rgba(255, 246, 232, 0.68);
+  font-weight: 850;
+}
+
+.volley-color-option.is-selected {
+  border-color: var(--volley-yellow);
+  background: rgba(255, 210, 29, 0.12);
+  box-shadow: 0 0 0 1px var(--volley-yellow) inset;
+}
+
+.volley-color-option.is-full {
+  opacity: 0.45;
+}
+
+.volley-color-swatch {
+  grid-row: span 2;
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(255, 246, 232, 0.72);
+  border-radius: 50%;
+  background: var(--shirt-color);
+  box-shadow: 0 0 0 1px rgba(22, 6, 8, 0.2);
+}
+
+.volley-color-select {
+  display: grid;
+  gap: 8px;
+}
+
+.volley-color-select select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 246, 232, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 246, 232, 0.96);
+  color: var(--volley-deep);
+}
+
+.volley-color-summary {
+  margin: 0;
+  color: rgba(255, 246, 232, 0.78) !important;
+  font-size: 0.94rem !important;
+  font-weight: 900 !important;
+}
+
 .volley-field-heading {
   display: flex;
   align-items: baseline;
@@ -1980,7 +2073,8 @@ footer img {
   .volley-info,
   .volley-registration,
   .volley-rule-list,
-  .volley-regulation-grid {
+  .volley-regulation-grid,
+  .volley-color-grid {
     grid-template-columns: 1fr;
   }
 

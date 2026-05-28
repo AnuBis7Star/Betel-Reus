@@ -202,3 +202,13 @@ Este documento registra lo que ya esta confirmado, implementado o resuelto. Si a
 - Se anadio compresion gzip para HTML, CSS, JS, JSON y SVG servidos por Node.
 - Se anadio cache en memoria para YouTube RSS y evitar pedir el feed externo en cada request.
 - Se redujo una fuente de forced reflow en el carrusel de videos evitando leer `scrollWidth` en cada frame.
+
+
+12. Turneu volley: colores de camiseta
+--------------------------------------
+- Se anadio seleccion de color de camiseta en el formulario publico del torneo.
+- Se anadio desplegable con mas colores ademas de los colores principales.
+- Se anadio limite de 5 equipos por color.
+- Se anadio columna `shirt_color` para `volley_registrations`.
+- Se anadio endpoint de disponibilidad de colores para bloquear colores completos.
+- Se anadio gestion del color desde el panel admin de volley.

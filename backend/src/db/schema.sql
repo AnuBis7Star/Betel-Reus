@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS volley_registrations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   team_name TEXT NOT NULL,
   representative_name TEXT NOT NULL,
+  shirt_color TEXT NOT NULL DEFAULT '',
   players JSONB NOT NULL DEFAULT '[]'::jsonb,
   notes TEXT NOT NULL DEFAULT '',
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
@@ -60,7 +61,9 @@ CREATE INDEX IF NOT EXISTS idx_books_active_title ON books(active, title);
 CREATE INDEX IF NOT EXISTS idx_orders_status_created_at ON orders(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
+ALTER TABLE volley_registrations ADD COLUMN IF NOT EXISTS shirt_color TEXT NOT NULL DEFAULT '';
 CREATE INDEX IF NOT EXISTS idx_volley_registrations_status_created_at ON volley_registrations(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_volley_registrations_shirt_color_status ON volley_registrations(shirt_color, status);
 
 INSERT INTO books (title, author, category, language, price, stock, reserved)
 VALUES

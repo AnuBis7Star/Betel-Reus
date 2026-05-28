@@ -2,6 +2,7 @@ import {
   createVolleyRegistration,
   deleteVolleyRegistration,
   listApprovedVolleyTeams,
+  listVolleyColorAvailability,
   listVolleyRegistrations,
   updateVolleyRegistration
 } from "../services/volley.service.mjs";
@@ -13,6 +14,10 @@ async function createVolleyRegistrationController(req, res) {
 
 async function getApprovedVolleyTeams(req, res) {
   return sendJson(res, 200, { teams: await listApprovedVolleyTeams() });
+}
+
+async function getVolleyColors(req, res) {
+  return sendJson(res, 200, { colors: await listVolleyColorAvailability() });
 }
 
 async function getAdminVolleyRegistrations(req, res) {
@@ -32,5 +37,6 @@ export {
   deleteAdminVolleyRegistration,
   getAdminVolleyRegistrations,
   getApprovedVolleyTeams,
+  getVolleyColors,
   updateAdminVolleyRegistration
 };
