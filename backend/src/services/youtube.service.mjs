@@ -2,6 +2,8 @@ import { json } from "../utils/response.mjs";
 import { tagValue } from "../utils/helpers.mjs";
 
 const channelId = "UC6dl7mk7XE_VMqBNZqWOjig";
+const cacheMs = Number(process.env.YOUTUBE_CACHE_MS || 10 * 60 * 1000);
+let youtubeCache = { expiresAt: 0, data: null };
 
 function parseVideos(xml) {
   const entries = xml.match(/<entry>[\s\S]*?<\/entry>/g) ?? [];
@@ -25,7 +27,10 @@ async function youtubeResponse() {
 }
 
 async function getYoutubeVideos() {
-  return JSON.parse(await youtubeResponse());
+  if (youtubeCache.data && youtubeCache.expiresAt > Date.now()) return youtubeCache.data;
+  const data = JSON.parse(await youtubeResponse());
+  youtubeCache = { data, expiresAt: Date.now() + cacheMs };
+  return data;
 }
 
 export { channelId, getYoutubeVideos, parseVideos, youtubeResponse };

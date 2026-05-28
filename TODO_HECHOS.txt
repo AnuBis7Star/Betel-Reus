@@ -188,3 +188,17 @@ Este documento registra lo que ya esta confirmado, implementado o resuelto. Si a
 - Se anadio `frontend/public/js/api.js` como cliente API reutilizable.
 - Se escapo contenido dinamico renderizado desde DB/YouTube para reducir riesgo de XSS.
 - Se anadio `.env.example`, `backend/.env.example` y `PRODUCTION.md`.
+
+
+11. Optimizaciones Hostinger resueltas
+--------------------------------------
+- Se hizo visible desde HTML la primera imagen LCP del hero con `preload` y `fetchpriority`.
+- Se dejo la primera imagen del hero definida antes de que arranque JavaScript para evitar descubrimiento tardio.
+- Se anadieron dimensiones explicitas `width` y `height` a las imagenes del HTML.
+- Se anadieron dimensiones a las miniaturas de YouTube generadas por JavaScript.
+- Se crearon versiones reducidas para logos, iconos y grafico del torneo de volley.
+- Se sustituyo el grafico grande de volley por una version de 900 px en landing y pagina de volley.
+- Se anadieron cabeceras de cache para assets estaticos.
+- Se anadio compresion gzip para HTML, CSS, JS, JSON y SVG servidos por Node.
+- Se anadio cache en memoria para YouTube RSS y evitar pedir el feed externo en cada request.
+- Se redujo una fuente de forced reflow en el carrusel de videos evitando leer `scrollWidth` en cada frame.
