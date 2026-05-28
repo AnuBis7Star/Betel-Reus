@@ -63,7 +63,6 @@ Pendiente recomendado:
 
 Opciones razonables:
 
-- Hostinger Node.js Web App, configurado segun `HOSTINGER_DEPLOY.md`.
 - Render paid web service + Render PostgreSQL.
 - Railway.
 - Fly.io + PostgreSQL gestionado externo.

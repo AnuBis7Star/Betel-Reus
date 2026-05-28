@@ -91,7 +91,6 @@ Betel-Reus/
 ├── server.mjs
 ├── package.json
 ├── DATABASE_SETUP.md
-├── HOSTINGER_DEPLOY.md
 ├── PRODUCTION.md
 ├── TODO.txt
 └── TODO_HECHOS.txt
@@ -106,9 +105,3 @@ La raíz mantiene `npm run dev` y `npm start` para desarrollo y Render. Internam
 - `backend/src/config/`: centraliza PostgreSQL y el almacenamiento en memoria.
 - `backend/src/utils/`: respuestas HTTP, estáticos y helpers compartidos.
 - `frontend/public/`: contiene las vistas HTML, estilos, JS del navegador y assets.
-
-## Despliegue En Hostinger
-
-Este proyecto debe desplegarse como **Node.js Web App**, no como hosting estatico copiando archivos a `public_html`.
-
-La guia con los comandos, variables de entorno y comprobaciones esta en [HOSTINGER_DEPLOY.md](HOSTINGER_DEPLOY.md).
