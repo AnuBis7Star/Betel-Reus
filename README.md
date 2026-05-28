@@ -92,7 +92,6 @@ Betel-Reus/
 ├── package.json
 ├── DATABASE_SETUP.md
 ├── HOSTINGER_DEPLOY.md
-├── OPENLITESPEED_VPS.md
 ├── PRODUCTION.md
 ├── TODO.txt
 └── TODO_HECHOS.txt
@@ -113,5 +112,3 @@ La raíz mantiene `npm run dev` y `npm start` para desarrollo y Render. Internam
 Este proyecto debe desplegarse como **Node.js Web App**, no como hosting estatico copiando archivos a `public_html`.
 
 La guia con los comandos, variables de entorno y comprobaciones esta en [HOSTINGER_DEPLOY.md](HOSTINGER_DEPLOY.md).
-
-Para VPS con OpenLiteSpeed, usa [OPENLITESPEED_VPS.md](OPENLITESPEED_VPS.md).

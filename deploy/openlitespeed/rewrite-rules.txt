@@ -1,4 +1,0 @@
-# OpenLiteSpeed Virtual Host > Rewrite > Rewrite Rules
-# Requires a Web Server External App named betel_node pointing to 127.0.0.1:3000.
-
-RewriteRule ^(.*)$ HTTP://betel_node/$1 [P,L,E=PROXY-HOST:betelreus.com]
