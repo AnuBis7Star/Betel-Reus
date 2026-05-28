@@ -64,6 +64,7 @@ Pendiente recomendado:
 Opciones razonables:
 
 - Hostinger Node.js Web App, configurado segun `HOSTINGER_DEPLOY.md`.
+- Hostinger VPS con OpenLiteSpeed como reverse proxy, configurado segun `OPENLITESPEED_VPS.md`.
 - Render paid web service + Render PostgreSQL.
 - Railway.
 - Fly.io + PostgreSQL gestionado externo.
