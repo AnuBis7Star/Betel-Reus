@@ -800,7 +800,7 @@ function renderVideos(videos) {
   const selectedVideos = videos.slice(0, 30);
   const videoCards = selectedVideos.map((video) => `
     <a class="video-card" href="${escapeAttribute(video.url)}" target="_blank" rel="noreferrer" draggable="false">
-      <img src="${escapeAttribute(video.thumbnail)}" alt="${escapeAttribute(video.title)}" loading="lazy" draggable="false" />
+      <img src="${escapeAttribute(video.thumbnail)}" width="480" height="360" alt="${escapeAttribute(video.title)}" loading="lazy" draggable="false" />
       <span>${video.published ? new Date(video.published).toLocaleDateString(lang === "ro" ? "ro-RO" : "es-ES") : "YouTube"}</span>
       <h3>${escapeHtml(video.title)}</h3>
     </a>
@@ -841,9 +841,14 @@ function startVideoRotation() {
   let startOffset = 0;
   let offset = 0;
   let lastTime = 0;
+  let halfWidth = 0;
+
+  const updateWidth = () => {
+    halfWidth = track.scrollWidth / 2;
+  };
 
   const normalizeOffset = () => {
-    const halfWidth = track.scrollWidth / 2;
+    if (halfWidth <= 0) updateWidth();
     if (halfWidth <= 0) return;
     while (offset <= -halfWidth) offset += halfWidth;
     while (offset > 0) offset -= halfWidth;
@@ -937,6 +942,8 @@ function startVideoRotation() {
     window.open(link.href, "_blank", "noopener,noreferrer");
   }, true);
 
+  updateWidth();
+  window.addEventListener("resize", updateWidth, { passive: true });
   paint();
   videoRotationFrame = requestAnimationFrame(tick);
 }

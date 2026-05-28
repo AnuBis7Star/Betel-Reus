@@ -255,3 +255,17 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
   - Frontend desplegado aparte.
   - Backend como API en subdominio `api`.
   - Autenticacion compartida por dominio seguro.
+
+14. Optimizacion pendiente tras auditoria Hostinger
+---------------------------------------------------
+- Revisar redirects finales en Hostinger:
+  - Elegir dominio canonico `https://betelreus.com` o `https://www.betelreus.com`.
+  - Evitar cadenas largas tipo `http -> https -> www -> no-www`.
+- Revisar latencia del primer documento en Hostinger despues del deploy:
+  - Confirmar que el plan Node responde estable.
+  - Activar compresion/cache/CDN si Hostinger lo permite.
+- Decidir si merece la pena anadir un build de minificacion:
+  - CSS minificado.
+  - JavaScript minificado.
+  - Mantener archivos fuente faciles de editar para voluntarios.
+- Revisar de nuevo Lighthouse/Hostinger despues de desplegar los cambios de performance.

@@ -105,3 +105,9 @@ La raíz mantiene `npm run dev` y `npm start` para desarrollo y Render. Internam
 - `backend/src/config/`: centraliza PostgreSQL y el almacenamiento en memoria.
 - `backend/src/utils/`: respuestas HTTP, estáticos y helpers compartidos.
 - `frontend/public/`: contiene las vistas HTML, estilos, JS del navegador y assets.
+
+## Flujo Seguro De Cambios
+
+`main` se considera producción/live. Los cambios normales deben hacerse en una rama corta y revisarse mediante pull request antes de mezclar.
+
+La guía está en [WEBSITE_WORKFLOW.md](WEBSITE_WORKFLOW.md).
