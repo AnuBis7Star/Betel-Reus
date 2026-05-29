@@ -22,9 +22,9 @@
     </header>
 
     <main>
-      <section class="section admin-page auth-page is-auth-checking" id="adminAuthPage">
+      <section class="section admin-page auth-page is-auth-checking" id="adminAuthPage" data-admin-session-only="true">
         <div class="auth-loading" data-i18n="authChecking">Se încarcă...</div>
-        <div class="library-gate" id="adminGate">
+        <div class="library-gate is-hidden" id="adminGate">
           <p class="eyebrow" data-i18n="adminPrivatePanel">Panou privat</p>
           <h1 data-i18n="adminEventsPageTitle">Evenimente</h1>
           <p data-i18n="adminEventsGateText">Introdu codul privat pentru a gestiona evenimentele de pe pagina principală.</p>

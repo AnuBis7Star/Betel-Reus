@@ -1396,6 +1396,7 @@ async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
 function setupAdmin() {
   if (!$("#adminGate")) return;
   const authPage = $("#adminAuthPage");
+  const sessionOnly = authPage?.dataset.adminSessionOnly === "true";
 
   const expiresAt = Number(sessionStorage.getItem("betel-admin-expires-at") || 0);
   if (currentAdminCode && expiresAt > Date.now()) {
@@ -1410,6 +1411,10 @@ function setupAdmin() {
     sessionStorage.removeItem("betel-admin-code");
     sessionStorage.removeItem("betel-admin-expires-at");
     currentAdminCode = "";
+    if (sessionOnly) {
+      window.location.href = "/admin.html";
+      return;
+    }
     authPage?.classList.remove("is-auth-checking");
   }
 
