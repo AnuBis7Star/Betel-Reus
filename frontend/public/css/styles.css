@@ -1963,7 +1963,7 @@ footer img {
 .volley-extra-color-grid {
   display: flex;
   gap: 10px;
-  width: min(100%, calc(100vw - 72px));
+  width: min(100%, calc(100vw - 72px), 460px);
   min-width: 0;
   max-width: 100%;
   overflow-x: auto;
@@ -1971,11 +1971,27 @@ footer img {
   padding: 4px 0 8px;
   cursor: grab;
   scrollbar-color: rgba(255, 246, 232, 0.35) transparent;
+  scrollbar-width: thin;
+  touch-action: pan-x;
 }
 
 .volley-extra-color-grid.is-dragging {
   cursor: grabbing;
   user-select: none;
+}
+
+.volley-extra-color-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.volley-extra-color-grid::-webkit-scrollbar-track {
+  background: rgba(255, 246, 232, 0.08);
+  border-radius: 999px;
+}
+
+.volley-extra-color-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 246, 232, 0.32);
+  border-radius: 999px;
 }
 
 .volley-color-option.is-compact {
