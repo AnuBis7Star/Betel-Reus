@@ -1597,6 +1597,8 @@ footer img {
   border-bottom: 1px solid rgba(255, 246, 232, 0.16);
   background: rgba(22, 6, 8, 0.72);
   backdrop-filter: blur(18px);
+  transition: transform 0.24s ease, background 0.24s ease;
+  will-change: transform;
 }
 
 .volley-brand,
@@ -2221,6 +2223,7 @@ footer img {
 @media (max-width: 900px) {
   .volley-header {
     position: static;
+    transform: none;
   }
 
   .volley-hero,
@@ -2239,6 +2242,12 @@ footer img {
 
   .volley-poster {
     min-height: 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .volley-header.is-hidden-on-scroll {
+    transform: translateY(-100%);
   }
 }
 

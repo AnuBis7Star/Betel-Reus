@@ -413,6 +413,38 @@ function setupExtraColorScroller() {
   }, true);
 }
 
+function setupVolleyHeaderScroll() {
+  const header = document.querySelector(".volley-header");
+  if (!header) return;
+  const desktopQuery = window.matchMedia("(min-width: 901px)");
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const update = () => {
+    const currentY = Math.max(0, window.scrollY);
+    if (!desktopQuery.matches || currentY < 96) {
+      header.classList.remove("is-hidden-on-scroll");
+    } else if (currentY > lastY + 8) {
+      header.classList.add("is-hidden-on-scroll");
+    } else if (currentY < lastY - 8) {
+      header.classList.remove("is-hidden-on-scroll");
+    }
+    lastY = currentY;
+    ticking = false;
+  };
+
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }, { passive: true });
+
+  desktopQuery.addEventListener?.("change", () => {
+    header.classList.remove("is-hidden-on-scroll");
+    lastY = window.scrollY;
+  });
+}
+
 async function loadColorAvailability() {
   if (!colorGrid || !extraColorGrid) return;
   try {
@@ -612,6 +644,7 @@ resetPlayerGrid();
 setupVolleyEffects();
 applyLanguage();
 setupExtraColorScroller();
+setupVolleyHeaderScroll();
 loadColorAvailability();
 
 document.querySelector("#langToggle")?.addEventListener("click", () => {
