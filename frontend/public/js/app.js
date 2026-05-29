@@ -1,5 +1,8 @@
 import { apiRequest as requestApi } from "./api.js";
 
+const contactEmail = ["contacto", "betelreus.com"].join("@");
+const contactFormMinimumMs = 3000;
+
 const translations = {
   ro: {
     navHome: "Acasă",
@@ -659,7 +662,14 @@ function applyLanguage() {
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
   if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) renderAdmin();
+  setupContactEmailLinks();
   updateLiveCountdown();
+}
+
+function setupContactEmailLinks() {
+  $$("[data-email-link]").forEach((link) => {
+    link.href = `mailto:${contactEmail}`;
+  });
 }
 
 let revealObserver = null;
@@ -1704,15 +1714,21 @@ function updateLiveCountdown() {
 function setupContactForm() {
   const form = $("#contactForm");
   if (!form) return;
+  const formReadyAt = Date.now() + contactFormMinimumMs;
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const data = new FormData(form);
     const name = data.get("name").trim();
     const contact = data.get("contact").trim();
     const message = data.get("message").trim();
+    const website = data.get("website").trim();
+    if (website || Date.now() < formReadyAt) {
+      $("#contactFormMessage").textContent = translations[lang].contactFormSent;
+      return;
+    }
     const subject = encodeURIComponent(`${lang === "ro" ? "Mesaj de pe site" : "Mensaje desde la web"} - ${name}`);
     const body = encodeURIComponent(`${translations[lang].contactFormName}: ${name}\n${translations[lang].contactFormContact}: ${contact}\n\n${translations[lang].contactFormMessage}:\n${message}`);
-    window.location.href = `mailto:contacto@betelreus.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
     $("#contactFormMessage").textContent = translations[lang].contactFormSent;
   });
 }
