@@ -939,6 +939,23 @@ cite {
   overflow-wrap: normal;
 }
 
+.volley-team-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.volley-team-color {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 246, 232, 0.76);
+  border-radius: 50%;
+  background: var(--shirt-color);
+  box-shadow: 0 0 0 1px rgba(22, 6, 8, 0.28);
+}
+
 .volley-teams span,
 .volley-teams small {
   color: rgba(255, 246, 232, 0.68);

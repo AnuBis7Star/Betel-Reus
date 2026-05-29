@@ -225,6 +225,13 @@ function colorById(colorId) {
   return shirtColors.find((color) => color.id === colorId);
 }
 
+function colorSwatch(colorId) {
+  const color = colorById(colorId);
+  if (!color) return "";
+  const label = colorName(color);
+  return `<span class="volley-team-color" style="--shirt-color: ${escapeHtml(color.hex)}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}"></span>`;
+}
+
 function setMessage(text, state = "") {
   if (!message) return;
   message.textContent = text;
@@ -422,10 +429,12 @@ function renderTeams(teams) {
   teams.forEach((team) => teamNameCache.add(normalizeComparable(team.teamName)));
   teamsContainer.innerHTML = teams.map((team) => `
     <article>
-      <span>${team.players.length} ${tx("volleyConfirmedCount")}</span>
+      <div class="volley-team-meta">
+        <span>${team.players.length} ${tx("volleyConfirmedCount")}</span>
+        ${team.shirtColor ? colorSwatch(team.shirtColor) : ""}
+      </div>
       <h3>${escapeHtml(team.teamName)}</h3>
       <p>${tx("volleyRepresentative")}: ${escapeHtml(team.representativeName)}</p>
-      ${team.shirtColor ? `<p>${tx("volleyShirtColorLabel")}: ${escapeHtml(colorName(colorById(team.shirtColor)) || team.shirtColor)}</p>` : ""}
       <small>${team.players.map(escapeHtml).join(", ")}</small>
     </article>
   `).join("") || `<p>${tx("volleyNoTeams")}</p>`;
