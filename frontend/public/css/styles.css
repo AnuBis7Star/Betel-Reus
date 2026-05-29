@@ -1944,6 +1944,7 @@ footer img {
 }
 
 .volley-more-colors {
+  container-type: inline-size;
   display: grid;
   gap: 8px;
   width: 100%;
@@ -1963,7 +1964,8 @@ footer img {
 .volley-extra-color-grid {
   display: flex;
   gap: 10px;
-  width: min(100%, calc(100vw - 72px), 460px);
+  width: 100%;
+  width: 100cqw;
   min-width: 0;
   max-width: 100%;
   overflow-x: auto;
