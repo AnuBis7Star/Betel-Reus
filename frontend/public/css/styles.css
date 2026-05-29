@@ -440,6 +440,12 @@ cite {
   margin-bottom: clamp(18px, 3vw, 34px);
 }
 
+@media (min-width: 861px) {
+  .program-events-column {
+    padding-top: clamp(210px, 14vw, 280px);
+  }
+}
+
 .column-title {
   margin: 0;
   color: var(--ink);
