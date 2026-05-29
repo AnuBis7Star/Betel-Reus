@@ -49,6 +49,8 @@ select {
   border-bottom: 1px solid rgba(23, 23, 23, 0.08);
   background: rgba(251, 250, 247, 0.9);
   backdrop-filter: blur(18px);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
+  will-change: transform;
 }
 
 .brand img {
@@ -1487,6 +1489,9 @@ textarea {
 }
 
 .map-panel {
+  position: relative;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   min-height: 260px;
 }
@@ -1497,6 +1502,23 @@ textarea {
   height: 100%;
   min-height: 260px;
   border: 0;
+}
+
+.map-load-button {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 18px;
+  color: var(--ink);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.map-panel.is-loaded .map-load-button {
+  display: none;
 }
 
 .contact-form {
@@ -2321,6 +2343,7 @@ footer img {
     gap: 10px;
     min-height: auto;
     padding: 10px 12px;
+    transform: none;
   }
 
   .brand {
@@ -2610,6 +2633,32 @@ footer img {
 
   body.cart-open .mobile-cart-backdrop {
     display: block;
+  }
+}
+
+@media (min-width: 861px) {
+  .site-header.is-hidden-on-scroll {
+    transform: translateY(-100%);
+  }
+}
+
+@media (max-width: 700px) {
+  .map-panel:not(.is-loaded) {
+    background:
+      linear-gradient(rgba(251, 250, 247, 0.82), rgba(251, 250, 247, 0.82)),
+      url("/assets/icon-light.png") center / 86px auto no-repeat;
+  }
+
+  .map-panel:not(.is-loaded) .map-load-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
   }
 }
 

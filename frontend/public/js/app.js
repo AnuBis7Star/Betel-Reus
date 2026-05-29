@@ -99,6 +99,7 @@ const translations = {
     contactCall: "Sună-ne",
     contactSendEmail: "Trimite email",
     contactMapTitle: "Hartă Betel Reus",
+    contactLoadMap: "Încarcă harta",
     contactFormTitle: "Trimite-ne un mesaj",
     contactFormHint: "Mesajul se va trimite către contacto@betelreus.com.",
     contactFormName: "Nume",
@@ -338,6 +339,7 @@ const translations = {
     contactCall: "Llámanos",
     contactSendEmail: "Enviar email",
     contactMapTitle: "Mapa Betel Reus",
+    contactLoadMap: "Cargar mapa",
     contactFormTitle: "Envíanos un mensaje",
     contactFormHint: "El mensaje se enviará a contacto@betelreus.com.",
     contactFormName: "Nombre",
@@ -507,7 +509,7 @@ let videoResumeTimer;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const accessCode = "BETEL-REUS";
-const defaultAdminCode = "ADMIN-BETEL";
+const defaultAdminCode = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname) ? "ADMIN-BETEL" : "";
 const adminSessionMs = 10 * 60 * 1000;
 const heroImages = [
   "https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg",
@@ -1767,6 +1769,68 @@ function setupContactForm() {
   });
 }
 
+function setupDeferredMap() {
+  const panel = $("[data-map-panel]");
+  const iframe = panel?.querySelector("iframe[data-map-src]");
+  const button = panel?.querySelector("[data-map-load]");
+  if (!panel || !iframe) return;
+
+  const loadMap = () => {
+    if (iframe.src) return;
+    iframe.src = iframe.dataset.mapSrc;
+    panel.classList.add("is-loaded");
+  };
+
+  button?.addEventListener("click", loadMap);
+
+  if (!window.matchMedia("(max-width: 700px)").matches) {
+    loadMap();
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) return;
+  const mapObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadMap();
+      mapObserver.disconnect();
+    });
+  }, { rootMargin: "180px 0px", threshold: 0.01 });
+  mapObserver.observe(panel);
+}
+
+function setupDesktopHeaderScroll() {
+  const header = $(".site-header");
+  if (!header) return;
+  const desktopQuery = window.matchMedia("(min-width: 861px)");
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const update = () => {
+    const currentY = Math.max(0, window.scrollY);
+    if (!desktopQuery.matches || currentY < 96) {
+      header.classList.remove("is-hidden-on-scroll");
+    } else if (currentY > lastY + 8) {
+      header.classList.add("is-hidden-on-scroll");
+    } else if (currentY < lastY - 8) {
+      header.classList.remove("is-hidden-on-scroll");
+    }
+    lastY = currentY;
+    ticking = false;
+  };
+
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }, { passive: true });
+
+  desktopQuery.addEventListener?.("change", () => {
+    header.classList.remove("is-hidden-on-scroll");
+    lastY = window.scrollY;
+  });
+}
+
 function setupNavigationMenu() {
   const menu = $(".nav-menu");
   const button = menu?.querySelector("button");
@@ -1835,3 +1899,5 @@ loadVideos();
 updateLiveCountdown();
 setInterval(updateLiveCountdown, 60000);
 setupContactForm();
+setupDeferredMap();
+setupDesktopHeaderScroll();

@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
-import { gzipSync } from "node:zlib";
+import { brotliCompressSync, constants, gzipSync } from "node:zlib";
 
 import { mime } from "./response.mjs";
 
 const root = fileURLToPath(new URL("../../..", import.meta.url));
 const publicDir = join(root, "frontend", "public");
-const compressedTypes = new Set([".html", ".css", ".js", ".json", ".svg"]);
+const compressedTypes = new Set([".html", ".css", ".js", ".json", ".svg", ".txt", ".xml"]);
 const immutableTypes = new Set([".png", ".jpg", ".jpeg", ".svg"]);
 const compressedCache = new Map();
 
@@ -19,17 +19,19 @@ function cacheControl(ext, searchParams = new URLSearchParams()) {
   return "public, max-age=300";
 }
 
-function acceptsGzip(req) {
-  return String(req.headers["accept-encoding"] || "").includes("gzip");
+function acceptsEncoding(req, encoding) {
+  return String(req.headers["accept-encoding"] || "").includes(encoding);
 }
 
-function compressedBody(filePath, file) {
-  const key = `${filePath}:${file.length}`;
+function compressedBody(filePath, file, encoding) {
+  const key = `${encoding}:${filePath}:${file.length}`;
   const cached = compressedCache.get(key);
   if (cached) return cached;
-  const gzipped = gzipSync(file);
-  compressedCache.set(key, gzipped);
-  return gzipped;
+  const compressed = encoding === "br"
+    ? brotliCompressSync(file, { params: { [constants.BROTLI_PARAM_QUALITY]: 5 } })
+    : gzipSync(file);
+  compressedCache.set(key, compressed);
+  return compressed;
 }
 
 function sendFile(req, res, filePath, file, searchParams) {
@@ -40,8 +42,12 @@ function sendFile(req, res, filePath, file, searchParams) {
   };
   let body = file;
 
-  if (compressedTypes.has(ext) && acceptsGzip(req)) {
-    body = compressedBody(filePath, file);
+  if (compressedTypes.has(ext) && acceptsEncoding(req, "br")) {
+    body = compressedBody(filePath, file, "br");
+    headers["Content-Encoding"] = "br";
+    headers.Vary = "Accept-Encoding";
+  } else if (compressedTypes.has(ext) && acceptsEncoding(req, "gzip")) {
+    body = compressedBody(filePath, file, "gzip");
     headers["Content-Encoding"] = "gzip";
     headers.Vary = "Accept-Encoding";
   }
