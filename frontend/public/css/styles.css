@@ -1921,25 +1921,48 @@ footer img {
 .volley-more-colors {
   display: grid;
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.volley-more-colors summary {
+  width: fit-content;
+  cursor: pointer;
+  color: rgba(255, 246, 232, 0.82);
+  font-size: 0.98rem;
+  font-weight: 900;
 }
 
 .volley-extra-color-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 4px 0 8px;
+  scrollbar-color: rgba(255, 246, 232, 0.35) transparent;
 }
 
 .volley-color-option.is-compact {
-  grid-template-columns: 32px minmax(0, 1fr);
-  min-height: 70px;
-  padding: 10px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+  min-height: 58px;
+  padding: 0;
 }
 
 .volley-color-option.is-compact .volley-color-swatch {
-  width: 30px;
-  height: 30px;
+  grid-row: auto;
+  width: 34px;
+  height: 34px;
 }
 
+.volley-color-option.is-compact strong,
 .volley-color-option.is-compact small {
   display: none;
 }

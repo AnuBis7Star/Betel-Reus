@@ -21,7 +21,17 @@ const shirtColors = [
   { id: "orange", ro: "Portocaliu", es: "Naranja", hex: "#f97316" },
   { id: "turquoise", ro: "Turcoaz", es: "Turquesa", hex: "#14b8a6" },
   { id: "navy", ro: "Bleumarin", es: "Azul marino", hex: "#1e3a8a" },
-  { id: "gray", ro: "Gri", es: "Gris", hex: "#8a8f98" }
+  { id: "gray", ro: "Gri", es: "Gris", hex: "#8a8f98" },
+  { id: "burgundy", ro: "Vișiniu", es: "Granate", hex: "#7f1d1d" },
+  { id: "coral", ro: "Coral", es: "Coral", hex: "#fb7185" },
+  { id: "sky", ro: "Albastru deschis", es: "Azul claro", hex: "#38bdf8" },
+  { id: "mint", ro: "Mentă", es: "Menta", hex: "#86efac" },
+  { id: "lime", ro: "Verde lime", es: "Verde lima", hex: "#a3e635" },
+  { id: "beige", ro: "Bej", es: "Beige", hex: "#d6c3a5" },
+  { id: "brown", ro: "Maro", es: "Marrón", hex: "#7c2d12" },
+  { id: "silver", ro: "Argintiu", es: "Plateado", hex: "#cbd5e1" },
+  { id: "gold", ro: "Auriu", es: "Dorado", hex: "#fbbf24" },
+  { id: "lavender", ro: "Lavandă", es: "Lavanda", hex: "#c084fc" }
 ];
 
 async function ensureVolleySchema(client = pool) {

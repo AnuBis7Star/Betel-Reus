@@ -336,10 +336,10 @@ function renderColorPicker() {
     const selected = color.id === selectedShirtColor;
     const label = colorName(color);
     return `
-      <button class="volley-color-option${isCompact ? " is-compact" : ""}${selected ? " is-selected" : ""}${color.full ? " is-full" : ""}" type="button" data-color="${escapeHtml(color.id)}" ${color.full ? "disabled" : ""}>
+      <button class="volley-color-option${isCompact ? " is-compact" : ""}${selected ? " is-selected" : ""}${color.full ? " is-full" : ""}" type="button" data-color="${escapeHtml(color.id)}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}" ${color.full ? "disabled" : ""}>
         <span class="volley-color-swatch" style="--shirt-color: ${escapeHtml(color.hex)}"></span>
-        <strong>${escapeHtml(label)}</strong>
-        <small>${color.full ? tx("volleyColorComplete") : formatTx("volleyColorAvailability", { remaining: color.remaining, capacity: color.capacity })}</small>
+        ${isCompact ? "" : `<strong>${escapeHtml(label)}</strong>
+        <small>${color.full ? tx("volleyColorComplete") : formatTx("volleyColorAvailability", { remaining: color.remaining, capacity: color.capacity })}</small>`}
       </button>
     `;
   };
