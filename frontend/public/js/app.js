@@ -152,6 +152,7 @@ const translations = {
     adminVolleyTableTitle: "Echipe și înscrieri",
     adminVolleyTeam: "Echipă",
     adminVolleyRepresentative: "Reprezentant",
+    adminVolleyColor: "Culoare",
     adminVolleyPlayers: "Jucători",
     adminVolleyStatus: "Stare",
     adminVolleyNotes: "Note",
@@ -390,6 +391,7 @@ const translations = {
     adminVolleyTableTitle: "Equipos e inscripciones",
     adminVolleyTeam: "Equipo",
     adminVolleyRepresentative: "Representante",
+    adminVolleyColor: "Color",
     adminVolleyPlayers: "Jugadores",
     adminVolleyStatus: "Estado",
     adminVolleyNotes: "Notas",
@@ -524,6 +526,21 @@ const statusLabelKeys = {
   collected: "adminStatusCollected",
   cancelled: "adminStatusCancelled"
 };
+
+const volleyShirtColors = [
+  { id: "white", ro: "Alb", es: "Blanco" },
+  { id: "black", ro: "Negru", es: "Negro" },
+  { id: "red", ro: "Roșu", es: "Rojo" },
+  { id: "blue", ro: "Albastru", es: "Azul" },
+  { id: "green", ro: "Verde", es: "Verde" },
+  { id: "yellow", ro: "Galben", es: "Amarillo" },
+  { id: "pink", ro: "Roz", es: "Rosa" },
+  { id: "purple", ro: "Mov", es: "Morado" },
+  { id: "orange", ro: "Portocaliu", es: "Naranja" },
+  { id: "turquoise", ro: "Turcoaz", es: "Turquesa" },
+  { id: "navy", ro: "Bleumarin", es: "Azul marino" },
+  { id: "gray", ro: "Gri", es: "Gris" }
+];
 
 const adminEntityKeys = {
   book: "adminEntityBook",
@@ -1338,6 +1355,7 @@ function setupAdmin() {
         const payload = {
           teamName: row.querySelector("[data-field='teamName']").value.trim(),
           representativeName: row.querySelector("[data-field='representativeName']").value.trim(),
+          shirtColor: row.querySelector("[data-field='shirtColor']").value,
           players: row.querySelector("[data-field='players']").value.split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean),
           notes: row.querySelector("[data-field='notes']").value.trim(),
           status
@@ -1610,12 +1628,28 @@ function getVolleyStatusLabel(status) {
   }[status] || status;
 }
 
+function getVolleyColorLabel(colorId) {
+  const color = volleyShirtColors.find((item) => item.id === colorId);
+  return color ? color[lang] || color.ro : colorId || "-";
+}
+
+function volleyColorOptions(selectedColor) {
+  return `<option value="">-</option>${volleyShirtColors.map((color) =>
+    `<option value="${escapeAttribute(color.id)}" ${color.id === selectedColor ? "selected" : ""}>${escapeHtml(color[lang] || color.ro)}</option>`
+  ).join("")}`;
+}
+
 function renderAdminVolleyRegistrations() {
   if (!$("#volleyRegistrationsList")) return;
   $("#volleyRegistrationsList").innerHTML = volleyRegistrations.map((registration) => `
     <tr>
       <td><input data-field="teamName" value="${escapeAttribute(registration.teamName)}" /></td>
       <td><input data-field="representativeName" value="${escapeAttribute(registration.representativeName)}" /></td>
+      <td>
+        <select data-field="shirtColor" title="${escapeAttribute(getVolleyColorLabel(registration.shirtColor))}">
+          ${volleyColorOptions(registration.shirtColor)}
+        </select>
+      </td>
       <td><textarea data-field="players">${escapeHtml((registration.players || []).join("\n"))}</textarea></td>
       <td>
         <span class="volley-status ${escapeAttribute(registration.status)}">${escapeHtml(getVolleyStatusLabel(registration.status))}</span>
@@ -1633,7 +1667,7 @@ function renderAdminVolleyRegistrations() {
         <button type="button" data-action="delete" data-id="${registration.id}">${tx("adminDelete")}</button>
       </td>
     </tr>
-  `).join("") || `<tr><td colspan="6">${tx("adminVolleyEmpty")}</td></tr>`;
+  `).join("") || `<tr><td colspan="7">${tx("adminVolleyEmpty")}</td></tr>`;
 }
 
 function getReservationItems(reservation) {

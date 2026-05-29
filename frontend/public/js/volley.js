@@ -5,8 +5,14 @@ const message = document.querySelector("#volleyFormMessage");
 const teamsContainer = document.querySelector("#volleyTeams");
 const playerGrid = document.querySelector("#volleyPlayerGrid");
 const addPlayerButton = document.querySelector("#addVolleyPlayer");
+const colorGrid = document.querySelector("#volleyColorGrid");
+const extraColorGrid = document.querySelector("#volleyExtraColorGrid");
+const colorSummary = document.querySelector("#volleyColorSummary");
 const minimumPlayers = 6;
 const teamNameCache = new Set();
+let shirtColors = [];
+let approvedTeams = [];
+let selectedShirtColor = "";
 let lang = localStorage.getItem("betel-lang") || "ro";
 
 const translations = {
@@ -64,6 +70,15 @@ const translations = {
     volleyFullNamePlaceholder: "Nume și prenume",
     volleyTeamNameLabel: "Numele echipei",
     volleyTeamNamePlaceholder: "Numele echipei",
+    volleyShirtColorLabel: "Culoarea tricoului",
+    volleyShirtColorLimit: "Maximum 5 echipe pe culoare",
+    volleyShirtColorHelp: "Toți jucătorii echipei ar trebui să vină, pe cât posibil, cu tricou de aceeași culoare. Culorile complete apar dezactivate.",
+    volleyMoreColorsLabel: "Mai multe culori",
+    volleyNoColorSelected: "Alege culoarea tricoului echipei.",
+    volleyColorSelected: "Ai ales {color}. Mai sunt {remaining} loc(uri) pentru această culoare.",
+    volleyColorFull: "Culoarea {color} este completă.",
+    volleyColorAvailability: "{remaining} din {capacity} locuri disponibile",
+    volleyColorComplete: "Complet",
     volleyPlayersLabel: "Jucători",
     volleyMinimumPlayers: "Minimum 6 jucători",
     volleyAddPlayer: "+ Adaugă jucător",
@@ -84,6 +99,8 @@ const translations = {
     volleyGenericError: "Nu s-a putut trimite înscrierea. Încearcă din nou.",
     volleyRepresentativeMissing: "Adaugă numele reprezentantului echipei.",
     volleyTeamMissing: "Adaugă numele echipei.",
+    volleyColorMissing: "Alege culoarea tricoului echipei.",
+    volleyColorUnavailable: "Culoarea aleasă este completă. Alege altă culoare.",
     volleyAcceptedDuplicate: "Există deja o echipă acceptată cu acest nume. Folosește alt nume sau contactează organizarea.",
     volleyPlayersMissing: "Adaugă cel puțin 6 jucători cu nume și prenume.",
     volleySubmitting: "Se trimite înscrierea...",
@@ -146,6 +163,15 @@ const translations = {
     volleyFullNamePlaceholder: "Nombre y apellidos",
     volleyTeamNameLabel: "Nombre del equipo",
     volleyTeamNamePlaceholder: "Nombre del equipo",
+    volleyShirtColorLabel: "Color de camiseta",
+    volleyShirtColorLimit: "Máximo 5 equipos por color",
+    volleyShirtColorHelp: "Todos los jugadores del equipo deberían venir, en la medida de lo posible, con una camiseta del mismo color. Los colores completos aparecen deshabilitados.",
+    volleyMoreColorsLabel: "Más colores",
+    volleyNoColorSelected: "Elige el color de camiseta del equipo.",
+    volleyColorSelected: "Has escogido {color}. Quedan {remaining} plaza(s) para este color.",
+    volleyColorFull: "El color {color} está completo.",
+    volleyColorAvailability: "{remaining} de {capacity} plazas disponibles",
+    volleyColorComplete: "Completo",
     volleyPlayersLabel: "Jugadores",
     volleyMinimumPlayers: "Mínimo 6 jugadores",
     volleyAddPlayer: "+ Añadir jugador",
@@ -166,6 +192,8 @@ const translations = {
     volleyGenericError: "No se pudo enviar la inscripción. Inténtalo de nuevo.",
     volleyRepresentativeMissing: "Añade el nombre del representante del equipo.",
     volleyTeamMissing: "Añade el nombre del equipo.",
+    volleyColorMissing: "Elige el color de camiseta del equipo.",
+    volleyColorUnavailable: "El color elegido está completo. Elige otro color.",
     volleyAcceptedDuplicate: "Ya existe un equipo aceptado con ese nombre. Usa otro nombre o contacta con la organización.",
     volleyPlayersMissing: "Añade al menos 6 jugadores con nombre y apellidos.",
     volleySubmitting: "Enviando inscripción...",
@@ -180,8 +208,28 @@ function tx(key) {
   return translations[lang]?.[key] || translations.ro[key] || key;
 }
 
+function formatTx(key, replacements = {}) {
+  return Object.entries(replacements).reduce((text, [token, value]) => text.replaceAll(`{${token}}`, value), tx(key));
+}
+
 function escapeHtml(value = "") {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+}
+
+function colorName(color) {
+  if (!color) return "";
+  return color[lang] || color.es || color.ro || color.id;
+}
+
+function colorById(colorId) {
+  return shirtColors.find((color) => color.id === colorId);
+}
+
+function colorSwatch(colorId) {
+  const color = colorById(colorId);
+  if (!color) return "";
+  const label = colorName(color);
+  return `<span class="volley-team-color" style="--shirt-color: ${escapeHtml(color.hex)}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}"></span>`;
 }
 
 function setMessage(text, state = "") {
@@ -259,8 +307,123 @@ function applyLanguage() {
     const key = node.dataset.i18nPlaceholder;
     if (translations[lang][key]) node.placeholder = translations[lang][key];
   });
+  renderColorPicker();
   renumberPlayers();
   loadApprovedTeams();
+}
+
+function selectedColor() {
+  return shirtColors.find((color) => color.id === selectedShirtColor);
+}
+
+function setSelectedColor(colorId) {
+  const color = shirtColors.find((item) => item.id === colorId);
+  selectedShirtColor = color && !color.full ? color.id : "";
+  renderColorPicker();
+}
+
+function renderColorSummary() {
+  if (!colorSummary) return;
+  const color = selectedColor();
+  if (!color) {
+    colorSummary.textContent = tx("volleyNoColorSelected");
+    return;
+  }
+  colorSummary.textContent = formatTx("volleyColorSelected", {
+    color: colorName(color),
+    remaining: color.remaining
+  });
+}
+
+function renderColorPicker() {
+  if (!colorGrid || !extraColorGrid || !shirtColors.length) return;
+  const featuredColors = shirtColors.slice(0, 8);
+  const extraColors = shirtColors.slice(8);
+  const colorButton = (color, isCompact = false) => {
+    const selected = color.id === selectedShirtColor;
+    const label = colorName(color);
+    return `
+      <button class="volley-color-option${isCompact ? " is-compact" : ""}${selected ? " is-selected" : ""}${color.full ? " is-full" : ""}" type="button" data-color="${escapeHtml(color.id)}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}" ${color.full ? "disabled" : ""}>
+        <span class="volley-color-swatch" style="--shirt-color: ${escapeHtml(color.hex)}"></span>
+        ${isCompact ? "" : `<strong>${escapeHtml(label)}</strong>
+        <small>${color.full ? tx("volleyColorComplete") : formatTx("volleyColorAvailability", { remaining: color.remaining, capacity: color.capacity })}</small>`}
+      </button>
+    `;
+  };
+  colorGrid.innerHTML = featuredColors.map((color) => colorButton(color)).join("");
+  extraColorGrid.innerHTML = extraColors.map((color) => colorButton(color, true)).join("");
+  renderColorSummary();
+}
+
+function setupExtraColorScroller() {
+  if (!extraColorGrid) return;
+  let isDragging = false;
+  let didDrag = false;
+  let suppressClick = false;
+  let startX = 0;
+  let startScrollLeft = 0;
+
+  const canScroll = () => extraColorGrid.scrollWidth > extraColorGrid.clientWidth + 2;
+
+  extraColorGrid.addEventListener("wheel", (event) => {
+    if (!canScroll()) return;
+    const horizontalDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!horizontalDelta) return;
+    event.preventDefault();
+    extraColorGrid.scrollLeft += horizontalDelta;
+  }, { passive: false });
+
+  extraColorGrid.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || !canScroll()) return;
+    isDragging = true;
+    didDrag = false;
+    startX = event.clientX;
+    startScrollLeft = extraColorGrid.scrollLeft;
+    extraColorGrid.classList.add("is-dragging");
+    extraColorGrid.setPointerCapture?.(event.pointerId);
+  });
+
+  extraColorGrid.addEventListener("pointermove", (event) => {
+    if (!isDragging) return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) > 3) didDrag = true;
+    extraColorGrid.scrollLeft = startScrollLeft - delta;
+    event.preventDefault();
+  });
+
+  const stopDragging = (event) => {
+    if (!isDragging) return;
+    isDragging = false;
+    extraColorGrid.classList.remove("is-dragging");
+    extraColorGrid.releasePointerCapture?.(event.pointerId);
+    if (didDrag) {
+      suppressClick = true;
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 0);
+    }
+  };
+
+  extraColorGrid.addEventListener("pointerup", stopDragging);
+  extraColorGrid.addEventListener("pointercancel", stopDragging);
+  extraColorGrid.addEventListener("click", (event) => {
+    if (!suppressClick) return;
+    event.preventDefault();
+    event.stopPropagation();
+  }, true);
+}
+
+async function loadColorAvailability() {
+  if (!colorGrid || !extraColorGrid) return;
+  try {
+    const data = await apiRequest("/api/volley/colors");
+    shirtColors = data.colors || [];
+    if (selectedShirtColor && selectedColor()?.full) selectedShirtColor = "";
+    renderColorPicker();
+    renderTeams(approvedTeams);
+  } catch {
+    shirtColors = [];
+  }
 }
 
 function playerValues() {
@@ -320,10 +483,14 @@ function resetPlayerGrid() {
 function renderTeams(teams) {
   if (!teamsContainer) return;
   teamNameCache.clear();
+  approvedTeams = teams;
   teams.forEach((team) => teamNameCache.add(normalizeComparable(team.teamName)));
   teamsContainer.innerHTML = teams.map((team) => `
     <article>
-      <span>${team.players.length} ${tx("volleyConfirmedCount")}</span>
+      <div class="volley-team-meta">
+        <span>${team.players.length} ${tx("volleyConfirmedCount")}</span>
+        ${team.shirtColor ? colorSwatch(team.shirtColor) : ""}
+      </div>
       <h3>${escapeHtml(team.teamName)}</h3>
       <p>${tx("volleyRepresentative")}: ${escapeHtml(team.representativeName)}</p>
       <small>${team.players.map(escapeHtml).join(", ")}</small>
@@ -350,6 +517,7 @@ form?.addEventListener("submit", async (event) => {
   const payload = {
     representativeName: data.get("representative").trim(),
     teamName: data.get("team").trim(),
+    shirtColor: selectedShirtColor,
     players,
     notes: data.get("notes").trim(),
     website: data.get("website")?.trim() || ""
@@ -375,6 +543,17 @@ form?.addEventListener("submit", async (event) => {
     return;
   }
 
+  const chosenColor = selectedColor();
+  if (!chosenColor) {
+    setMessage(tx("volleyColorMissing"), "error");
+    return;
+  }
+
+  if (chosenColor.full) {
+    setMessage(tx("volleyColorUnavailable"), "error");
+    return;
+  }
+
   if (players.length < minimumPlayers) {
     setMessage(tx("volleyPlayersMissing"), "error");
     return;
@@ -385,12 +564,14 @@ form?.addEventListener("submit", async (event) => {
   try {
     await apiRequest("/api/volley/registrations", { method: "POST", body: payload });
     form.reset();
+    selectedShirtColor = "";
     resetPlayerGrid();
     setMessage(tx("volleySuccess"), "success");
+    await loadColorAvailability();
     await loadApprovedTeams();
   } catch (error) {
     if (error.status === 409) {
-      setMessage(tx("volleyDuplicate"), "error");
+      setMessage(error.message?.toLowerCase().includes("color") ? tx("volleyColorUnavailable") : tx("volleyDuplicate"), "error");
     } else if (error.status === 429) {
       setMessage(tx("volleyRateLimited"), "error");
     } else {
@@ -399,6 +580,18 @@ form?.addEventListener("submit", async (event) => {
   } finally {
     submitButton.disabled = false;
   }
+});
+
+colorGrid?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-color]");
+  if (!button || button.disabled) return;
+  setSelectedColor(button.dataset.color);
+});
+
+extraColorGrid?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-color]");
+  if (!button || button.disabled) return;
+  setSelectedColor(button.dataset.color);
 });
 
 addPlayerButton?.addEventListener("click", () => {
@@ -418,6 +611,8 @@ playerGrid?.addEventListener("click", (event) => {
 resetPlayerGrid();
 setupVolleyEffects();
 applyLanguage();
+setupExtraColorScroller();
+loadColorAvailability();
 
 document.querySelector("#langToggle")?.addEventListener("click", () => {
   lang = lang === "ro" ? "es" : "ro";
