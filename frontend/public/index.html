@@ -27,7 +27,7 @@
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preconnect" href="https://i.ytimg.com" />
     <link rel="preload" as="image" href="https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=landing-20260529h" />
+    <link rel="stylesheet" href="/css/styles.css?v=landing-20260529j" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -156,6 +156,7 @@
             </div>
             <img src="/assets/volley-tournament-transparent-900.png" width="900" height="600" alt="Volleyball Tournament" loading="lazy" />
           </article>
+          <div class="managed-events-list" id="landingEventsList"></div>
         </div>
       </section>
 
@@ -256,11 +257,41 @@
       </section>
     </main>
 
+    <div class="event-modal" id="eventModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+      <button class="event-modal-backdrop" type="button" data-event-modal-close aria-label="Închide"></button>
+      <div class="event-modal-panel">
+        <button class="event-modal-close" type="button" data-event-modal-close aria-label="Închide">×</button>
+        <div class="event-modal-poster-wrap">
+          <img id="eventModalPoster" src="" alt="" />
+        </div>
+        <div class="event-modal-copy">
+          <p class="eyebrow" id="eventModalCategory"></p>
+          <h2 id="eventModalTitle"></h2>
+          <p id="eventModalDescription"></p>
+          <div class="event-modal-meta">
+            <article>
+              <span data-i18n="eventModalDate">Data</span>
+              <strong id="eventModalDate"></strong>
+            </article>
+            <article>
+              <span data-i18n="eventModalTime">Ora</span>
+              <strong id="eventModalTime"></strong>
+            </article>
+            <article>
+              <span data-i18n="eventModalLocation">Locație</span>
+              <strong id="eventModalLocation"></strong>
+            </article>
+          </div>
+          <p class="event-modal-full" id="eventModalFull"></p>
+        </div>
+      </div>
+    </div>
+
     <footer>
       <img src="/assets/icon-dark-160.png" width="160" height="160" alt="" loading="lazy" />
       <span>© <span id="year"></span> Biserica Betel Reus</span>
     </footer>
 
-    <script src="/js/app.min.js?v=landing-20260529i" type="module"></script>
+    <script src="/js/app.min.js?v=app-20260529b" type="module"></script>
   </body>
 </html>

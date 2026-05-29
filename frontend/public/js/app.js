@@ -137,6 +137,9 @@ const translations = {
     adminModuleVolleyTitle: "Turneu volley",
     adminModuleVolleySummary: "Înscrieri, echipe și aprobare",
     adminModuleVolleyText: "Editează echipele înscrise și aprobă ce apare public.",
+    adminModuleEventsTitle: "Evenimente",
+    adminModuleEventsSummary: "Program, afișe și publicare",
+    adminModuleEventsText: "Creează evenimente care apar automat pe pagina principală.",
     adminModuleFutureTitle: "Viitor",
     adminModuleFutureSummary: "Alt modul",
     adminModuleFutureText: "Spațiu pregătit pentru următoarea secțiune.",
@@ -170,6 +173,62 @@ const translations = {
     adminVolleySavedMessage: "Înscriere salvată.",
     adminVolleyStatusUpdated: "Stare actualizată.",
     adminVolleySaveError: "Nu s-a putut salva înscrierea.",
+    eventModalDate: "Data",
+    eventModalTime: "Ora",
+    eventModalLocation: "Locație",
+    eventNoPoster: "Afișul va apărea aici",
+    adminEventsPageTitle: "Evenimente",
+    adminEventsGateText: "Introdu codul privat pentru a gestiona evenimentele de pe pagina principală.",
+    adminEventsViewLanding: "Vezi landing page",
+    adminEventsAdd: "+ Adaugă eveniment",
+    adminEventsSummaryEyebrow: "Rezumat",
+    adminEventsSummaryTitle: "Evenimente publicate",
+    adminEventsSummaryText: "Evenimentele publicate apar automat în landing page.",
+    adminEventsListEyebrow: "Listă",
+    adminEventsListTitle: "Evenimente create",
+    adminEventsEmptyEyebrow: "Fără evenimente",
+    adminEventsEmptyTitle: "Încă nu există evenimente create",
+    adminEventsEmptyText: "Adaugă primul eveniment pentru ca acesta să poată apărea pe pagina principală.",
+    adminEventsEditorEyebrow: "Editor",
+    adminEventsNewTitle: "Adaugă eveniment",
+    adminEventsEditTitle: "Editează eveniment",
+    adminEventsClose: "Închide",
+    adminEventsGeneral: "Informații generale",
+    adminEventsDate: "Data",
+    adminEventsTime: "Ora",
+    adminEventsLocation: "Locație",
+    adminEventsCategory: "Categorie",
+    adminEventsPublished: "Publicat",
+    adminEventsFeatured: "Featured",
+    adminEventsAccent: "Culoare card",
+    adminEventsTitleLabel: "Titlu",
+    adminEventsShortLabel: "Descriere scurtă",
+    adminEventsFullLabel: "Descriere completă",
+    adminEventsPosterRo: "Afiș română",
+    adminEventsTitleLabelEs: "Título",
+    adminEventsShortLabelEs: "Descripción corta",
+    adminEventsFullLabelEs: "Descripción completa",
+    adminEventsPosterEs: "Cartel español",
+    adminEventsPreview: "Preview landing card",
+    adminEventsDelete: "Șterge eveniment",
+    adminEventsSaveDraft: "Salvează ca schiță",
+    adminEventsSave: "Salvează eveniment",
+    adminEventsPublishedStatus: "Publicat",
+    adminEventsHiddenStatus: "Ascuns",
+    adminEventsNoPoster: "Fără afiș",
+    adminEventsIncompleteRo: "RO incomplet",
+    adminEventsIncompleteEs: "ES incomplet",
+    adminEventsTotal: "Total",
+    adminEventsPublishedCount: "Publicate",
+    adminEventsHiddenCount: "Ascunse",
+    adminEventsFeaturedCount: "Featured",
+    adminEventsPublish: "Publică",
+    adminEventsHide: "Ascunde",
+    adminEventsSaved: "Eveniment salvat.",
+    adminEventsDeleted: "Eveniment șters.",
+    adminEventsSaveError: "Nu s-a putut salva evenimentul.",
+    adminEventsDeleteError: "Nu s-a putut șterge evenimentul.",
+    adminEventsConfirmDelete: "Sigur vrei să ștergi acest eveniment?",
     adminBookFormTitle: "Carte",
     adminTitlePlaceholder: "Titlul cărții",
     adminCategoryLabel: "Categorie",
@@ -237,6 +296,7 @@ const translations = {
     adminEntityBook: "carte",
     adminEntityOrder: "cerere",
     adminEntityReservation: "cerere",
+    adminEntityEvent: "eveniment",
     adminActionMemberRequest: "Cerere trimisă de membru",
     adminActionBookCreated: "Carte creată",
     adminActionBookUpdated: "Carte actualizată",
@@ -379,6 +439,9 @@ const translations = {
     adminModuleVolleyTitle: "Torneo volley",
     adminModuleVolleySummary: "Inscripciones, equipos y aprobación",
     adminModuleVolleyText: "Edita los equipos inscritos y aprueba lo que aparece públicamente.",
+    adminModuleEventsTitle: "Eventos",
+    adminModuleEventsSummary: "Horario, carteles y publicación",
+    adminModuleEventsText: "Crea eventos que aparecen automáticamente en la página principal.",
     adminModuleFutureTitle: "Futuro",
     adminModuleFutureSummary: "Otro módulo",
     adminModuleFutureText: "Espacio preparado para la próxima sección.",
@@ -412,6 +475,62 @@ const translations = {
     adminVolleySavedMessage: "Inscripción guardada.",
     adminVolleyStatusUpdated: "Estado actualizado.",
     adminVolleySaveError: "No se pudo guardar la inscripción.",
+    eventModalDate: "Fecha",
+    eventModalTime: "Hora",
+    eventModalLocation: "Ubicación",
+    eventNoPoster: "El cartel aparecerá aquí",
+    adminEventsPageTitle: "Eventos",
+    adminEventsGateText: "Introduce el código privado para gestionar los eventos de la página principal.",
+    adminEventsViewLanding: "Ver landing page",
+    adminEventsAdd: "+ Añadir evento",
+    adminEventsSummaryEyebrow: "Resumen",
+    adminEventsSummaryTitle: "Eventos publicados",
+    adminEventsSummaryText: "Los eventos publicados aparecen automáticamente en la landing page.",
+    adminEventsListEyebrow: "Lista",
+    adminEventsListTitle: "Eventos creados",
+    adminEventsEmptyEyebrow: "Sin eventos",
+    adminEventsEmptyTitle: "Todavía no hay eventos creados",
+    adminEventsEmptyText: "Añade el primer evento para que pueda aparecer en la página principal.",
+    adminEventsEditorEyebrow: "Editor",
+    adminEventsNewTitle: "Añadir evento",
+    adminEventsEditTitle: "Editar evento",
+    adminEventsClose: "Cerrar",
+    adminEventsGeneral: "Información general",
+    adminEventsDate: "Fecha",
+    adminEventsTime: "Hora",
+    adminEventsLocation: "Ubicación",
+    adminEventsCategory: "Categoría",
+    adminEventsPublished: "Publicado",
+    adminEventsFeatured: "Featured",
+    adminEventsAccent: "Color card",
+    adminEventsTitleLabel: "Título",
+    adminEventsShortLabel: "Descripción corta",
+    adminEventsFullLabel: "Descripción completa",
+    adminEventsPosterRo: "Cartel rumano",
+    adminEventsTitleLabelEs: "Título",
+    adminEventsShortLabelEs: "Descripción corta",
+    adminEventsFullLabelEs: "Descripción completa",
+    adminEventsPosterEs: "Cartel español",
+    adminEventsPreview: "Preview landing card",
+    adminEventsDelete: "Eliminar evento",
+    adminEventsSaveDraft: "Guardar como borrador",
+    adminEventsSave: "Guardar evento",
+    adminEventsPublishedStatus: "Publicado",
+    adminEventsHiddenStatus: "Oculto",
+    adminEventsNoPoster: "Sin cartel",
+    adminEventsIncompleteRo: "RO incompleto",
+    adminEventsIncompleteEs: "ES incompleto",
+    adminEventsTotal: "Total",
+    adminEventsPublishedCount: "Publicados",
+    adminEventsHiddenCount: "Ocultos",
+    adminEventsFeaturedCount: "Featured",
+    adminEventsPublish: "Publicar",
+    adminEventsHide: "Ocultar",
+    adminEventsSaved: "Evento guardado.",
+    adminEventsDeleted: "Evento eliminado.",
+    adminEventsSaveError: "No se pudo guardar el evento.",
+    adminEventsDeleteError: "No se pudo eliminar el evento.",
+    adminEventsConfirmDelete: "¿Seguro que quieres eliminar este evento?",
     adminBookFormTitle: "Libro",
     adminTitlePlaceholder: "Título del libro",
     adminCategoryLabel: "Categoría",
@@ -479,6 +598,7 @@ const translations = {
     adminEntityBook: "libro",
     adminEntityOrder: "pedido",
     adminEntityReservation: "pedido",
+    adminEntityEvent: "evento",
     adminActionMemberRequest: "Pedido enviado por miembro",
     adminActionBookCreated: "Libro creado",
     adminActionBookUpdated: "Libro actualizado",
@@ -525,6 +645,10 @@ const heroImages = [
 let reservations = [];
 let auditLogs = [];
 let volleyRegistrations = [];
+let churchEvents = [];
+let activeEventId = null;
+let editingEventId = null;
+let currentEventPosters = { ro: "", es: "" };
 
 const statusLabelKeys = {
   pending: "adminStatusPending",
@@ -551,7 +675,8 @@ const volleyShirtColors = [
 const adminEntityKeys = {
   book: "adminEntityBook",
   order: "adminEntityOrder",
-  reservation: "adminEntityReservation"
+  reservation: "adminEntityReservation",
+  event: "adminEntityEvent"
 };
 
 const libraryCategories = ["Teologie", "Familie", "Tineri", "Copii", "Biografii", "Biblii", "Devoționale"];
@@ -632,14 +757,18 @@ async function loadBooksFromApi() {
 
 async function loadAdminDataFromApi(throwOnError = false) {
   try {
-    const [ordersData, auditData, volleyData] = await Promise.all([
+    const requests = [
       apiRequest("/api/admin/orders?active=true"),
       apiRequest("/api/admin/audit"),
       apiRequest("/api/admin/volley/registrations")
-    ]);
+    ];
+    const shouldLoadEvents = Boolean($("#adminEventsList") || $("#adminEventForm"));
+    if (shouldLoadEvents) requests.push(apiRequest("/api/admin/events"));
+    const [ordersData, auditData, volleyData, eventsData] = await Promise.all(requests);
     reservations = ordersData.orders;
     auditLogs = auditData.auditLogs;
     volleyRegistrations = volleyData.registrations || [];
+    if (eventsData) churchEvents = eventsData.events || [];
     saveReservations();
     saveAuditLogs();
   } catch (error) {
@@ -685,6 +814,8 @@ function applyLanguage() {
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
   if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) renderAdmin();
+  if ($("#landingEventsList")) renderLandingEvents();
+  if (activeEventId) renderEventModal();
   setupContactEmailLinks();
   updateLiveCountdown();
 }
@@ -831,6 +962,104 @@ async function loadVideos() {
       published: ""
     })));
   }
+}
+
+async function loadEvents() {
+  if (!$("#landingEventsList")) return;
+  try {
+    const data = await fetch("/api/events").then((res) => res.json());
+    churchEvents = data.events || [];
+    renderLandingEvents();
+  } catch {
+    churchEvents = [];
+    renderLandingEvents();
+  }
+}
+
+function eventField(event, base) {
+  const suffix = lang === "es" ? "Es" : "Ro";
+  return event[`${base}${suffix}`] || event[`${base}Ro`] || event[`${base}Es`] || "";
+}
+
+function eventPoster(event) {
+  return eventField(event, "poster") || "";
+}
+
+function formatEventDate(event) {
+  if (!event?.date) return "";
+  const date = new Date(`${event.date}T00:00:00`);
+  return date.toLocaleDateString(lang === "ro" ? "ro-RO" : "es-ES", { day: "2-digit", month: "long", year: "numeric" });
+}
+
+function renderLandingEvents() {
+  const list = $("#landingEventsList");
+  if (!list) return;
+  list.innerHTML = churchEvents.map((event) => {
+    const poster = eventPoster(event);
+    const title = eventField(event, "title");
+    const shortDescription = eventField(event, "shortDescription");
+    return `
+      <button class="event-card managed-event-card" type="button" data-event-id="${escapeAttribute(event.id)}" style="--event-accent: ${escapeAttribute(event.accentColor || "#7f090b")}">
+        <div>
+          <p class="eyebrow">${escapeHtml(event.category || tx("eventsColumnTitle"))}</p>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(shortDescription)}</p>
+          <strong>${escapeHtml(formatEventDate(event))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</strong>
+          <div class="event-tags">
+            ${event.location ? `<span>${escapeHtml(event.location)}</span>` : ""}
+            ${event.category ? `<span>${escapeHtml(event.category)}</span>` : ""}
+          </div>
+        </div>
+        ${poster ? `<img src="${escapeAttribute(poster)}" width="220" height="300" alt="${escapeAttribute(title)}" loading="lazy" />` : `<span class="event-poster-placeholder">${tx("eventNoPoster")}</span>`}
+      </button>
+    `;
+  }).join("");
+  prepareRevealElements(list);
+}
+
+function renderEventModal() {
+  const event = churchEvents.find((item) => item.id === activeEventId);
+  const modal = $("#eventModal");
+  if (!event || !modal) return;
+  const title = eventField(event, "title");
+  const poster = eventPoster(event);
+  $("#eventModalCategory").textContent = event.category || tx("eventsColumnTitle");
+  $("#eventModalTitle").textContent = title;
+  $("#eventModalDescription").textContent = eventField(event, "shortDescription");
+  $("#eventModalDate").textContent = formatEventDate(event);
+  $("#eventModalTime").textContent = event.time || "-";
+  $("#eventModalLocation").textContent = event.location || "-";
+  $("#eventModalFull").textContent = eventField(event, "fullDescription");
+  $("#eventModalPoster").src = poster || "";
+  $("#eventModalPoster").alt = poster ? title : tx("eventNoPoster");
+  modal.style.setProperty("--event-accent", event.accentColor || "#7f090b");
+}
+
+function openEventModal(id) {
+  activeEventId = id;
+  renderEventModal();
+  $("#eventModal")?.classList.add("is-open");
+  $("#eventModal")?.setAttribute("aria-hidden", "false");
+  document.body.classList.add("event-modal-open");
+}
+
+function closeEventModal() {
+  activeEventId = null;
+  $("#eventModal")?.classList.remove("is-open");
+  $("#eventModal")?.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("event-modal-open");
+}
+
+function setupEvents() {
+  $("#landingEventsList")?.addEventListener("click", (event) => {
+    const card = event.target.closest("[data-event-id]");
+    if (!card) return;
+    openEventModal(card.dataset.eventId);
+  });
+  $$("[data-event-modal-close]").forEach((button) => button.addEventListener("click", closeEventModal));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && activeEventId) closeEventModal();
+  });
 }
 
 function renderVideos(videos) {
@@ -1377,6 +1606,50 @@ function setupAdmin() {
     }
   });
 
+  $("#addEventButton")?.addEventListener("click", () => openEventEditor());
+  $("#addEventButtonInline")?.addEventListener("click", () => openEventEditor());
+  $("#addEventButtonEmpty")?.addEventListener("click", () => openEventEditor());
+  $("#closeEventEditor")?.addEventListener("click", closeEventEditor);
+  $("#saveEventDraft")?.addEventListener("click", () => saveEventFromForm({ forceDraft: true }));
+  $("#deleteEventButton")?.addEventListener("click", deleteCurrentEvent);
+  $("#adminEventForm")?.addEventListener("input", renderAdminEventPreview);
+  $("#adminEventForm")?.addEventListener("change", renderAdminEventPreview);
+  $("#adminEventForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    saveEventFromForm();
+  });
+
+  $("#adminEventsList")?.addEventListener("click", async (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    const selectedEvent = churchEvents.find((item) => item.id === button.dataset.id);
+    if (!selectedEvent) return;
+
+    if (button.dataset.action === "edit") {
+      openEventEditor(selectedEvent);
+      return;
+    }
+
+    if (button.dataset.action === "toggle") {
+      try {
+        const data = await apiRequest(`/api/admin/events/${selectedEvent.id}`, {
+          method: "PATCH",
+          body: { ...selectedEvent, published: !selectedEvent.published }
+        });
+        Object.assign(selectedEvent, data.event);
+        renderAdmin();
+      } catch {
+        $("#adminEventMessage").textContent = tx("adminEventsSaveError");
+      }
+      return;
+    }
+
+    if (button.dataset.action === "delete") {
+      editingEventId = selectedEvent.id;
+      await deleteCurrentEvent();
+    }
+  });
+
   $("#reservationsList")?.addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
@@ -1419,6 +1692,7 @@ function renderAdmin() {
   renderAdminStats();
   renderAdminBooks();
   renderAdminVolleyRegistrations();
+  renderAdminEvents();
   renderAdminReservations();
   renderAuditLog();
   updateStockSaveButton();
@@ -1676,6 +1950,212 @@ function renderAdminVolleyRegistrations() {
   `).join("") || `<tr><td colspan="7">${tx("adminVolleyEmpty")}</td></tr>`;
 }
 
+function eventLanguageComplete(event, suffix) {
+  return Boolean(event[`title${suffix}`] && event[`shortDescription${suffix}`] && event[`fullDescription${suffix}`] && event[`poster${suffix}`]);
+}
+
+function eventPreviewMarkup(event) {
+  const poster = eventPoster(event);
+  return `
+    <article class="event-card managed-event-card admin-preview-event-card" style="--event-accent: ${escapeAttribute(event.accentColor || "#7f090b")}">
+      <div>
+        <p class="eyebrow">${escapeHtml(event.category || tx("eventsColumnTitle"))}</p>
+        <h3>${escapeHtml(eventField(event, "title") || tx("adminEventsNewTitle"))}</h3>
+        <p>${escapeHtml(eventField(event, "shortDescription") || tx("adminEventsSummaryText"))}</p>
+        <strong>${escapeHtml(event.date ? formatEventDate(event) : tx("adminEventsDate"))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</strong>
+      </div>
+      ${poster ? `<img src="${escapeAttribute(poster)}" alt="" />` : `<span class="event-poster-placeholder">${tx("eventNoPoster")}</span>`}
+    </article>
+  `;
+}
+
+function renderAdminEvents() {
+  if (!$("#adminEventsList")) return;
+  const total = churchEvents.length;
+  const published = churchEvents.filter((event) => event.published).length;
+  const featured = churchEvents.filter((event) => event.featured).length;
+  const hidden = total - published;
+  $("#adminEventsStats").innerHTML = [
+    [tx("adminEventsTotal"), total],
+    [tx("adminEventsPublishedCount"), published],
+    [tx("adminEventsHiddenCount"), hidden],
+    [tx("adminEventsFeaturedCount"), featured]
+  ].map(([label, value]) => `<article><span>${label}</span><strong>${value}</strong></article>`).join("");
+
+  $("#adminEventsEmpty")?.classList.toggle("is-hidden", total > 0);
+  $("#adminEventsList").classList.toggle("is-hidden", total === 0);
+  $("#adminEventsList").innerHTML = churchEvents.map((event) => {
+    const title = event.titleRo || event.titleEs || tx("adminEventsNewTitle");
+    const poster = event.posterRo || event.posterEs || "";
+    const roComplete = eventLanguageComplete(event, "Ro");
+    const esComplete = eventLanguageComplete(event, "Es");
+    return `
+      <article class="admin-event-row">
+        <div class="admin-event-thumb">${poster ? `<img src="${escapeAttribute(poster)}" alt="" loading="lazy" />` : `<span>${tx("adminEventsNoPoster")}</span>`}</div>
+        <div class="admin-event-row-copy">
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(event.shortDescriptionRo || event.shortDescriptionEs || "")}</p>
+          <div class="admin-event-badges">
+            <span class="${event.published ? "success" : "muted"}">${event.published ? tx("adminEventsPublishedStatus") : tx("adminEventsHiddenStatus")}</span>
+            ${event.featured ? "<span>Featured</span>" : ""}
+            <span>${escapeHtml(formatEventDate(event))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</span>
+            <span>${roComplete ? "RO" : tx("adminEventsIncompleteRo")} + ${esComplete ? "ES" : tx("adminEventsIncompleteEs")}</span>
+          </div>
+        </div>
+        <div class="table-actions">
+          <button type="button" data-action="edit" data-id="${event.id}">${tx("adminEdit")}</button>
+          <button type="button" data-action="toggle" data-id="${event.id}">${event.published ? tx("adminEventsHide") : tx("adminEventsPublish")}</button>
+          <button type="button" data-action="delete" data-id="${event.id}">${tx("adminDelete")}</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+  renderAdminEventPreview();
+}
+
+function defaultEvent() {
+  return {
+    id: "",
+    date: new Date().toISOString().slice(0, 10),
+    time: "18:00",
+    location: "Betel Reus",
+    category: "Serviciu special",
+    accentColor: "#7f090b",
+    published: false,
+    featured: false,
+    titleRo: "",
+    shortDescriptionRo: "",
+    fullDescriptionRo: "",
+    posterRo: "",
+    titleEs: "",
+    shortDescriptionEs: "",
+    fullDescriptionEs: "",
+    posterEs: ""
+  };
+}
+
+function openEventEditor(event = null) {
+  const form = $("#adminEventForm");
+  if (!form) return;
+  const data = event || defaultEvent();
+  editingEventId = data.id || null;
+  currentEventPosters = { ro: data.posterRo || "", es: data.posterEs || "" };
+  form.elements.id.value = data.id || "";
+  form.elements.date.value = data.date || defaultEvent().date;
+  form.elements.time.value = data.time || "";
+  form.elements.location.value = data.location || "";
+  form.elements.category.value = data.category || "";
+  form.elements.accentColor.value = data.accentColor || "#7f090b";
+  form.elements.published.checked = Boolean(data.published);
+  form.elements.featured.checked = Boolean(data.featured);
+  form.elements.titleRo.value = data.titleRo || "";
+  form.elements.shortDescriptionRo.value = data.shortDescriptionRo || "";
+  form.elements.fullDescriptionRo.value = data.fullDescriptionRo || "";
+  form.elements.titleEs.value = data.titleEs || "";
+  form.elements.shortDescriptionEs.value = data.shortDescriptionEs || "";
+  form.elements.fullDescriptionEs.value = data.fullDescriptionEs || "";
+  form.elements.posterRoFile.value = "";
+  form.elements.posterEsFile.value = "";
+  $("[data-poster-current='ro']").textContent = data.posterRo || "";
+  $("[data-poster-current='es']").textContent = data.posterEs || "";
+  $("#deleteEventButton").disabled = !editingEventId;
+  $("#adminEventEditorTitle").textContent = editingEventId ? tx("adminEventsEditTitle") : tx("adminEventsNewTitle");
+  $("#adminEventMessage").textContent = "";
+  $("#adminEventEditor").classList.remove("is-hidden");
+  renderAdminEventPreview();
+  $("#adminEventEditor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function closeEventEditor() {
+  editingEventId = null;
+  currentEventPosters = { ro: "", es: "" };
+  $("#adminEventEditor")?.classList.add("is-hidden");
+}
+
+function eventFromForm() {
+  const form = $("#adminEventForm");
+  return {
+    id: form.elements.id.value,
+    date: form.elements.date.value,
+    time: form.elements.time.value.trim(),
+    location: form.elements.location.value.trim(),
+    category: form.elements.category.value.trim(),
+    accentColor: form.elements.accentColor.value,
+    published: form.elements.published.checked,
+    featured: form.elements.featured.checked,
+    titleRo: form.elements.titleRo.value.trim(),
+    shortDescriptionRo: form.elements.shortDescriptionRo.value.trim(),
+    fullDescriptionRo: form.elements.fullDescriptionRo.value.trim(),
+    posterRo: currentEventPosters.ro,
+    titleEs: form.elements.titleEs.value.trim(),
+    shortDescriptionEs: form.elements.shortDescriptionEs.value.trim(),
+    fullDescriptionEs: form.elements.fullDescriptionEs.value.trim(),
+    posterEs: currentEventPosters.es
+  };
+}
+
+function renderAdminEventPreview() {
+  if (!$("#adminEventPreview") || !$("#adminEventForm")) return;
+  $("#adminEventPreview").innerHTML = eventPreviewMarkup(eventFromForm());
+}
+
+function fileToDataUrl(file) {
+  if (!file) return Promise.resolve(null);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve({ name: file.name, dataUrl: reader.result });
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+async function eventPayloadFromForm({ forceDraft = false } = {}) {
+  const form = $("#adminEventForm");
+  const payload = eventFromForm();
+  if (forceDraft) payload.published = false;
+  const [posterRoUpload, posterEsUpload] = await Promise.all([
+    fileToDataUrl(form.elements.posterRoFile.files[0]),
+    fileToDataUrl(form.elements.posterEsFile.files[0])
+  ]);
+  if (posterRoUpload) payload.posterRoUpload = posterRoUpload;
+  if (posterEsUpload) payload.posterEsUpload = posterEsUpload;
+  return payload;
+}
+
+async function saveEventFromForm(options = {}) {
+  if (!$("#adminEventForm")) return;
+  const message = $("#adminEventMessage");
+  message.textContent = tx("adminSaving");
+  try {
+    const payload = await eventPayloadFromForm(options);
+    const endpoint = editingEventId ? `/api/admin/events/${editingEventId}` : "/api/admin/events";
+    const response = await apiRequest(endpoint, { method: editingEventId ? "PATCH" : "POST", body: payload });
+    const index = churchEvents.findIndex((event) => event.id === response.event.id);
+    if (index >= 0) churchEvents[index] = response.event;
+    else churchEvents.unshift(response.event);
+    message.textContent = tx("adminEventsSaved");
+    openEventEditor(response.event);
+    renderAdmin();
+  } catch (error) {
+    message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminEventsSaveError");
+  }
+}
+
+async function deleteCurrentEvent() {
+  if (!editingEventId) return;
+  if (!window.confirm(tx("adminEventsConfirmDelete"))) return;
+  const message = $("#adminEventMessage");
+  if (message) message.textContent = "";
+  try {
+    await apiRequest(`/api/admin/events/${editingEventId}`, { method: "DELETE" });
+    churchEvents = churchEvents.filter((event) => event.id !== editingEventId);
+    closeEventEditor();
+    renderAdmin();
+  } catch {
+    if (message) message.textContent = tx("adminEventsDeleteError");
+  }
+}
+
 function getReservationItems(reservation) {
   if (Array.isArray(reservation.items)) return reservation.items;
   return [{ title: reservation.bookTitle || "Carte", quantity: 1, price: 0 }];
@@ -1896,10 +2376,12 @@ startHeroRotation();
 setupNavigationMenu();
 setupLibrary();
 setupAdmin();
+setupEvents();
 setupLandingEffects();
 applyLanguage();
 loadVerse();
 loadVideos();
+loadEvents();
 updateLiveCountdown();
 setInterval(updateLiveCountdown, 60000);
 setupContactForm();

@@ -57,6 +57,27 @@ CREATE TABLE IF NOT EXISTS volley_registrations (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS church_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_date DATE NOT NULL,
+  event_time TEXT NOT NULL DEFAULT '',
+  location TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL DEFAULT '',
+  accent_color TEXT NOT NULL DEFAULT '#7f090b',
+  published BOOLEAN NOT NULL DEFAULT false,
+  featured BOOLEAN NOT NULL DEFAULT false,
+  title_ro TEXT NOT NULL DEFAULT '',
+  short_description_ro TEXT NOT NULL DEFAULT '',
+  full_description_ro TEXT NOT NULL DEFAULT '',
+  poster_ro TEXT NOT NULL DEFAULT '',
+  title_es TEXT NOT NULL DEFAULT '',
+  short_description_es TEXT NOT NULL DEFAULT '',
+  full_description_es TEXT NOT NULL DEFAULT '',
+  poster_es TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE INDEX IF NOT EXISTS idx_books_active_title ON books(active, title);
 CREATE INDEX IF NOT EXISTS idx_orders_status_created_at ON orders(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
@@ -64,6 +85,8 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DE
 ALTER TABLE volley_registrations ADD COLUMN IF NOT EXISTS shirt_color TEXT NOT NULL DEFAULT '';
 CREATE INDEX IF NOT EXISTS idx_volley_registrations_status_created_at ON volley_registrations(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_volley_registrations_shirt_color_status ON volley_registrations(shirt_color, status);
+CREATE INDEX IF NOT EXISTS idx_church_events_public_date ON church_events(published, event_date, featured);
+CREATE INDEX IF NOT EXISTS idx_church_events_created_at ON church_events(created_at DESC);
 
 INSERT INTO books (title, author, category, language, price, stock, reserved)
 VALUES

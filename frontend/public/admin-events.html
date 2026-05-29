@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administrare evenimente Betel Reus</title>
+    <meta name="description" content="Panou privat pentru gestionarea evenimentelor Betel Reus." />
+    <link rel="icon" href="/assets/icon-dark.png" />
+    <link rel="stylesheet" href="/css/styles.css?v=admin-events-20260529a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Biserica Betel Reus">
+        <img src="/assets/logo-dark-320.png" width="320" height="78" alt="Biserica Betel Reus" />
+      </a>
+      <nav class="nav" aria-label="Navigare administrare">
+        <a href="/" data-i18n="navHome">Acasă</a>
+        <a href="/admin.html" data-i18n="navAdmin">Panou</a>
+        <a href="/#program" data-i18n="eventsColumnTitle">Evenimente</a>
+      </nav>
+      <button class="lang-toggle" type="button" id="langToggle">ES</button>
+    </header>
+
+    <main>
+      <section class="section admin-page auth-page is-auth-checking" id="adminAuthPage">
+        <div class="auth-loading" data-i18n="authChecking">Se încarcă...</div>
+        <div class="library-gate" id="adminGate">
+          <p class="eyebrow" data-i18n="adminPrivatePanel">Panou privat</p>
+          <h1 data-i18n="adminEventsPageTitle">Evenimente</h1>
+          <p data-i18n="adminEventsGateText">Introdu codul privat pentru a gestiona evenimentele de pe pagina principală.</p>
+          <form class="access-form" id="adminAccessForm">
+            <label>
+              <span data-i18n="adminCodeLabel">Cod administrare</span>
+              <input name="code" type="password" autocomplete="off" required placeholder="Cod privat" data-i18n-placeholder="adminCodePlaceholder" />
+            </label>
+            <button class="button primary" type="submit" data-i18n="adminEnter">Intră în panou</button>
+            <span class="form-note" id="adminAccessMessage"></span>
+          </form>
+        </div>
+
+        <div class="admin-shell is-hidden" id="adminShell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="adminModuleEventsTitle">Evenimente</p>
+              <h1 data-i18n="adminEventsPageTitle">Evenimente</h1>
+            </div>
+            <div class="header-actions">
+              <a class="button secondary" href="/admin.html" data-i18n="adminAllSections">Toate secțiunile</a>
+              <a class="button secondary" href="/#program" data-i18n="adminEventsViewLanding">Vezi landing page</a>
+              <button class="button primary" type="button" id="addEventButton" data-i18n="adminEventsAdd">+ Adaugă eveniment</button>
+              <button class="button secondary" type="button" id="exitAdmin" data-i18n="exitLibrary">Ieșire</button>
+            </div>
+          </div>
+
+          <div class="admin-events-layout">
+            <aside class="admin-panel admin-events-summary">
+              <p class="eyebrow" data-i18n="adminEventsSummaryEyebrow">Rezumat</p>
+              <h2 data-i18n="adminEventsSummaryTitle">Evenimente publicate</h2>
+              <p data-i18n="adminEventsSummaryText">Evenimentele publicate apar automat în landing page.</p>
+              <div class="admin-events-stats" id="adminEventsStats"></div>
+            </aside>
+
+            <section class="admin-panel admin-events-list-panel">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="adminEventsListEyebrow">Listă</p>
+                  <h2 data-i18n="adminEventsListTitle">Evenimente create</h2>
+                </div>
+                <button class="button primary" type="button" id="addEventButtonInline" data-i18n="adminEventsAdd">+ Adaugă eveniment</button>
+              </div>
+              <div class="admin-events-list" id="adminEventsList"></div>
+              <div class="event-empty-state is-hidden" id="adminEventsEmpty">
+                <div class="empty-icon">+</div>
+                <p class="eyebrow" data-i18n="adminEventsEmptyEyebrow">Fără evenimente</p>
+                <h2 data-i18n="adminEventsEmptyTitle">Încă nu există evenimente create</h2>
+                <p data-i18n="adminEventsEmptyText">Adaugă primul eveniment pentru ca acesta să poată apărea pe pagina principală.</p>
+                <button class="button primary" type="button" id="addEventButtonEmpty" data-i18n="adminEventsAdd">+ Adaugă eveniment</button>
+              </div>
+            </section>
+          </div>
+
+          <section class="admin-panel admin-event-editor is-hidden" id="adminEventEditor">
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow" data-i18n="adminEventsEditorEyebrow">Editor</p>
+                <h2 id="adminEventEditorTitle" data-i18n="adminEventsNewTitle">Adaugă eveniment</h2>
+              </div>
+              <button class="button secondary" type="button" id="closeEventEditor" data-i18n="adminEventsClose">Închide</button>
+            </div>
+
+            <form id="adminEventForm" class="event-editor-form">
+              <input type="hidden" name="id" />
+              <div class="event-editor-main">
+                <div class="event-editor-fields">
+                  <fieldset>
+                    <legend data-i18n="adminEventsGeneral">Informații generale</legend>
+                    <div class="form-row">
+                      <label>
+                        <span data-i18n="adminEventsDate">Data</span>
+                        <input name="date" type="date" required />
+                      </label>
+                      <label>
+                        <span data-i18n="adminEventsTime">Ora</span>
+                        <input name="time" type="text" placeholder="18:00" />
+                      </label>
+                    </div>
+                    <label>
+                      <span data-i18n="adminEventsLocation">Locație</span>
+                      <input name="location" type="text" placeholder="Betel Reus" />
+                    </label>
+                    <label>
+                      <span data-i18n="adminEventsCategory">Categorie</span>
+                      <input name="category" type="text" placeholder="Serviciu special" />
+                    </label>
+                    <div class="form-row">
+                      <label class="checkbox-label">
+                        <span data-i18n="adminEventsPublished">Publicat</span>
+                        <input name="published" type="checkbox" />
+                      </label>
+                      <label class="checkbox-label">
+                        <span data-i18n="adminEventsFeatured">Featured</span>
+                        <input name="featured" type="checkbox" />
+                      </label>
+                    </div>
+                    <label class="color-field">
+                      <span data-i18n="adminEventsAccent">Culoare card</span>
+                      <input name="accentColor" type="color" value="#7f090b" />
+                    </label>
+                  </fieldset>
+
+                  <div class="event-language-grid">
+                    <fieldset>
+                      <legend>Română</legend>
+                      <label><span data-i18n="adminEventsTitleLabel">Titlu</span><input name="titleRo" type="text" /></label>
+                      <label><span data-i18n="adminEventsShortLabel">Descriere scurtă</span><textarea name="shortDescriptionRo"></textarea></label>
+                      <label><span data-i18n="adminEventsFullLabel">Descriere completă</span><textarea name="fullDescriptionRo"></textarea></label>
+                      <label class="upload-field">
+                        <span data-i18n="adminEventsPosterRo">Afiș română</span>
+                        <input name="posterRoFile" type="file" accept="image/png,image/jpeg,image/webp" />
+                        <small data-poster-current="ro"></small>
+                      </label>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Español</legend>
+                      <label><span data-i18n="adminEventsTitleLabelEs">Título</span><input name="titleEs" type="text" /></label>
+                      <label><span data-i18n="adminEventsShortLabelEs">Descripción corta</span><textarea name="shortDescriptionEs"></textarea></label>
+                      <label><span data-i18n="adminEventsFullLabelEs">Descripción completa</span><textarea name="fullDescriptionEs"></textarea></label>
+                      <label class="upload-field">
+                        <span data-i18n="adminEventsPosterEs">Cartel español</span>
+                        <input name="posterEsFile" type="file" accept="image/png,image/jpeg,image/webp" />
+                        <small data-poster-current="es"></small>
+                      </label>
+                    </fieldset>
+                  </div>
+                </div>
+
+                <aside class="admin-event-preview-panel">
+                  <h3 data-i18n="adminEventsPreview">Preview landing card</h3>
+                  <div id="adminEventPreview"></div>
+                </aside>
+              </div>
+
+              <div class="event-editor-actions">
+                <button class="button secondary danger" type="button" id="deleteEventButton" data-i18n="adminEventsDelete">Șterge eveniment</button>
+                <span class="form-note" id="adminEventMessage"></span>
+                <button class="button secondary" type="button" id="saveEventDraft" data-i18n="adminEventsSaveDraft">Salvează ca schiță</button>
+                <button class="button primary" type="submit" data-i18n="adminEventsSave">Salvează eveniment</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <img src="/assets/icon-dark-160.png" width="160" height="160" alt="" loading="lazy" />
+      <span>© <span id="year"></span> Biserica Betel Reus</span>
+    </footer>
+
+    <script src="/js/app.min.js?v=app-20260529b" type="module"></script>
+  </body>
+</html>

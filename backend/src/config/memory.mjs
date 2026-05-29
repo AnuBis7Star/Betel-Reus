@@ -8,6 +8,7 @@ const memory = {
     { id: randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", category: "Copii", language: "ro", stock: 6, reserved: 0, price: 18 }
   ],
   orders: [],
+  events: [],
   volleyRegistrations: [],
   auditLogs: []
 };
