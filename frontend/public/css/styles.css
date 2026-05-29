@@ -1948,12 +1948,15 @@ footer img {
 
 .volley-color-option.is-compact {
   display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
   place-items: center;
   flex: 0 0 58px;
   width: 58px;
   height: 58px;
   min-height: 58px;
   padding: 0;
+  text-align: center;
 }
 
 .volley-color-option.is-compact .volley-color-swatch {
