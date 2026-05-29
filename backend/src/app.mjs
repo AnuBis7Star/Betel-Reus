@@ -15,7 +15,7 @@ async function app(req, res) {
       await handleApiRoutes(req, res, url);
       return;
     }
-    await serveStatic(req, url.pathname, res);
+    await serveStatic(req, url, res);
   } catch (error) {
     if (!error.status || error.status >= 500) console.error(error);
     sendError(res, error);

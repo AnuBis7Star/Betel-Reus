@@ -1392,6 +1392,12 @@ textarea {
   font-weight: 800;
 }
 
+.social-links img {
+  display: block;
+  width: 17px;
+  height: 17px;
+}
+
 .identity-verse {
   margin-top: 16px;
   color: var(--muted);
