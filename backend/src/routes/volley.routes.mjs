@@ -3,6 +3,7 @@ import {
   deleteAdminVolleyRegistration,
   getAdminVolleyRegistrations,
   getApprovedVolleyTeams,
+  getVolleyColors,
   updateAdminVolleyRegistration
 } from "../controllers/volley.controller.mjs";
 import { requireAdmin } from "../middleware/admin.middleware.mjs";
@@ -10,6 +11,11 @@ import { requireAdmin } from "../middleware/admin.middleware.mjs";
 async function handleVolleyRoutes(req, res, url) {
   if (url.pathname === "/api/volley/teams" && req.method === "GET") {
     await getApprovedVolleyTeams(req, res);
+    return true;
+  }
+
+  if (url.pathname === "/api/volley/colors" && req.method === "GET") {
+    await getVolleyColors(req, res);
     return true;
   }
 

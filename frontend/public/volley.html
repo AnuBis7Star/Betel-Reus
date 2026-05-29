@@ -7,7 +7,7 @@
     <meta name="description" content="Informații și înscriere pentru turneul de volley organizat de tinerii Betel Reus pe 13 iunie 2026." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preload" as="image" href="/assets/volley-tournament-transparent-900.png" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/styles.css?v=volley-colors-20260529g" />
   </head>
   <body class="volley-page" id="top">
     <header class="volley-header">
@@ -151,6 +151,19 @@
             <div class="volley-player-grid" id="volleyPlayerGrid"></div>
             <button class="volley-add-player" id="addVolleyPlayer" type="button" data-i18n="volleyAddPlayer">+ Adaugă jucător</button>
           </div>
+          <div class="volley-color-field">
+            <div class="volley-field-heading">
+              <span data-i18n="volleyShirtColorLabel">Culoarea tricoului</span>
+              <small data-i18n="volleyShirtColorLimit">Maximum 5 echipe pe culoare</small>
+            </div>
+            <p class="volley-color-help" data-i18n="volleyShirtColorHelp">Toți jucătorii echipei ar trebui să vină, pe cât posibil, cu tricou de aceeași culoare. Culorile complete apar dezactivate.</p>
+            <div class="volley-color-grid" id="volleyColorGrid"></div>
+            <details class="volley-more-colors">
+              <summary data-i18n="volleyMoreColorsLabel">Mai multe culori</summary>
+              <div class="volley-extra-color-grid" id="volleyExtraColorGrid"></div>
+            </details>
+            <p class="volley-color-summary" id="volleyColorSummary" data-i18n="volleyNoColorSelected">Alege culoarea tricoului echipei.</p>
+          </div>
           <label>
             <span data-i18n="volleyNotesLabel">Note</span>
             <textarea name="notes" placeholder="Comentarii, întrebări sau nevoi ale echipei" data-i18n-placeholder="volleyNotesPlaceholder"></textarea>
@@ -175,6 +188,6 @@
       <img src="/assets/icon-light-160.png" width="160" height="160" alt="" loading="lazy" />
       <span>© 2026 Biserica Betel Reus</span>
     </footer>
-    <script src="/js/volley.js" type="module"></script>
+    <script src="/js/volley.js?v=volley-colors-20260529g" type="module"></script>
   </body>
 </html>
