@@ -355,6 +355,64 @@ function renderColorPicker() {
   renderColorSummary();
 }
 
+function setupExtraColorScroller() {
+  if (!extraColorGrid) return;
+  let isDragging = false;
+  let didDrag = false;
+  let suppressClick = false;
+  let startX = 0;
+  let startScrollLeft = 0;
+
+  const canScroll = () => extraColorGrid.scrollWidth > extraColorGrid.clientWidth + 2;
+
+  extraColorGrid.addEventListener("wheel", (event) => {
+    if (!canScroll()) return;
+    const horizontalDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!horizontalDelta) return;
+    event.preventDefault();
+    extraColorGrid.scrollLeft += horizontalDelta;
+  }, { passive: false });
+
+  extraColorGrid.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || !canScroll()) return;
+    isDragging = true;
+    didDrag = false;
+    startX = event.clientX;
+    startScrollLeft = extraColorGrid.scrollLeft;
+    extraColorGrid.classList.add("is-dragging");
+    extraColorGrid.setPointerCapture?.(event.pointerId);
+  });
+
+  extraColorGrid.addEventListener("pointermove", (event) => {
+    if (!isDragging) return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) > 3) didDrag = true;
+    extraColorGrid.scrollLeft = startScrollLeft - delta;
+    event.preventDefault();
+  });
+
+  const stopDragging = (event) => {
+    if (!isDragging) return;
+    isDragging = false;
+    extraColorGrid.classList.remove("is-dragging");
+    extraColorGrid.releasePointerCapture?.(event.pointerId);
+    if (didDrag) {
+      suppressClick = true;
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 0);
+    }
+  };
+
+  extraColorGrid.addEventListener("pointerup", stopDragging);
+  extraColorGrid.addEventListener("pointercancel", stopDragging);
+  extraColorGrid.addEventListener("click", (event) => {
+    if (!suppressClick) return;
+    event.preventDefault();
+    event.stopPropagation();
+  }, true);
+}
+
 async function loadColorAvailability() {
   if (!colorGrid || !extraColorGrid) return;
   try {
@@ -553,6 +611,7 @@ playerGrid?.addEventListener("click", (event) => {
 resetPlayerGrid();
 setupVolleyEffects();
 applyLanguage();
+setupExtraColorScroller();
 loadColorAvailability();
 
 document.querySelector("#langToggle")?.addEventListener("click", () => {

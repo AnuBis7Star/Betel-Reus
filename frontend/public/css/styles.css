@@ -1969,7 +1969,13 @@ footer img {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   padding: 4px 0 8px;
+  cursor: grab;
   scrollbar-color: rgba(255, 246, 232, 0.35) transparent;
+}
+
+.volley-extra-color-grid.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .volley-color-option.is-compact {
