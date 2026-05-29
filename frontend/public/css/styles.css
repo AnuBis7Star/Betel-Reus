@@ -1804,7 +1804,13 @@ footer img {
 .volley-form {
   display: grid;
   gap: 14px;
+  width: 100%;
+  min-width: 0;
   padding: 22px;
+}
+
+.volley-form > * {
+  min-width: 0;
 }
 
 .volley-hidden-field {
@@ -1850,6 +1856,8 @@ footer img {
 .volley-color-field {
   display: grid;
   gap: 14px;
+  width: 100%;
+  min-width: 0;
 }
 
 .volley-color-help {
@@ -1921,6 +1929,7 @@ footer img {
 .volley-more-colors {
   display: grid;
   gap: 8px;
+  width: 100%;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
@@ -1937,7 +1946,7 @@ footer img {
 .volley-extra-color-grid {
   display: flex;
   gap: 10px;
-  width: 100%;
+  width: min(100%, calc(100vw - 72px));
   min-width: 0;
   max-width: 100%;
   overflow-x: auto;
