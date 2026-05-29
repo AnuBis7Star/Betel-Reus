@@ -90,13 +90,14 @@ const translations = {
     aboutTitle: "O familie în credință, în inima orașului Reus",
     aboutText: "Biserica Betel este un loc al prezenței lui Dumnezeu, unde viețile sunt transformate prin Duhul Sfânt. Aici trăim o viață nouă, în Hristos și cu Hristos.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
-    contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
+    contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
     contactPastor: "Telefon pastor: Dorel Abuțnăriți",
     contactTransport: "Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.",
     contactCall: "Sună-ne",
     contactSendEmail: "Trimite email",
     contactMapTitle: "Hartă Betel Reus",
     contactFormTitle: "Trimite-ne un mesaj",
+    contactFormHint: "Mesajul se va trimite către contacto@betelreus.com.",
     contactFormName: "Nume",
     contactFormNamePlaceholder: "Numele tău",
     contactFormContact: "Email sau telefon",
@@ -327,13 +328,14 @@ const translations = {
     aboutTitle: "Una familia en la fe, en el corazón de Reus",
     aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espíritu Santo. Aquí vivimos una vida nueva, en Cristo y con Cristo.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
-    contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
+    contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
     contactPastor: "Teléfono del pastor: Dorel Abuțnăriți",
     contactTransport: "Parking: plazas en la calle, delante de la iglesia. Transporte público: revisa la ruta local hacia Carrer de Terrassa 33.",
     contactCall: "Llámanos",
     contactSendEmail: "Enviar email",
     contactMapTitle: "Mapa Betel Reus",
     contactFormTitle: "Envíanos un mensaje",
+    contactFormHint: "El mensaje se enviará a contacto@betelreus.com.",
     contactFormName: "Nombre",
     contactFormNamePlaceholder: "Tu nombre",
     contactFormContact: "Email o teléfono",
@@ -1710,7 +1712,7 @@ function setupContactForm() {
     const message = data.get("message").trim();
     const subject = encodeURIComponent(`${lang === "ro" ? "Mesaj de pe site" : "Mensaje desde la web"} - ${name}`);
     const body = encodeURIComponent(`${translations[lang].contactFormName}: ${name}\n${translations[lang].contactFormContact}: ${contact}\n\n${translations[lang].contactFormMessage}:\n${message}`);
-    window.location.href = `mailto:bbetelreus@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:contacto@betelreus.com?subject=${subject}&body=${body}`;
     $("#contactFormMessage").textContent = translations[lang].contactFormSent;
   });
 }

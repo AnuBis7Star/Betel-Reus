@@ -1488,6 +1488,13 @@ textarea {
   padding: 24px;
 }
 
+.contact-form-hint {
+  margin: -4px 0 2px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
 .contact-form h3 {
   font-size: 1.4rem;
 }
