@@ -1,5 +1,8 @@
 import { apiRequest as requestApi } from "./api.js";
 
+const contactEmail = ["contacto", "betelreus.com"].join("@");
+const contactFormMinimumMs = 3000;
+
 const translations = {
   ro: {
     navHome: "Acasă",
@@ -32,6 +35,7 @@ const translations = {
     scheduleText: "Programul principal al bisericii pentru membri, familii și vizitatori.",
     saturdayOther: "Alte activități după program",
     sunday: "Duminică",
+    monday: "Luni",
     wednesday: "Miercuri",
     friday: "Vineri",
     saturday: "Sâmbătă",
@@ -89,13 +93,15 @@ const translations = {
     aboutTitle: "O familie în credință, în inima orașului Reus",
     aboutText: "Biserica Betel este un loc al prezenței lui Dumnezeu, unde viețile sunt transformate prin Duhul Sfânt. Aici trăim o viață nouă, în Hristos și cu Hristos.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
-    contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
+    contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
     contactPastor: "Telefon pastor: Dorel Abuțnăriți",
     contactTransport: "Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.",
     contactCall: "Sună-ne",
     contactSendEmail: "Trimite email",
     contactMapTitle: "Hartă Betel Reus",
+    contactLoadMap: "Încarcă harta",
     contactFormTitle: "Trimite-ne un mesaj",
+    contactFormHint: "Mesajul se va trimite către contacto@betelreus.com.",
     contactFormName: "Nume",
     contactFormNamePlaceholder: "Numele tău",
     contactFormContact: "Email sau telefon",
@@ -269,6 +275,7 @@ const translations = {
     scheduleText: "El programa principal de la iglesia para miembros, familias y visitantes.",
     saturdayOther: "Otras actividades según programación",
     sunday: "Domingo",
+    monday: "Lunes",
     wednesday: "Miércoles",
     friday: "Viernes",
     saturday: "Sábado",
@@ -326,13 +333,15 @@ const translations = {
     aboutTitle: "Una familia en la fe, en el corazón de Reus",
     aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espíritu Santo. Aquí vivimos una vida nueva, en Cristo y con Cristo.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
-    contactEmail: "bbetelreus@gmail.com · +34 605 43 05 73",
+    contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
     contactPastor: "Teléfono del pastor: Dorel Abuțnăriți",
     contactTransport: "Parking: plazas en la calle, delante de la iglesia. Transporte público: revisa la ruta local hacia Carrer de Terrassa 33.",
     contactCall: "Llámanos",
     contactSendEmail: "Enviar email",
     contactMapTitle: "Mapa Betel Reus",
+    contactLoadMap: "Cargar mapa",
     contactFormTitle: "Envíanos un mensaje",
+    contactFormHint: "El mensaje se enviará a contacto@betelreus.com.",
     contactFormName: "Nombre",
     contactFormNamePlaceholder: "Tu nombre",
     contactFormContact: "Email o teléfono",
@@ -500,7 +509,7 @@ let videoResumeTimer;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const accessCode = "BETEL-REUS";
-const defaultAdminCode = "ADMIN-BETEL";
+const defaultAdminCode = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname) ? "ADMIN-BETEL" : "";
 const adminSessionMs = 10 * 60 * 1000;
 const heroImages = [
   "https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg",
@@ -672,7 +681,14 @@ function applyLanguage() {
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
   if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) renderAdmin();
+  setupContactEmailLinks();
   updateLiveCountdown();
+}
+
+function setupContactEmailLinks() {
+  $$("[data-email-link]").forEach((link) => {
+    link.href = `mailto:${contactEmail}`;
+  });
 }
 
 let revealObserver = null;
@@ -1734,16 +1750,84 @@ function updateLiveCountdown() {
 function setupContactForm() {
   const form = $("#contactForm");
   if (!form) return;
+  const formReadyAt = Date.now() + contactFormMinimumMs;
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const data = new FormData(form);
     const name = data.get("name").trim();
     const contact = data.get("contact").trim();
     const message = data.get("message").trim();
+    const website = data.get("website").trim();
+    if (website || Date.now() < formReadyAt) {
+      $("#contactFormMessage").textContent = translations[lang].contactFormSent;
+      return;
+    }
     const subject = encodeURIComponent(`${lang === "ro" ? "Mesaj de pe site" : "Mensaje desde la web"} - ${name}`);
     const body = encodeURIComponent(`${translations[lang].contactFormName}: ${name}\n${translations[lang].contactFormContact}: ${contact}\n\n${translations[lang].contactFormMessage}:\n${message}`);
-    window.location.href = `mailto:bbetelreus@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
     $("#contactFormMessage").textContent = translations[lang].contactFormSent;
+  });
+}
+
+function setupDeferredMap() {
+  const panel = $("[data-map-panel]");
+  const iframe = panel?.querySelector("iframe[data-map-src]");
+  const button = panel?.querySelector("[data-map-load]");
+  if (!panel || !iframe) return;
+
+  const loadMap = () => {
+    if (iframe.src) return;
+    iframe.src = iframe.dataset.mapSrc;
+    panel.classList.add("is-loaded");
+  };
+
+  button?.addEventListener("click", loadMap);
+
+  if (!window.matchMedia("(max-width: 700px)").matches) {
+    loadMap();
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) return;
+  const mapObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadMap();
+      mapObserver.disconnect();
+    });
+  }, { rootMargin: "180px 0px", threshold: 0.01 });
+  mapObserver.observe(panel);
+}
+
+function setupDesktopHeaderScroll() {
+  const header = $(".site-header");
+  if (!header) return;
+  const desktopQuery = window.matchMedia("(min-width: 861px)");
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const update = () => {
+    const currentY = Math.max(0, window.scrollY);
+    if (!desktopQuery.matches || currentY < 96) {
+      header.classList.remove("is-hidden-on-scroll");
+    } else if (currentY > lastY + 8) {
+      header.classList.add("is-hidden-on-scroll");
+    } else if (currentY < lastY - 8) {
+      header.classList.remove("is-hidden-on-scroll");
+    }
+    lastY = currentY;
+    ticking = false;
+  };
+
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }, { passive: true });
+
+  desktopQuery.addEventListener?.("change", () => {
+    header.classList.remove("is-hidden-on-scroll");
+    lastY = window.scrollY;
   });
 }
 
@@ -1815,3 +1899,5 @@ loadVideos();
 updateLiveCountdown();
 setInterval(updateLiveCountdown, 60000);
 setupContactForm();
+setupDeferredMap();
+setupDesktopHeaderScroll();

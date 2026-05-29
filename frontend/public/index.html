@@ -5,10 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Betel Reus | Biserica Betel Reus</title>
     <meta name="description" content="Betel Reus este o casă de rugăciune și închinare în Reus, unde ne adunăm pentru a-L glorifica pe Dumnezeu, a asculta Cuvântul și a crește împreună în Hristos." />
+    <link rel="canonical" href="https://betelreus.com/" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:locale" content="ro_RO" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Biserica Betel Reus" />
+    <meta property="og:title" content="Biserica Betel Reus | Biserică penticostală în Reus" />
+    <meta property="og:description" content="Program, predici, contact și resurse pentru comunitatea Bisericii Betel Reus." />
+    <meta property="og:url" content="https://betelreus.com/" />
+    <meta property="og:image" content="https://betelreus.com/assets/logo-dark-320.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Biserica Betel Reus" />
+    <meta name="twitter:description" content="Program, predici, contact și resurse pentru comunitatea Bisericii Betel Reus." />
+    <meta name="twitter:image" content="https://betelreus.com/assets/logo-dark-320.png" />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preconnect" href="https://i.ytimg.com" />
     <link rel="preload" as="image" href="https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/styles.css?v=landing-20260529e" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Church",
+        "name": "Biserica Betel Reus",
+        "url": "https://betelreus.com/",
+        "email": "contacto@betelreus.com",
+        "telephone": "+34605430573",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Carrer de Terrassa, 33",
+          "addressLocality": "Reus",
+          "postalCode": "43204",
+          "addressRegion": "Tarragona",
+          "addressCountry": "ES"
+        },
+        "sameAs": [
+          "https://www.instagram.com/bisericabetelreus/",
+          "https://www.instagram.com/tineriibetelreus/",
+          "https://www.youtube.com/@BisericaBetelReus",
+          "https://www.tiktok.com/@bisericabetelreus",
+          "https://www.facebook.com/BBetelReus"
+        ]
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -81,6 +119,10 @@
               <span>18:00 - 20:00 · <span data-i18n="divineService">Serviciu divin</span></span>
             </article>
             <article>
+              <strong data-i18n="monday">Luni</strong>
+              <span>20:00 - 21:30 · <span data-i18n="prayer">Rugăciune</span></span>
+            </article>
+            <article>
               <strong data-i18n="wednesday">Miercuri</strong>
               <span>20:00 - 21:30 · <span data-i18n="prayer">Rugăciune</span></span>
             </article>
@@ -145,11 +187,11 @@
           <h2 data-i18n="socialTitle">Rămâi aproape de comunitate</h2>
         </div>
         <div class="social-links">
-          <a href="https://www.instagram.com/bisericabetelreus/" target="_blank" rel="noreferrer"><span>IG</span>Instagram</a>
-          <a href="https://www.instagram.com/tineriibetelreus/" target="_blank" rel="noreferrer"><span>IG</span>Tineri</a>
-          <a href="https://www.youtube.com/@BisericaBetelReus" target="_blank" rel="noreferrer"><span>YT</span>YouTube</a>
-          <a href="https://www.tiktok.com/@bisericabetelreus" target="_blank" rel="noreferrer"><span>TT</span>TikTok</a>
-          <a href="https://www.facebook.com/BBetelReus" target="_blank" rel="noreferrer"><span>FB</span>Facebook</a>
+          <a class="social-instagram" href="https://www.instagram.com/bisericabetelreus/" target="_blank" rel="noreferrer"><span><img src="/assets/social-instagram.svg" width="18" height="18" alt="" loading="lazy" /></span>Instagram</a>
+          <a class="social-instagram" href="https://www.instagram.com/tineriibetelreus/" target="_blank" rel="noreferrer"><span><img src="/assets/social-instagram.svg" width="18" height="18" alt="" loading="lazy" /></span>Tineri</a>
+          <a class="social-youtube" href="https://www.youtube.com/@BisericaBetelReus" target="_blank" rel="noreferrer"><span><img src="/assets/social-youtube.svg" width="18" height="18" alt="" loading="lazy" /></span>YouTube</a>
+          <a class="social-tiktok" href="https://www.tiktok.com/@bisericabetelreus" target="_blank" rel="noreferrer"><span><img src="/assets/social-tiktok.svg" width="18" height="18" alt="" loading="lazy" /></span>TikTok</a>
+          <a class="social-facebook" href="https://www.facebook.com/BBetelReus" target="_blank" rel="noreferrer"><span><img src="/assets/social-facebook.svg" width="18" height="18" alt="" loading="lazy" /></span>Facebook</a>
         </div>
       </section>
 
@@ -162,6 +204,11 @@
         </div>
         <form class="contact-form" id="contactForm">
           <h3 data-i18n="contactFormTitle">Trimite-ne un mesaj</h3>
+          <p class="contact-form-hint" data-i18n="contactFormHint">Mesajul se va trimite către contacto@betelreus.com.</p>
+          <label class="contact-hidden-field">
+            <span>Website</span>
+            <input name="website" autocomplete="off" tabindex="-1" />
+          </label>
           <label>
             <span data-i18n="contactFormName">Nume</span>
             <input name="name" autocomplete="name" required placeholder="Numele tău" data-i18n-placeholder="contactFormNamePlaceholder" />
@@ -181,18 +228,19 @@
           <div class="contact-box">
             <strong>Betel Reus</strong>
             <span data-i18n="contactAddress">Carrer de Terrassa, 33, 43204 Reus, Tarragona</span>
-            <span data-i18n="contactEmail">bbetelreus@gmail.com · +34 605 43 05 73</span>
+            <span data-i18n="contactEmail">contacto@betelreus.com · +34 605 43 05 73</span>
             <span data-i18n="contactPastor">Telefon pastor: Dorel Abuțnăriți</span>
             <span data-i18n="contactTransport">Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.</span>
             <div class="contact-actions">
               <a class="button primary" href="tel:+34605430573" data-i18n="contactCall">Sună-ne</a>
-              <a class="button secondary" href="mailto:bbetelreus@gmail.com" data-i18n="contactSendEmail">Trimite email</a>
+              <a class="button secondary" href="#" data-email-link data-i18n="contactSendEmail">Trimite email</a>
               <a class="button secondary" href="https://wa.me/34605430573" target="_blank" rel="noreferrer">WhatsApp</a>
               <a class="button secondary" href="https://maps.app.goo.gl/cx4rVZyv5y9qeULV7" target="_blank" rel="noreferrer">Maps</a>
             </div>
           </div>
-          <div class="map-panel">
-            <iframe title="Hartă Betel Reus" data-i18n-title="contactMapTitle" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Carrer%20de%20Terrassa%2033%2C%2043204%20Reus%2C%20Tarragona&output=embed"></iframe>
+          <div class="map-panel" data-map-panel>
+            <button class="map-load-button" type="button" data-map-load data-i18n="contactLoadMap">Încarcă harta</button>
+            <iframe title="Hartă Betel Reus" data-i18n-title="contactMapTitle" loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-map-src="https://www.google.com/maps?q=Carrer%20de%20Terrassa%2033%2C%2043204%20Reus%2C%20Tarragona&output=embed"></iframe>
           </div>
         </div>
       </section>
@@ -203,6 +251,6 @@
       <span>© <span id="year"></span> Biserica Betel Reus</span>
     </footer>
 
-    <script src="/js/app.js" type="module"></script>
+    <script src="/js/app.js?v=landing-20260529e" type="module"></script>
   </body>
 </html>

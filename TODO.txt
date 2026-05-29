@@ -36,7 +36,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 -----------
 - Confirmar si el telefono del pastor acepta WhatsApp publico.
 - Decidir si habra formulario de contacto en la primera version.
-- Si hay formulario, confirmar si los mensajes llegan a bbetelreus@gmail.com.
+- Si hay formulario, confirmar si los mensajes llegan a contacto@betelreus.com.
 - Preparar texto de consentimiento de privacidad para el formulario, si se implementa.
 
 
