@@ -424,14 +424,32 @@ cite {
   align-items: start;
 }
 
+.program-layout {
+  grid-template-columns: minmax(360px, 0.92fr) minmax(420px, 1.08fr);
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.program-schedule-column,
+.program-events-column {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.program-schedule-column > p:not(.eyebrow) {
+  margin-bottom: clamp(18px, 3vw, 34px);
+}
+
+.column-title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
+  line-height: 1.05;
+}
+
 .schedule-grid {
   display: grid;
   gap: 12px;
-}
-
-.program-column {
-  display: grid;
-  gap: 16px;
 }
 
 .schedule-grid article,
@@ -445,9 +463,9 @@ cite {
 
 .schedule-grid article {
   display: grid;
-  grid-template-columns: minmax(110px, 0.35fr) 1fr;
+  grid-template-columns: minmax(96px, 0.34fr) 1fr;
   gap: 8px 16px;
-  padding: 20px;
+  padding: 18px;
 }
 
 .schedule-grid article strong {
@@ -484,7 +502,7 @@ cite {
 .volley-event-card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(120px, 0.42fr);
+  grid-template-columns: minmax(0, 1fr) minmax(110px, 0.34fr);
   gap: 18px;
   overflow: hidden;
   border: 1px solid rgba(255, 210, 29, 0.22);

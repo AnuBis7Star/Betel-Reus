@@ -27,7 +27,7 @@
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preconnect" href="https://i.ytimg.com" />
     <link rel="preload" as="image" href="https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=landing-20260529e" />
+    <link rel="stylesheet" href="/css/styles.css?v=landing-20260529f" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -111,13 +111,12 @@
         <div class="video-rail" id="videoRail"></div>
       </section>
 
-      <section class="section split" id="program">
-        <div>
+      <section class="section split program-layout" id="program">
+        <div class="program-schedule-column">
           <p class="eyebrow" data-i18n="scheduleEyebrow">Ne întâlnim împreună</p>
           <h2 data-i18n="scheduleTitle">Program și evenimente</h2>
           <p data-i18n="scheduleText">Programul principal al bisericii pentru membri, familii și vizitatori.</p>
-        </div>
-        <div class="program-column">
+          <h3 class="column-title" data-i18n="scheduleColumnTitle">Program</h3>
           <div class="schedule-grid">
             <article>
               <strong data-i18n="sunday">Duminică</strong>
@@ -142,6 +141,9 @@
               <span data-i18n="saturdayOther">Alte activități după program</span>
             </article>
           </div>
+        </div>
+        <div class="program-events-column">
+          <h3 class="column-title" data-i18n="eventsColumnTitle">Evenimente</h3>
           <article class="event-card volley-event-card" id="eventos">
             <div class="event-card-copy">
               <p class="eyebrow" data-i18n="volleyEventEyebrow">Eveniment tineret</p>
@@ -257,6 +259,6 @@
       <span>© <span id="year"></span> Biserica Betel Reus</span>
     </footer>
 
-    <script src="/js/app.js?v=landing-20260529e" type="module"></script>
+    <script src="/js/app.js?v=landing-20260529f" type="module"></script>
   </body>
 </html>
