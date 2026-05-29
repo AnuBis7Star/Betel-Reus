@@ -1376,9 +1376,31 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  --social-color: rgba(255, 255, 255, 0.36);
   border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 8px;
   padding: 11px 14px;
+}
+
+.social-links a:hover {
+  border-color: color-mix(in srgb, var(--social-color), white 18%);
+  background: color-mix(in srgb, var(--social-color), transparent 86%);
+}
+
+.social-links .social-instagram {
+  --social-color: #e4405f;
+}
+
+.social-links .social-youtube {
+  --social-color: #ff0000;
+}
+
+.social-links .social-tiktok {
+  --social-color: #00f2ea;
+}
+
+.social-links .social-facebook {
+  --social-color: #1877f2;
 }
 
 .social-links span {
@@ -1387,7 +1409,8 @@ textarea {
   width: 26px;
   height: 26px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--social-color), transparent 72%);
   font-size: 0.72rem;
   font-weight: 800;
 }
