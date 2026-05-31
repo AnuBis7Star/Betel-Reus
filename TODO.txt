@@ -25,14 +25,14 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Confirmar si algun dia hara falta catalan o ingles. Para la primera version queda fuera.
 
 
-2. Programa y eventos
+2. Programa y eventos - HECHO
 ---------------------
 - Enviar proximos eventos que deben aparecer al lanzar, si hay alguno.
 - Decidir si el calendario seguira manual o si mas adelante se conectara Google Calendar.
 - Si se usa Google Calendar, enviar calendario o cuenta desde la que se gestionara.
 
 
-3. Contacto
+3. Contacto - HECHO
 -----------
 - Confirmar si el telefono del pastor acepta WhatsApp publico.
 - Decidir si habra formulario de contacto en la primera version.
@@ -40,7 +40,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Preparar texto de consentimiento de privacidad para el formulario, si se implementa.
 
 
-4. Redes sociales y multimedia
+4. Redes sociales y multimedia - HECHO
 ------------------------------
 - Confirmar si Instagram queda solo como enlace externo o si se quieren posts concretos incrustados.
 - Si Instagram sera automatico mas adelante, preparar acceso a Meta Developer y cuenta profesional.
@@ -52,7 +52,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
   - Categorias.
 
 
-5. Versiculo del dia
+5. Versiculo del dia - HECHO
 --------------------
 - Decidir proveedor final:
   - Mantener fallback local diario.
@@ -133,7 +133,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Configurar backups de PostgreSQL.
 
 
-9. Hosting, dominio y despliegue
+9. Hosting, dominio y despliegue - HECHO
 --------------------------------
 - Aprobar internamente el proyecto de la pagina.
 - Elegir dominio final:
@@ -148,7 +148,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Configurar emails transaccionales si hacen falta.
 
 
-10. SEO y compartir en redes
+10. SEO y compartir en redes - HECHO
 ----------------------------
 - Preparar imagen Open Graph para WhatsApp/Facebook.
 - Crear `sitemap.xml`.
@@ -157,9 +157,9 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Confirmar si se usara Google Analytics, Plausible u otra analitica.
 
 
-11. Legal y privacidad
+11. Legal y privacidad 
 ----------------------
-- Confirmar responsable legal de la web.
+- Confirmar responsable legal de la web. - Alin Enrique Nascutiu
 - Preparar aviso legal.
 - Preparar politica de privacidad.
 - Preparar politica de cookies si se usan cookies, embeds o analitica.
@@ -171,7 +171,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
   - Analitica.
 
 
-12. Revision final antes de publicar
+12. Revision final antes de publicar - HECHO
 ------------------------------------
 - Sustituir imagenes provisionales por fotos reales.
 - Revisar version movil.
@@ -189,74 +189,9 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Revisar enlaces externos.
 - Revisar textos con acentos/diacriticos correctos en rumano y espanol.
 
+13. - HECHO
 
-13. Pendiente para nivel profesional de produccion
--------------------------------------------------
-- Sustituir `ADMIN_CODE` por login real para administradores:
-  - Usuarios admin individuales.
-  - Contrasenas hasheadas.
-  - Sesiones seguras.
-  - Roles/permisos.
-- Quitar el fallback temporal `ADMIN-BETEL` del backend antes de publicar oficialmente.
-- Definir login real para miembros o un sistema de identificacion mas serio para la biblioteca.
-- Anadir proteccion anti-spam mas fuerte:
-  - Rate limit persistente o gestionado fuera de memoria.
-  - Captcha para formularios publicos si hay abuso.
-  - Limite de pedidos por usuario/miembro.
-- Preparar emails transaccionales:
-  - Confirmacion de pedido al miembro si se recoge email/telefono.
-  - Aviso al responsable de biblioteca.
-  - Aviso al pastor/responsable para mensajes de contacto.
-- Anadir sistema de backups automaticos de PostgreSQL y probar restauracion.
-- Definir monitorizacion:
-  - Logs de errores.
-  - Alertas si cae la web.
-  - Alertas si falla la base de datos.
-- Revisar privacidad y legal:
-  - Aviso legal.
-  - Politica de privacidad.
-  - Politica de cookies si se usan embeds, analitica o cookies reales.
-  - Consentimiento para guardar datos de pedidos/contacto.
-- Preparar dominio final:
-  - Comprar dominio.
-  - Configurar DNS.
-  - Configurar HTTPS.
-  - Configurar redireccion www/no-www.
-  - Configurar `CORS_ORIGIN` con dominio real.
-- Completar SEO tecnico:
-  - `robots.txt`.
-  - `sitemap.xml`.
-  - Open Graph image.
-  - Metadatos para compartir en WhatsApp/Facebook.
-  - Google Search Console.
-- Hacer auditoria visual y QA final:
-  - Movil real.
-  - Desktop real.
-  - Navegacion con teclado.
-  - Contraste.
-  - Textos largos en botones/cards.
-  - Navegacion completa RO/ES.
-- Revisar performance:
-  - Peso de imagenes.
-  - Cache de assets.
-  - Cache/control de YouTube RSS.
-  - Lighthouse basico.
-- Preparar contenido final:
-  - Fotos reales de la iglesia.
-  - Textos finales revisados por responsables.
-  - Datos de contacto definitivos.
-  - Imagen Open Graph oficial.
-- Preparar gestion profesional de libros:
-  - Importar inventario real.
-  - Definir categorias finales.
-  - Definir responsable de biblioteca.
-  - Exportar pedidos/inventario a CSV si hace falta.
-- Separacion futura completa si crece el proyecto:
-  - Frontend desplegado aparte.
-  - Backend como API en subdominio `api`.
-  - Autenticacion compartida por dominio seguro.
-
-14. Optimizacion pendiente tras auditoria Hostinger
+14. Optimizacion pendiente tras auditoria Hostinger  - HECHO
 ---------------------------------------------------
 - Revisar redirects finales en Hostinger:
   - Elegir dominio canonico `https://betelreus.com` o `https://www.betelreus.com`.
@@ -269,3 +204,5 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
   - JavaScript minificado.
   - Mantener archivos fuente faciles de editar para voluntarios.
 - Revisar de nuevo Lighthouse/Hostinger despues de desplegar los cambios de performance.
+
+

@@ -1520,7 +1520,7 @@ function setupAdmin() {
     saveBooks();
     renderAdmin();
   });
-
+  setupEventPosterColorDetection();
   $("#adminSearch")?.addEventListener("input", renderAdminBooks);
   $("#adminCategoryFilter")?.addEventListener("change", renderAdminBooks);
   $("#saveStockChanges")?.addEventListener("click", savePendingStockChanges);
@@ -2125,6 +2125,116 @@ async function eventPayloadFromForm({ forceDraft = false } = {}) {
   if (posterRoUpload) payload.posterRoUpload = posterRoUpload;
   if (posterEsUpload) payload.posterEsUpload = posterEsUpload;
   return payload;
+}
+
+function rgbToHex(red, green, blue) {
+  return `#${[red, green, blue]
+    .map((value) => value.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
+async function getAverageImageColor(file) {
+  if (!file || !file.type.startsWith("image/")) return "#7f090b";
+
+  const imageUrl = URL.createObjectURL(file);
+  const image = new Image();
+
+  try {
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = reject;
+      image.src = imageUrl;
+    });
+
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+
+    if (!context) return "#7f090b";
+
+    const size = 32;
+    canvas.width = size;
+    canvas.height = size;
+
+    context.drawImage(image, 0, 0, size, size);
+
+    const { data } = context.getImageData(0, 0, size, size);
+
+    let redTotal = 0;
+    let greenTotal = 0;
+    let blueTotal = 0;
+    let count = 0;
+
+    for (let index = 0; index < data.length; index += 4) {
+      const red = data[index];
+      const green = data[index + 1];
+      const blue = data[index + 2];
+      const alpha = data[index + 3];
+
+      if (alpha < 128) continue;
+
+      const max = Math.max(red, green, blue);
+      const min = Math.min(red, green, blue);
+      const brightness = (red + green + blue) / 3;
+      const saturation = max - min;
+
+      // Ignore whites, blacks and gray-ish pixels
+      if (brightness > 235) continue;
+      if (brightness < 25) continue;
+      if (saturation < 18) continue;
+
+      redTotal += red;
+      greenTotal += green;
+      blueTotal += blue;
+      count++;
+    }
+
+    if (count === 0) return "#7f090b";
+
+    return rgbToHex(
+      Math.round(redTotal / count),
+      Math.round(greenTotal / count),
+      Math.round(blueTotal / count)
+    );
+  } finally {
+    URL.revokeObjectURL(imageUrl);
+  }
+}
+
+function setupEventPosterColorDetection() {
+  const form = $("#adminEventForm");
+  if (!form) return;
+
+  const accentColorInput = form.elements.accentColor;
+  const posterRoInput = form.elements.posterRoFile;
+  const posterEsInput = form.elements.posterEsFile;
+  const colorHint = $("#eventColorHint");
+
+  async function detectColorFromPoster(file) {
+    if (!file) return;
+
+    try {
+      const color = await getAverageImageColor(file);
+      accentColorInput.value = color;
+
+      if (colorHint) {
+        colorHint.textContent = tx("adminEventsColorDetected");
+      }
+
+      renderAdminEventPreview();
+    } catch {
+      if (colorHint) {
+        colorHint.textContent = tx("adminEventsColorDetectError");
+      }
+    }
+  }
+
+  posterRoInput?.addEventListener("change", () => {
+    detectColorFromPoster(posterRoInput.files[0]);
+  });
+
+  posterEsInput?.addEventListener("change", () => {
+    detectColorFromPoster(posterEsInput.files[0]);
+  });
 }
 
 async function saveEventFromForm(options = {}) {
