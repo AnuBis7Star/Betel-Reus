@@ -42,6 +42,7 @@ async function ensureVolleySchema(client = pool) {
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       team_name TEXT NOT NULL,
       representative_name TEXT NOT NULL,
+      church_name TEXT NOT NULL DEFAULT '',
       shirt_color TEXT NOT NULL DEFAULT '',
       players JSONB NOT NULL DEFAULT '[]'::jsonb,
       notes TEXT NOT NULL DEFAULT '',
@@ -50,6 +51,7 @@ async function ensureVolleySchema(client = pool) {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )
   `);
+  await client.query("ALTER TABLE volley_registrations ADD COLUMN IF NOT EXISTS church_name TEXT NOT NULL DEFAULT ''");
   await client.query("ALTER TABLE volley_registrations ADD COLUMN IF NOT EXISTS shirt_color TEXT NOT NULL DEFAULT ''");
   await client.query("CREATE INDEX IF NOT EXISTS idx_volley_registrations_status_created_at ON volley_registrations(status, created_at DESC)");
   await client.query("CREATE INDEX IF NOT EXISTS idx_volley_registrations_shirt_color_status ON volley_registrations(shirt_color, status)");
@@ -81,6 +83,7 @@ function normalizeShirtColor(value = "") {
 function normalizeVolleyPayload(payload = {}, existing = {}) {
   const teamName = normalizeText(payload.teamName ?? payload.team ?? existing.teamName, 120);
   const representativeName = normalizeText(payload.representativeName ?? payload.representative ?? existing.representativeName, 120);
+  const churchName = normalizeText(payload.churchName ?? payload.church ?? existing.churchName, 160);
   const shirtColor = normalizeShirtColor(payload.shirtColor ?? payload.shirt_color ?? existing.shirtColor);
   const players = normalizePlayers(payload.players ?? existing.players);
   const notes = normalizeText(payload.notes ?? existing.notes, 600);
@@ -88,7 +91,7 @@ function normalizeVolleyPayload(payload = {}, existing = {}) {
 
   if (!["pending", "approved", "rejected"].includes(status)) throw httpError(400, "Invalid registration status");
 
-  return { teamName, representativeName, shirtColor, players, notes, status };
+  return { teamName, representativeName, churchName, shirtColor, players, notes, status };
 }
 
 async function ensureUniqueTeamName(teamName, currentId = null) {
@@ -160,6 +163,7 @@ async function ensureColorCapacity(shirtColor, currentId = null) {
 function validateVolleyRegistration(registration) {
   if (!registration.teamName) throw httpError(400, "Team name is required");
   if (!registration.representativeName) throw httpError(400, "Representative name is required");
+  if (!registration.churchName) throw httpError(400, "Church name is required");
   if (!registration.shirtColor) throw httpError(400, "Shirt color is required");
   if (registration.players.length < minimumPlayers) throw httpError(400, `At least ${minimumPlayers} players are required`);
 }
@@ -169,6 +173,7 @@ function volleyRegistrationFromRow(row) {
     id: row.id,
     teamName: row.team_name,
     representativeName: row.representative_name,
+    churchName: row.church_name || "",
     shirtColor: row.shirt_color || "",
     players: Array.isArray(row.players) ? row.players : [],
     notes: row.notes || "",
@@ -180,6 +185,9 @@ function volleyRegistrationFromRow(row) {
 
 async function createVolleyRegistration(payload) {
   if (normalizeText(payload.website, 80)) throw httpError(400, "Invalid registration");
+  if (payload.gdprConsent !== true && payload.gdprConsent !== "true" && payload.gdprConsent !== "on") {
+    throw httpError(400, "Privacy consent is required");
+  }
   const registration = normalizeVolleyPayload(payload);
   validateVolleyRegistration(registration);
   await ensureUniqueTeamName(registration.teamName);
@@ -195,8 +203,8 @@ async function createVolleyRegistration(payload) {
 
   await ensureVolleySchema();
   const result = await pool.query(
-    "INSERT INTO volley_registrations (team_name, representative_name, shirt_color, players, notes, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-    [registration.teamName, registration.representativeName, registration.shirtColor, JSON.stringify(registration.players), registration.notes, registration.status]
+    "INSERT INTO volley_registrations (team_name, representative_name, church_name, shirt_color, players, notes, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+    [registration.teamName, registration.representativeName, registration.churchName, registration.shirtColor, JSON.stringify(registration.players), registration.notes, registration.status]
   );
   const created = volleyRegistrationFromRow(result.rows[0]);
   await audit("Înscriere volley trimisă", "volley", created.id, null, created, created.representativeName);
@@ -242,8 +250,8 @@ async function updateVolleyRegistration(id, payload) {
   await ensureUniqueTeamName(updatedPayload.teamName, id);
   if (updatedPayload.status !== "rejected") await ensureColorCapacity(updatedPayload.shirtColor, id);
   const result = await pool.query(
-    "UPDATE volley_registrations SET team_name = $1, representative_name = $2, shirt_color = $3, players = $4, notes = $5, status = $6, updated_at = now() WHERE id = $7 RETURNING *",
-    [updatedPayload.teamName, updatedPayload.representativeName, updatedPayload.shirtColor, JSON.stringify(updatedPayload.players), updatedPayload.notes, updatedPayload.status, id]
+    "UPDATE volley_registrations SET team_name = $1, representative_name = $2, church_name = $3, shirt_color = $4, players = $5, notes = $6, status = $7, updated_at = now() WHERE id = $8 RETURNING *",
+    [updatedPayload.teamName, updatedPayload.representativeName, updatedPayload.churchName, updatedPayload.shirtColor, JSON.stringify(updatedPayload.players), updatedPayload.notes, updatedPayload.status, id]
   );
   const updated = volleyRegistrationFromRow(result.rows[0]);
   await audit("Înscriere volley actualizată", "volley", id, before, updated);

@@ -96,7 +96,7 @@ const translations = {
     aboutText: "Biserica Betel este un loc al prezenței lui Dumnezeu, unde viețile sunt transformate prin Duhul Sfânt. Aici trăim o viață nouă, în Hristos și cu Hristos.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
     contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
-    contactPastor: "Telefon pastor: Dorel Abuțnăriți",
+    contactPastor: "Telefon pastor: Dorel Abutnăriți",
     contactTransport: "Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.",
     contactCall: "Sună-ne",
     contactSendEmail: "Trimite email",
@@ -158,6 +158,7 @@ const translations = {
     adminVolleyTableTitle: "Echipe și înscrieri",
     adminVolleyTeam: "Echipă",
     adminVolleyRepresentative: "Reprezentant",
+    adminVolleyChurch: "Biserică",
     adminVolleyColor: "Culoare",
     adminVolleyPlayers: "Jucători",
     adminVolleyStatus: "Stare",
@@ -179,11 +180,11 @@ const translations = {
     eventNoPoster: "Afișul va apărea aici",
     adminEventsPageTitle: "Evenimente",
     adminEventsGateText: "Introdu codul privat pentru a gestiona evenimentele de pe pagina principală.",
-    adminEventsViewLanding: "Vezi landing page",
+    adminEventsViewLanding: "Vezi pagina principală",
     adminEventsAdd: "+ Adaugă eveniment",
     adminEventsSummaryEyebrow: "Rezumat",
     adminEventsSummaryTitle: "Evenimente publicate",
-    adminEventsSummaryText: "Evenimentele publicate apar automat în landing page.",
+    adminEventsSummaryText: "Evenimentele publicate apar automat pe pagina principală.",
     adminEventsListEyebrow: "Listă",
     adminEventsListTitle: "Evenimente create",
     adminEventsEmptyEyebrow: "Fără evenimente",
@@ -199,8 +200,10 @@ const translations = {
     adminEventsLocation: "Locație",
     adminEventsCategory: "Categorie",
     adminEventsPublished: "Publicat",
-    adminEventsFeatured: "Featured",
+    adminEventsFeatured: "Recomandat",
     adminEventsAccent: "Culoare card",
+    adminEventsColorDetected: "Culoarea cardului a fost detectată din afiș.",
+    adminEventsColorDetectError: "Nu s-a putut detecta culoarea. Alege manual culoarea cardului.",
     adminEventsTitleLabel: "Titlu",
     adminEventsShortLabel: "Descriere scurtă",
     adminEventsFullLabel: "Descriere completă",
@@ -209,7 +212,7 @@ const translations = {
     adminEventsShortLabelEs: "Descripción corta",
     adminEventsFullLabelEs: "Descripción completa",
     adminEventsPosterEs: "Cartel español",
-    adminEventsPreview: "Preview landing card",
+    adminEventsPreview: "Previzualizare card",
     adminEventsDelete: "Șterge eveniment",
     adminEventsSaveDraft: "Salvează ca schiță",
     adminEventsSave: "Salvează eveniment",
@@ -221,7 +224,7 @@ const translations = {
     adminEventsTotal: "Total",
     adminEventsPublishedCount: "Publicate",
     adminEventsHiddenCount: "Ascunse",
-    adminEventsFeaturedCount: "Featured",
+    adminEventsFeaturedCount: "Recomandate",
     adminEventsPublish: "Publică",
     adminEventsHide: "Ascunde",
     adminEventsSaved: "Eveniment salvat.",
@@ -398,7 +401,7 @@ const translations = {
     aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espíritu Santo. Aquí vivimos una vida nueva, en Cristo y con Cristo.",
     contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
     contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
-    contactPastor: "Teléfono del pastor: Dorel Abuțnăriți",
+    contactPastor: "Teléfono del pastor: Dorel Abutnăriți",
     contactTransport: "Parking: plazas en la calle, delante de la iglesia. Transporte público: revisa la ruta local hacia Carrer de Terrassa 33.",
     contactCall: "Llámanos",
     contactSendEmail: "Enviar email",
@@ -460,6 +463,7 @@ const translations = {
     adminVolleyTableTitle: "Equipos e inscripciones",
     adminVolleyTeam: "Equipo",
     adminVolleyRepresentative: "Representante",
+    adminVolleyChurch: "Iglesia",
     adminVolleyColor: "Color",
     adminVolleyPlayers: "Jugadores",
     adminVolleyStatus: "Estado",
@@ -481,11 +485,11 @@ const translations = {
     eventNoPoster: "El cartel aparecerá aquí",
     adminEventsPageTitle: "Eventos",
     adminEventsGateText: "Introduce el código privado para gestionar los eventos de la página principal.",
-    adminEventsViewLanding: "Ver landing page",
+    adminEventsViewLanding: "Ver página principal",
     adminEventsAdd: "+ Añadir evento",
     adminEventsSummaryEyebrow: "Resumen",
     adminEventsSummaryTitle: "Eventos publicados",
-    adminEventsSummaryText: "Los eventos publicados aparecen automáticamente en la landing page.",
+    adminEventsSummaryText: "Los eventos publicados aparecen automáticamente en la página principal.",
     adminEventsListEyebrow: "Lista",
     adminEventsListTitle: "Eventos creados",
     adminEventsEmptyEyebrow: "Sin eventos",
@@ -501,8 +505,10 @@ const translations = {
     adminEventsLocation: "Ubicación",
     adminEventsCategory: "Categoría",
     adminEventsPublished: "Publicado",
-    adminEventsFeatured: "Featured",
-    adminEventsAccent: "Color card",
+    adminEventsFeatured: "Destacado",
+    adminEventsAccent: "Color de la tarjeta",
+    adminEventsColorDetected: "Color de la tarjeta detectado desde el cartel.",
+    adminEventsColorDetectError: "No se pudo detectar el color. Elige manualmente el color de la tarjeta.",
     adminEventsTitleLabel: "Título",
     adminEventsShortLabel: "Descripción corta",
     adminEventsFullLabel: "Descripción completa",
@@ -511,7 +517,7 @@ const translations = {
     adminEventsShortLabelEs: "Descripción corta",
     adminEventsFullLabelEs: "Descripción completa",
     adminEventsPosterEs: "Cartel español",
-    adminEventsPreview: "Preview landing card",
+    adminEventsPreview: "Vista previa de la tarjeta",
     adminEventsDelete: "Eliminar evento",
     adminEventsSaveDraft: "Guardar como borrador",
     adminEventsSave: "Guardar evento",
@@ -523,7 +529,7 @@ const translations = {
     adminEventsTotal: "Total",
     adminEventsPublishedCount: "Publicados",
     adminEventsHiddenCount: "Ocultos",
-    adminEventsFeaturedCount: "Featured",
+    adminEventsFeaturedCount: "Destacados",
     adminEventsPublish: "Publicar",
     adminEventsHide: "Ocultar",
     adminEventsSaved: "Evento guardado.",
@@ -1595,6 +1601,7 @@ function setupAdmin() {
         const payload = {
           teamName: row.querySelector("[data-field='teamName']").value.trim(),
           representativeName: row.querySelector("[data-field='representativeName']").value.trim(),
+          churchName: row.querySelector("[data-field='churchName']").value.trim(),
           shirtColor: row.querySelector("[data-field='shirtColor']").value,
           players: row.querySelector("[data-field='players']").value.split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean),
           notes: row.querySelector("[data-field='notes']").value.trim(),
@@ -1930,6 +1937,7 @@ function renderAdminVolleyRegistrations() {
     <tr>
       <td><input data-field="teamName" value="${escapeAttribute(registration.teamName)}" /></td>
       <td><input data-field="representativeName" value="${escapeAttribute(registration.representativeName)}" /></td>
+      <td><input data-field="churchName" value="${escapeAttribute(registration.churchName || "")}" /></td>
       <td>
         <select data-field="shirtColor" title="${escapeAttribute(getVolleyColorLabel(registration.shirtColor))}">
           ${volleyColorOptions(registration.shirtColor)}
@@ -1952,7 +1960,7 @@ function renderAdminVolleyRegistrations() {
         <button type="button" data-action="delete" data-id="${registration.id}">${tx("adminDelete")}</button>
       </td>
     </tr>
-  `).join("") || `<tr><td colspan="7">${tx("adminVolleyEmpty")}</td></tr>`;
+  `).join("") || `<tr><td colspan="8">${tx("adminVolleyEmpty")}</td></tr>`;
 }
 
 function eventLanguageComplete(event, suffix) {
@@ -2002,7 +2010,7 @@ function renderAdminEvents() {
           <p>${escapeHtml(event.shortDescriptionRo || event.shortDescriptionEs || "")}</p>
           <div class="admin-event-badges">
             <span class="${event.published ? "success" : "muted"}">${event.published ? tx("adminEventsPublishedStatus") : tx("adminEventsHiddenStatus")}</span>
-            ${event.featured ? "<span>Featured</span>" : ""}
+      ${event.featured ? `<span>${tx("adminEventsFeatured")}</span>` : ""}
             <span>${escapeHtml(formatEventDate(event))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</span>
             <span>${roComplete ? "RO" : tx("adminEventsIncompleteRo")} + ${esComplete ? "ES" : tx("adminEventsIncompleteEs")}</span>
           </div>

@@ -7,7 +7,7 @@
     <meta name="description" content="Informații și înscriere pentru turneul de volley organizat de tinerii Betel Reus pe 13 iunie 2026." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preload" as="image" href="/assets/volley-tournament-transparent-900.png" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=volley-header-20260529c" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260602b" />
   </head>
   <body class="volley-page" id="top">
     <header class="volley-header">
@@ -143,6 +143,10 @@
             <span data-i18n="volleyTeamNameLabel">Numele echipei</span>
             <input name="team" placeholder="Numele echipei" data-i18n-placeholder="volleyTeamNamePlaceholder" />
           </label>
+          <label>
+            <span data-i18n="volleyChurchLabel">Biserica</span>
+            <input name="church" placeholder="Biserica de care aparține echipa" data-i18n-placeholder="volleyChurchPlaceholder" />
+          </label>
           <div class="volley-players-field">
             <div class="volley-field-heading">
               <span data-i18n="volleyPlayersLabel">Jucători</span>
@@ -168,6 +172,10 @@
             <span data-i18n="volleyNotesLabel">Note</span>
             <textarea name="notes" placeholder="Comentarii, întrebări sau nevoi ale echipei" data-i18n-placeholder="volleyNotesPlaceholder"></textarea>
           </label>
+          <label class="volley-consent-field">
+            <input name="gdprConsent" type="checkbox" required />
+            <span data-i18n="volleyGdprConsent">Confirm că am informat echipa și accept ca Betel Reus să folosească aceste date doar pentru organizarea turneului.</span>
+          </label>
           <button class="volley-button primary" type="submit" data-i18n="volleySubmit">Trimite înscrierea</button>
           <p class="volley-form-note" id="volleyFormMessage" data-i18n="volleyInitialMessage">Echipa va rămâne în așteptarea aprobării.</p>
           <p class="volley-legal-note" data-i18n="volleyLegalNote">Prin trimiterea înscrierii accepți ca Betel Reus să folosească aceste date doar pentru organizarea turneului și contactarea reprezentantului. Datele nu vor fi publicate, cu excepția numelui echipei, reprezentantului și jucătorilor atunci când echipa este acceptată.</p>
@@ -188,6 +196,6 @@
       <img src="/assets/icon-light-160.png" width="160" height="160" alt="" loading="lazy" />
       <span>© 2026 Biserica Betel Reus</span>
     </footer>
-    <script src="/js/volley.min.js?v=volley-20260529a" type="module"></script>
+    <script src="/js/volley.min.js?v=volley-20260602b" type="module"></script>
   </body>
 </html>

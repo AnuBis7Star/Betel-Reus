@@ -70,6 +70,8 @@ const translations = {
     volleyFullNamePlaceholder: "Nume și prenume",
     volleyTeamNameLabel: "Numele echipei",
     volleyTeamNamePlaceholder: "Numele echipei",
+    volleyChurchLabel: "Biserica",
+    volleyChurchPlaceholder: "Biserica de care aparține echipa",
     volleyShirtColorLabel: "Culoarea tricoului",
     volleyShirtColorLimit: "Maximum 5 echipe pe culoare",
     volleyShirtColorHelp: "Toți jucătorii echipei ar trebui să vină, pe cât posibil, cu tricou de aceeași culoare. Culorile complete apar dezactivate.",
@@ -84,6 +86,7 @@ const translations = {
     volleyAddPlayer: "+ Adaugă jucător",
     volleyNotesLabel: "Note",
     volleyNotesPlaceholder: "Comentarii, întrebări sau nevoi ale echipei",
+    volleyGdprConsent: "Confirm că am informat echipa și accept ca Betel Reus să folosească aceste date doar pentru organizarea turneului.",
     volleySubmit: "Trimite înscrierea",
     volleyInitialMessage: "Echipa va rămâne în așteptarea aprobării.",
     volleyLegalNote: "Prin trimiterea înscrierii accepți ca Betel Reus să folosească aceste date doar pentru organizarea turneului și contactarea reprezentantului. Datele nu vor fi publicate, cu excepția numelui echipei, reprezentantului și jucătorilor atunci când echipa este acceptată.",
@@ -94,11 +97,14 @@ const translations = {
     volleyRemovePlayer: "Elimină jucătorul",
     volleyConfirmedCount: "jucători",
     volleyRepresentative: "Reprezentant",
+    volleyChurch: "Biserică",
     volleyNoTeams: "Încă nu există echipe confirmate.",
     volleyTeamsLoadError: "Nu s-au putut încărca echipele confirmate.",
     volleyGenericError: "Nu s-a putut trimite înscrierea. Încearcă din nou.",
     volleyRepresentativeMissing: "Adaugă numele reprezentantului echipei.",
     volleyTeamMissing: "Adaugă numele echipei.",
+    volleyChurchMissing: "Adaugă biserica de care aparține echipa.",
+    volleyGdprMissing: "Acceptă nota de confidențialitate pentru a trimite înscrierea.",
     volleyColorMissing: "Alege culoarea tricoului echipei.",
     volleyColorUnavailable: "Culoarea aleasă este completă. Alege altă culoare.",
     volleyAcceptedDuplicate: "Există deja o echipă acceptată cu acest nume. Folosește alt nume sau contactează organizarea.",
@@ -163,6 +169,8 @@ const translations = {
     volleyFullNamePlaceholder: "Nombre y apellidos",
     volleyTeamNameLabel: "Nombre del equipo",
     volleyTeamNamePlaceholder: "Nombre del equipo",
+    volleyChurchLabel: "Iglesia",
+    volleyChurchPlaceholder: "Iglesia a la que pertenece el equipo",
     volleyShirtColorLabel: "Color de camiseta",
     volleyShirtColorLimit: "Máximo 5 equipos por color",
     volleyShirtColorHelp: "Todos los jugadores del equipo deberían venir, en la medida de lo posible, con una camiseta del mismo color. Los colores completos aparecen deshabilitados.",
@@ -177,6 +185,7 @@ const translations = {
     volleyAddPlayer: "+ Añadir jugador",
     volleyNotesLabel: "Notas",
     volleyNotesPlaceholder: "Comentarios, dudas o necesidades del equipo",
+    volleyGdprConsent: "Confirmo que he informado al equipo y acepto que Betel Reus use estos datos solo para organizar el torneo.",
     volleySubmit: "Enviar inscripción",
     volleyInitialMessage: "El equipo quedará pendiente de aprobación.",
     volleyLegalNote: "Al enviar la inscripción aceptas que Betel Reus trate estos datos únicamente para organizar el torneo y contactar con el representante. Los datos no se publicarán salvo el nombre del equipo, el representante y los jugadores cuando el equipo sea aceptado.",
@@ -187,11 +196,14 @@ const translations = {
     volleyRemovePlayer: "Eliminar jugador",
     volleyConfirmedCount: "jugadores",
     volleyRepresentative: "Representante",
+    volleyChurch: "Iglesia",
     volleyNoTeams: "Todavía no hay equipos confirmados.",
     volleyTeamsLoadError: "No se pudieron cargar los equipos confirmados.",
     volleyGenericError: "No se pudo enviar la inscripción. Inténtalo de nuevo.",
     volleyRepresentativeMissing: "Añade el nombre del representante del equipo.",
     volleyTeamMissing: "Añade el nombre del equipo.",
+    volleyChurchMissing: "Añade la iglesia a la que pertenece el equipo.",
+    volleyGdprMissing: "Acepta la nota de privacidad para enviar la inscripción.",
     volleyColorMissing: "Elige el color de camiseta del equipo.",
     volleyColorUnavailable: "El color elegido está completo. Elige otro color.",
     volleyAcceptedDuplicate: "Ya existe un equipo aceptado con ese nombre. Usa otro nombre o contacta con la organización.",
@@ -518,14 +530,20 @@ function renderTeams(teams) {
   approvedTeams = teams;
   teams.forEach((team) => teamNameCache.add(normalizeComparable(team.teamName)));
   teamsContainer.innerHTML = teams.map((team) => `
-    <article>
+    <article class="volley-team-card">
       <div class="volley-team-meta">
         <span>${team.players.length} ${tx("volleyConfirmedCount")}</span>
         ${team.shirtColor ? colorSwatch(team.shirtColor) : ""}
       </div>
       <h3>${escapeHtml(team.teamName)}</h3>
-      <p>${tx("volleyRepresentative")}: ${escapeHtml(team.representativeName)}</p>
-      <small>${team.players.map(escapeHtml).join(", ")}</small>
+      <div class="volley-team-info">
+        ${team.churchName ? `<span>${tx("volleyChurch")}: ${escapeHtml(team.churchName)}</span>` : ""}
+        <span>${tx("volleyRepresentative")}: ${escapeHtml(team.representativeName)}</span>
+      </div>
+      <details class="volley-team-players">
+        <summary>${tx("volleyPlayersLabel")}</summary>
+        <small>${team.players.map(escapeHtml).join(", ")}</small>
+      </details>
     </article>
   `).join("") || `<p>${tx("volleyNoTeams")}</p>`;
   prepareRevealElements(teamsContainer);
@@ -549,10 +567,12 @@ form?.addEventListener("submit", async (event) => {
   const payload = {
     representativeName: data.get("representative").trim(),
     teamName: data.get("team").trim(),
+    churchName: data.get("church").trim(),
     shirtColor: selectedShirtColor,
     players,
     notes: data.get("notes").trim(),
-    website: data.get("website")?.trim() || ""
+    website: data.get("website")?.trim() || "",
+    gdprConsent: data.get("gdprConsent") === "on"
   };
 
   if (payload.website) {
@@ -567,6 +587,11 @@ form?.addEventListener("submit", async (event) => {
 
   if (!payload.teamName) {
     setMessage(tx("volleyTeamMissing"), "error");
+    return;
+  }
+
+  if (!payload.churchName) {
+    setMessage(tx("volleyChurchMissing"), "error");
     return;
   }
 
@@ -588,6 +613,11 @@ form?.addEventListener("submit", async (event) => {
 
   if (players.length < minimumPlayers) {
     setMessage(tx("volleyPlayersMissing"), "error");
+    return;
+  }
+
+  if (!payload.gdprConsent) {
+    setMessage(tx("volleyGdprMissing"), "error");
     return;
   }
 

@@ -157,7 +157,7 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
 - Confirmar si se usara Google Analytics, Plausible u otra analitica.
 
 
-11. Legal y privacidad 
+11. Legal y privacidad
 ----------------------
 - Confirmar responsable legal de la web. - Alin Enrique Nascutiu
 - Preparar aviso legal.
@@ -204,5 +204,4 @@ Cuando algo quede confirmado o terminado, se mueve a TODO_HECHOS.txt.
   - JavaScript minificado.
   - Mantener archivos fuente faciles de editar para voluntarios.
 - Revisar de nuevo Lighthouse/Hostinger despues de desplegar los cambios de performance.
-
 
