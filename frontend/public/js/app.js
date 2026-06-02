@@ -158,6 +158,7 @@ const translations = {
     adminVolleyTableTitle: "Echipe și înscrieri",
     adminVolleyTeam: "Echipă",
     adminVolleyRepresentative: "Reprezentant",
+    adminVolleyChurch: "Biserică",
     adminVolleyColor: "Culoare",
     adminVolleyPlayers: "Jucători",
     adminVolleyStatus: "Stare",
@@ -462,6 +463,7 @@ const translations = {
     adminVolleyTableTitle: "Equipos e inscripciones",
     adminVolleyTeam: "Equipo",
     adminVolleyRepresentative: "Representante",
+    adminVolleyChurch: "Iglesia",
     adminVolleyColor: "Color",
     adminVolleyPlayers: "Jugadores",
     adminVolleyStatus: "Estado",
@@ -1599,6 +1601,7 @@ function setupAdmin() {
         const payload = {
           teamName: row.querySelector("[data-field='teamName']").value.trim(),
           representativeName: row.querySelector("[data-field='representativeName']").value.trim(),
+          churchName: row.querySelector("[data-field='churchName']").value.trim(),
           shirtColor: row.querySelector("[data-field='shirtColor']").value,
           players: row.querySelector("[data-field='players']").value.split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean),
           notes: row.querySelector("[data-field='notes']").value.trim(),
@@ -1934,6 +1937,7 @@ function renderAdminVolleyRegistrations() {
     <tr>
       <td><input data-field="teamName" value="${escapeAttribute(registration.teamName)}" /></td>
       <td><input data-field="representativeName" value="${escapeAttribute(registration.representativeName)}" /></td>
+      <td><input data-field="churchName" value="${escapeAttribute(registration.churchName || "")}" /></td>
       <td>
         <select data-field="shirtColor" title="${escapeAttribute(getVolleyColorLabel(registration.shirtColor))}">
           ${volleyColorOptions(registration.shirtColor)}
@@ -1956,7 +1960,7 @@ function renderAdminVolleyRegistrations() {
         <button type="button" data-action="delete" data-id="${registration.id}">${tx("adminDelete")}</button>
       </td>
     </tr>
-  `).join("") || `<tr><td colspan="7">${tx("adminVolleyEmpty")}</td></tr>`;
+  `).join("") || `<tr><td colspan="8">${tx("adminVolleyEmpty")}</td></tr>`;
 }
 
 function eventLanguageComplete(event, suffix) {
