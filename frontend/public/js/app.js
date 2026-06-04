@@ -5,7 +5,7 @@ const contactFormMinimumMs = 3000;
 
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260604";
+const i18nAssetVersion = "i18n-20260604c";
 const translations = {};
 const seoTranslations = {
   ro: {
@@ -73,19 +73,29 @@ const statusLabelKeys = {
   cancelled: "adminStatusCancelled"
 };
 
-const volleyShirtColors = [
-  { id: "white", ro: "Alb", es: "Blanco" },
-  { id: "black", ro: "Negru", es: "Negro" },
-  { id: "red", ro: "Roșu", es: "Rojo" },
-  { id: "blue", ro: "Albastru", es: "Azul" },
-  { id: "green", ro: "Verde", es: "Verde" },
-  { id: "yellow", ro: "Galben", es: "Amarillo" },
-  { id: "pink", ro: "Roz", es: "Rosa" },
-  { id: "purple", ro: "Mov", es: "Morado" },
-  { id: "orange", ro: "Portocaliu", es: "Naranja" },
-  { id: "turquoise", ro: "Turcoaz", es: "Turquesa" },
-  { id: "navy", ro: "Bleumarin", es: "Azul marino" },
-  { id: "gray", ro: "Gri", es: "Gris" }
+let volleyShirtColors = [
+  { id: "white", ro: "Alb", es: "Blanco", hex: "#f7f3e8" },
+  { id: "black", ro: "Negru", es: "Negro", hex: "#242124" },
+  { id: "red", ro: "Roșu", es: "Rojo", hex: "#e8313a" },
+  { id: "blue", ro: "Albastru", es: "Azul", hex: "#2f6feb" },
+  { id: "green", ro: "Verde", es: "Verde", hex: "#596b36" },
+  { id: "yellow", ro: "Galben", es: "Amarillo", hex: "#ffd21d" },
+  { id: "pink", ro: "Roz", es: "Rosa", hex: "#e94aa9" },
+  { id: "purple", ro: "Mov", es: "Morado", hex: "#7c3aed" },
+  { id: "orange", ro: "Portocaliu", es: "Naranja", hex: "#f97316" },
+  { id: "turquoise", ro: "Turcoaz", es: "Turquesa", hex: "#14b8a6" },
+  { id: "navy", ro: "Bleumarin", es: "Azul marino", hex: "#1e3a8a" },
+  { id: "gray", ro: "Gri", es: "Gris", hex: "#8a8f98" },
+  { id: "burgundy", ro: "Vișiniu", es: "Granate", hex: "#7f1d1d" },
+  { id: "coral", ro: "Coral", es: "Coral", hex: "#fb7185" },
+  { id: "sky", ro: "Albastru deschis", es: "Azul claro", hex: "#38bdf8" },
+  { id: "mint", ro: "Mentă", es: "Menta", hex: "#86efac" },
+  { id: "lime", ro: "Verde lime", es: "Verde lima", hex: "#a3e635" },
+  { id: "beige", ro: "Bej", es: "Beige", hex: "#d6c3a5" },
+  { id: "brown", ro: "Maro", es: "Marrón", hex: "#7c2d12" },
+  { id: "silver", ro: "Argintiu", es: "Plateado", hex: "#cbd5e1" },
+  { id: "gold", ro: "Auriu", es: "Dorado", hex: "#fbbf24" },
+  { id: "lavender", ro: "Lavandă", es: "Lavanda", hex: "#c084fc" }
 ];
 
 const adminEntityKeys = {
@@ -96,6 +106,20 @@ const adminEntityKeys = {
 };
 
 const libraryCategories = ["Teologie", "Familie", "Tineri", "Copii", "Biografii", "Biblii", "Devoționale"];
+const categoryLabelKeys = {
+  Teologie: "categoryTheology",
+  Familie: "categoryFamily",
+  Tineri: "categoryYouth",
+  Copii: "categoryChildren",
+  Biografii: "categoryBiographies",
+  Biblii: "categoryBibles",
+  "Devoționale": "categoryDevotionals",
+  General: "categoryGeneral",
+  "Serviciu divin": "categoryDivineService",
+  "Eveniment tineret": "categoryYouthEvent",
+  "Sărbătoare": "categoryCelebration",
+  "Serviciu special": "categorySpecialService"
+};
 
 function escapeHtml(value = "") {
   return String(value)
@@ -155,6 +179,12 @@ function getAdminActionLabel(action = "") {
   return action;
 }
 
+function getCategoryLabel(category = "General") {
+  const normalized = category || "General";
+  const key = categoryLabelKeys[normalized];
+  return key ? tx(key) : normalized;
+}
+
 function saveBooks() {
   sessionStorage.setItem("betel-books", JSON.stringify(books));
 }
@@ -193,14 +223,16 @@ async function loadAdminDataFromApi(throwOnError = false) {
     const requests = [
       apiRequest("/api/admin/orders?active=true"),
       apiRequest("/api/admin/audit"),
-      apiRequest("/api/admin/volley/registrations")
+      apiRequest("/api/admin/volley/registrations"),
+      apiRequest("/api/volley/colors")
     ];
     const shouldLoadEvents = Boolean($("#adminEventsList") || $("#adminEventForm"));
     if (shouldLoadEvents) requests.push(apiRequest("/api/admin/events"));
-    const [ordersData, auditData, volleyData, eventsData] = await Promise.all(requests);
+    const [ordersData, auditData, volleyData, volleyColorsData, eventsData] = await Promise.all(requests);
     reservations = ordersData.orders;
     auditLogs = auditData.auditLogs;
     volleyRegistrations = volleyData.registrations || [];
+    volleyShirtColors = volleyColorsData.colors || volleyShirtColors;
     if (eventsData) churchEvents = eventsData.events || [];
     saveReservations();
     saveAuditLogs();
@@ -349,7 +381,7 @@ function renderBooks() {
   const categoryFilter = $("#bookCategoryFilter")?.value || "all";
   const categories = [...new Set([...libraryCategories, ...books.map((book) => book.category).filter(Boolean)])].sort();
   if ($("#bookCategoryFilter")) {
-    $("#bookCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(item)}</option>`).join("")}`;
+    $("#bookCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(getCategoryLabel(item))}</option>`).join("")}`;
     $("#bookCategoryFilter").value = categoryFilter && [...categories, "all"].includes(categoryFilter) ? categoryFilter : "all";
   }
   const visibleBooks = books.filter((book) => {
@@ -367,7 +399,7 @@ function renderBooks() {
         <div>
           <h3>${escapeHtml(book.title)}</h3>
           <p>${escapeHtml(book.author)}</p>
-          <span class="book-category">${escapeHtml(book.category || "General")}</span>
+          <span class="book-category">${escapeHtml(getCategoryLabel(book.category))}</span>
         </div>
         <div class="book-meta">
           <span>${available > 0 ? `${available} ${tx("available")}` : tx("unavailable")}</span>
@@ -454,13 +486,13 @@ function renderLandingEvents() {
     return `
       <button class="event-card managed-event-card" type="button" data-event-id="${escapeAttribute(event.id)}" style="--event-accent: ${escapeAttribute(event.accentColor || "#7f090b")}">
         <div>
-          <p class="eyebrow">${escapeHtml(event.category || tx("eventsColumnTitle"))}</p>
+          <p class="eyebrow">${escapeHtml(getCategoryLabel(event.category || tx("eventsColumnTitle")))}</p>
           <h3>${escapeHtml(title)}</h3>
           <p>${escapeHtml(shortDescription)}</p>
           <strong>${escapeHtml(formatEventDate(event))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</strong>
           <div class="event-tags">
             ${event.location ? `<span>${escapeHtml(event.location)}</span>` : ""}
-            ${event.category ? `<span>${escapeHtml(event.category)}</span>` : ""}
+            ${event.category ? `<span>${escapeHtml(getCategoryLabel(event.category))}</span>` : ""}
           </div>
         </div>
         ${poster ? `<img src="${escapeAttribute(poster)}" width="220" height="300" alt="${escapeAttribute(title)}" loading="lazy" />` : `<span class="event-poster-placeholder">${tx("eventNoPoster")}</span>`}
@@ -476,7 +508,7 @@ function renderEventModal() {
   if (!event || !modal) return;
   const title = eventField(event, "title");
   const poster = eventPoster(event);
-  $("#eventModalCategory").textContent = event.category || tx("eventsColumnTitle");
+  $("#eventModalCategory").textContent = getCategoryLabel(event.category || tx("eventsColumnTitle"));
   $("#eventModalTitle").textContent = title;
   $("#eventModalDescription").textContent = eventField(event, "shortDescription");
   $("#eventModalDate").textContent = formatEventDate(event);
@@ -1299,7 +1331,7 @@ function renderAdminBooks() {
   const query = $("#adminSearch").value.toLowerCase();
   const category = $("#adminCategoryFilter").value;
   const categories = [...new Set(books.map((book) => book.category).filter(Boolean))].sort();
-  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(item)}</option>`).join("")}`;
+  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(getCategoryLabel(item))}</option>`).join("")}`;
   $("#adminCategoryFilter").value = category && [...categories, "all"].includes(category) ? category : "all";
 
   const visibleBooks = books.filter((book) => {
@@ -1315,7 +1347,7 @@ function renderAdminBooks() {
     return `
       <tr>
         <td><strong>${escapeHtml(book.title)}</strong><span>${escapeHtml(book.author)}</span></td>
-        <td>${escapeHtml(book.category || "General")}</td>
+        <td>${escapeHtml(getCategoryLabel(book.category))}</td>
         <td>${escapeHtml(book.language || "ro")}</td>
         <td${stockClass}>${stockLabel}</td>
         <td>${book.reserved || 0}</td>
@@ -1373,7 +1405,11 @@ function getVolleyColorLabel(colorId) {
 }
 
 function volleyColorOptions(selectedColor) {
-  return `<option value="">-</option>${volleyShirtColors.map((color) =>
+  const knownColor = volleyShirtColors.some((color) => color.id === selectedColor);
+  const unknownSelectedColor = selectedColor && !knownColor
+    ? `<option value="${escapeAttribute(selectedColor)}" selected>${escapeHtml(selectedColor)}</option>`
+    : "";
+  return `<option value="">-</option>${unknownSelectedColor}${volleyShirtColors.map((color) =>
     `<option value="${escapeAttribute(color.id)}" ${color.id === selectedColor ? "selected" : ""}>${escapeHtml(color[lang] || color.ro)}</option>`
   ).join("")}`;
 }
@@ -1419,7 +1455,7 @@ function eventPreviewMarkup(event) {
   return `
     <article class="event-card managed-event-card admin-preview-event-card" style="--event-accent: ${escapeAttribute(event.accentColor || "#7f090b")}">
       <div>
-        <p class="eyebrow">${escapeHtml(event.category || tx("eventsColumnTitle"))}</p>
+        <p class="eyebrow">${escapeHtml(getCategoryLabel(event.category || tx("eventsColumnTitle")))}</p>
         <h3>${escapeHtml(eventField(event, "title") || tx("adminEventsNewTitle"))}</h3>
         <p>${escapeHtml(eventField(event, "shortDescription") || tx("adminEventsSummaryText"))}</p>
         <strong>${escapeHtml(event.date ? formatEventDate(event) : tx("adminEventsDate"))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</strong>
@@ -1445,8 +1481,9 @@ function renderAdminEvents() {
   $("#adminEventsEmpty")?.classList.toggle("is-hidden", total > 0);
   $("#adminEventsList").classList.toggle("is-hidden", total === 0);
   $("#adminEventsList").innerHTML = churchEvents.map((event) => {
-    const title = event.titleRo || event.titleEs || tx("adminEventsNewTitle");
-    const poster = event.posterRo || event.posterEs || "";
+    const title = eventField(event, "title") || tx("adminEventsNewTitle");
+    const description = eventField(event, "shortDescription") || "";
+    const poster = eventField(event, "poster") || "";
     const roComplete = eventLanguageComplete(event, "Ro");
     const esComplete = eventLanguageComplete(event, "Es");
     return `
@@ -1454,7 +1491,7 @@ function renderAdminEvents() {
         <div class="admin-event-thumb">${poster ? `<img src="${escapeAttribute(poster)}" alt="" loading="lazy" />` : `<span>${tx("adminEventsNoPoster")}</span>`}</div>
         <div class="admin-event-row-copy">
           <h3>${escapeHtml(title)}</h3>
-          <p>${escapeHtml(event.shortDescriptionRo || event.shortDescriptionEs || "")}</p>
+          <p>${escapeHtml(description)}</p>
           <div class="admin-event-badges">
             <span class="${event.published ? "success" : "muted"}">${event.published ? tx("adminEventsPublishedStatus") : tx("adminEventsHiddenStatus")}</span>
       ${event.featured ? `<span>${tx("adminEventsFeatured")}</span>` : ""}

@@ -160,9 +160,10 @@ async function ensureColorCapacity(shirtColor, currentId = null) {
   if (Number(result.rows[0]?.used || 0) >= colorCapacity) throw httpError(409, "This shirt color is already full");
 }
 
-function validateVolleyRegistration(registration) {
+function validateVolleyRegistration(registration, { allowRejectedIncomplete = false } = {}) {
   if (!registration.teamName) throw httpError(400, "Team name is required");
   if (!registration.representativeName) throw httpError(400, "Representative name is required");
+  if (allowRejectedIncomplete && registration.status === "rejected") return;
   if (!registration.churchName) throw httpError(400, "Church name is required");
   if (!registration.shirtColor) throw httpError(400, "Shirt color is required");
   if (registration.players.length < minimumPlayers) throw httpError(400, `At least ${minimumPlayers} players are required`);
@@ -233,7 +234,7 @@ async function updateVolleyRegistration(id, payload) {
     if (index === -1) throw httpError(404, "Registration not found");
     const before = { ...memory.volleyRegistrations[index] };
     const updated = { ...before, ...normalizeVolleyPayload(payload, before), updatedAt: new Date().toISOString() };
-    validateVolleyRegistration(updated);
+    validateVolleyRegistration(updated, { allowRejectedIncomplete: true });
     await ensureUniqueTeamName(updated.teamName, id);
     if (updated.status !== "rejected") await ensureColorCapacity(updated.shirtColor, id);
     memory.volleyRegistrations[index] = updated;
@@ -246,7 +247,7 @@ async function updateVolleyRegistration(id, payload) {
   if (!beforeResult.rowCount) throw httpError(404, "Registration not found");
   const before = volleyRegistrationFromRow(beforeResult.rows[0]);
   const updatedPayload = normalizeVolleyPayload(payload, before);
-  validateVolleyRegistration(updatedPayload);
+  validateVolleyRegistration(updatedPayload, { allowRejectedIncomplete: true });
   await ensureUniqueTeamName(updatedPayload.teamName, id);
   if (updatedPayload.status !== "rejected") await ensureColorCapacity(updatedPayload.shirtColor, id);
   const result = await pool.query(

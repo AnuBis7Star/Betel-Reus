@@ -70,6 +70,18 @@
   "bookCategoryFilterLabel": "Filtru categorie",
   "bookAvailabilityFilterLabel": "Filtru bibliotecă",
   "filterAllCategories": "Toate categoriile",
+  "categoryTheology": "Teologie",
+  "categoryFamily": "Familie",
+  "categoryYouth": "Tineri",
+  "categoryChildren": "Copii",
+  "categoryBiographies": "Biografii",
+  "categoryBibles": "Biblii",
+  "categoryDevotionals": "Devoționale",
+  "categoryGeneral": "General",
+  "categoryDivineService": "Serviciu divin",
+  "categoryYouthEvent": "Eveniment tineret",
+  "categoryCelebration": "Sărbătoare",
+  "categorySpecialService": "Serviciu special",
   "enterLibrary": "Intră în bibliotecă",
   "exitLibrary": "Ieșire",
   "accessDenied": "Codul nu este corect. Verifică-l și încearcă din nou. Dacă nu ai cod, trimite un mesaj sau contactează-l pe Alin Enrique Nascutiu.",
@@ -398,5 +410,7 @@
   "volleySuccess": "Înscriere trimisă corect. Rămâne în așteptarea aprobării.",
   "volleyDuplicate": "Există deja o înscriere cu acest nume de echipă. Folosește alt nume sau contactează organizarea.",
   "volleyRateLimited": "Ai trimis prea multe solicitări într-un timp scurt. Așteaptă un minut și încearcă din nou.",
-  "volleySubmitError": "Nu s-a putut trimite înscrierea. Verifică datele și încearcă din nou."
+  "volleySubmitError": "Nu s-a putut trimite înscrierea. Verifică datele și încearcă din nou.",
+  "socialYouth": "Tineri",
+  "volleyBrandYouth": "Betel Reus · Tinerii"
 }

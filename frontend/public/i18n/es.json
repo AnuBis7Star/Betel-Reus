@@ -70,6 +70,18 @@
   "bookCategoryFilterLabel": "Filtro de categoría",
   "bookAvailabilityFilterLabel": "Filtro de biblioteca",
   "filterAllCategories": "Todas las categorías",
+  "categoryTheology": "Teología",
+  "categoryFamily": "Familia",
+  "categoryYouth": "Jóvenes",
+  "categoryChildren": "Niños",
+  "categoryBiographies": "Biografías",
+  "categoryBibles": "Biblias",
+  "categoryDevotionals": "Devocionales",
+  "categoryGeneral": "General",
+  "categoryDivineService": "Culto divino",
+  "categoryYouthEvent": "Evento juvenil",
+  "categoryCelebration": "Celebración",
+  "categorySpecialService": "Culto especial",
   "enterLibrary": "Entrar en biblioteca",
   "exitLibrary": "Salir",
   "accessDenied": "El código no es correcto. Revísalo e inténtalo otra vez. Si no tienes código, envía un mensaje o contacta con Alin Enrique Nascutiu.",
@@ -398,5 +410,7 @@
   "volleySuccess": "Inscripción enviada correctamente. Queda pendiente de aprobación.",
   "volleyDuplicate": "Ya existe una inscripción con ese nombre de equipo. Usa otro nombre o contacta con la organización.",
   "volleyRateLimited": "Has enviado demasiadas solicitudes seguidas. Espera un minuto e inténtalo de nuevo.",
-  "volleySubmitError": "No se pudo enviar la inscripción. Revisa los datos e inténtalo de nuevo."
+  "volleySubmitError": "No se pudo enviar la inscripción. Revisa los datos e inténtalo de nuevo.",
+  "socialYouth": "Jóvenes",
+  "volleyBrandYouth": "Betel Reus · Jóvenes"
 }
