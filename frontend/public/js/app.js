@@ -3,616 +3,26 @@ import { apiRequest as requestApi } from "./api.js";
 const contactEmail = ["contacto", "betelreus.com"].join("@");
 const contactFormMinimumMs = 3000;
 
-const translations = {
+const defaultLanguage = "ro";
+const supportedLanguages = new Set(["ro", "es"]);
+const i18nAssetVersion = "i18n-20260604c";
+const translations = {};
+const seoTranslations = {
   ro: {
-    navHome: "Acasă",
-    navSchedule: "Program",
-    navFirstVisit: "Prima vizită",
-    navResources: "Resurse",
-    navLibrary: "Bibliotecă",
-    navVideos: "Predici",
-    navYoutube: "YouTube",
-    navLive: "Live",
-    navAdmin: "Panou",
-    navContact: "Contact",
-    eyebrow: "Biserică penticostală în Reus",
-    heroText: "Betel Reus, o casă de închinare. O familie în care ne rugăm, ascultăm Cuvântul și creștem împreună în Hristos.",
-    heroYoutube: "Vezi predici",
-    heroSchedule: "Vezi programul",
-    heroVisit: "Vino duminică la biserică",
-    heroMaps: "Deschide locația în Maps",
-    verseLabel: "Versetul zilei",
-    verseLoading: "Se încarcă...",
-    authChecking: "Se încarcă...",
-    liveLabel: "Următorul live",
-    liveLoading: "Se calculează...",
-    liveYoutube: "Urmărește live pe YouTube",
-    liveNow: "Live acum",
-    liveUntil: "până la",
-    liveIn: "peste",
-    scheduleEyebrow: "Ne întâlnim împreună",
-    scheduleTitle: "Program și evenimente",
-    scheduleText: "Programul principal al bisericii pentru membri, familii și vizitatori.",
-    scheduleColumnTitle: "Program",
-    eventsColumnTitle: "Evenimente",
-    saturdayOther: "Alte activități după program",
-    sunday: "Duminică",
-    monday: "Luni",
-    wednesday: "Miercuri",
-    friday: "Vineri",
-    saturday: "Sâmbătă",
-    divineService: "Serviciu divin",
-    prayer: "Rugăciune",
-    youth: "Tineret",
-    volleyEventEyebrow: "Eveniment tineret",
-    volleyEventTitle: "Volleyball Tournament",
-    volleyEventText: "A 4-a ediție: o zi sportivă pentru echipe, prieteni și tineri în Reus.",
-    volleyEventDate: "13 Iunie 2026 · 10:00",
-    volleyEventCta: "Vezi pagina evenimentului",
-    firstVisitEyebrow: "Prima dată cu noi?",
-    firstVisitTitle: "Informații pentru vizitatori",
-    firstVisitContact: "Contactează-ne",
-    faqParkingTitle: "Unde pot parca?",
-    faqParkingText: "Există parcare pe stradă, în fața bisericii și în zona din apropiere.",
-    faqLanguageTitle: "În ce limbă este serviciul?",
-    faqLanguageText: "Serviciul este în limba română, dar avem sistem de traducere în limba spaniolă.",
-    faqWelcomeTitle: "Pot veni dacă nu sunt român?",
-    faqWelcomeText: "Da. Toată lumea este binevenită la Betel Reus.",
-    faqChildrenTitle: "Există program pentru copii?",
-    faqChildrenText: "Da. Duminica dimineața, între 10:00 și 12:00, avem școală duminicală pentru copii.",
-    faqSundayTitle: "Ce pot aștepta într-o duminică?",
-    faqSundayText: "Programul se împarte, de obicei, în trei părți: un timp de rugăciune, cântări și mesaje scurte; apoi un timp de laudă, unde persoanele pot trimite un mesaj pastorului pentru a participa cu cântări, poezii sau mesaje; iar la final aproximativ o oră de predicare din Cuvântul lui Dumnezeu.",
-    libraryEyebrow: "Pentru membri",
-    libraryTitle: "Biblioteca Betel",
-    libraryAccessTitle: "Biblioteca Betel",
-    libraryAccessText: "Accesul este pentru membrii comunității. Introdu numele tău și codul primit de la responsabilul bibliotecii.",
-    libraryHelperText: "Biblioteca este disponibilă doar membrilor bisericii. Nu ai cod? Trimite un mesaj sau contactează-l pe Alin Enrique Nascutiu.",
-    memberName: "Nume",
-    memberActive: "Membru",
-    accessCode: "Cod acces",
-    memberNamePlaceholder: "Numele tău",
-    libraryCodePlaceholder: "Cod bibliotecă",
-    bookSearchPlaceholder: "Caută după titlu sau autor",
-    bookCategoryFilterLabel: "Filtru categorie",
-    bookAvailabilityFilterLabel: "Filtru bibliotecă",
-    filterAllCategories: "Toate categoriile",
-    enterLibrary: "Intră în bibliotecă",
-    exitLibrary: "Ieșire",
-    accessDenied: "Codul nu este corect. Verifică-l și încearcă din nou. Dacă nu ai cod, trimite un mesaj sau contactează-l pe Alin Enrique Nascutiu.",
-    resetLibrary: "Resetează",
-    bookTitle: "Titlu",
-    bookAuthor: "Autor",
-    bookStock: "Stoc",
-    bookPrice: "Preț",
-    addBook: "Adaugă carte",
-    filterAll: "Toate",
-    filterAvailable: "Disponibile",
-    filterReserved: "Rezervate",
-    videosTitle: "Ultimele predici și cântări",
-    socialEyebrow: "Rețele sociale",
-    socialTitle: "Rămâi aproape de comunitate",
-    aboutEyebrow: "Despre noi",
-    aboutTitle: "O familie în credință, în inima orașului Reus",
-    aboutText: "Biserica Betel este un loc al prezenței lui Dumnezeu, unde viețile sunt transformate prin Duhul Sfânt. Aici trăim o viață nouă, în Hristos și cu Hristos.",
-    contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
-    contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
-    contactPastor: "Telefon pastor: Dorel Abutnăriți",
-    contactTransport: "Parcare: locuri pe stradă, în fața bisericii. Transport public: verifică ruta locală către Carrer de Terrassa 33.",
-    contactCall: "Sună-ne",
-    contactSendEmail: "Trimite email",
-    contactMapTitle: "Hartă Betel Reus",
-    contactLoadMap: "Încarcă harta",
-    contactFormTitle: "Trimite-ne un mesaj",
-    contactFormHint: "Mesajul se va trimite către contacto@betelreus.com.",
-    contactFormName: "Nume",
-    contactFormNamePlaceholder: "Numele tău",
-    contactFormContact: "Email sau telefon",
-    contactFormContactPlaceholder: "Cum te putem contacta?",
-    contactFormMessage: "Mesaj",
-    contactFormMessagePlaceholder: "Scrie mesajul tău",
-    contactFormSent: "Se deschide aplicația de email.",
-    reserve: "Rezervă",
-    request: "Cere",
-    addToCart: "Adaugă",
-    cartEyebrow: "Coș",
-    cartTitle: "Cererea ta",
-    cartEmpty: "Coșul este gol.",
-    cartTotal: "Total",
-    confirmCart: "Trimite cererea",
-    cartSent: "Cererea a fost trimisă.",
-    cartOpen: "Deschide coșul",
-    cartClose: "Închide coșul",
-    returnBook: "Returnează",
-    available: "disponibile",
-    unavailable: "indisponibil",
-    reserved: "rezervate",
-    adminPrivatePanel: "Panou privat",
-    adminHomeTitle: "Administrare",
-    adminHomeText: "Introdu codul privat pentru a alege ce secțiune vrei să gestionezi.",
-    adminChooseSection: "Alege secțiunea",
-    adminAllSections: "Toate secțiunile",
-    adminModuleLibraryTitle: "Bibliotecă",
-    adminModuleLibrarySummary: "Cărți, stoc, cereri și istoric",
-    adminModuleLibraryText: "Gestionează inventarul bibliotecii și comenzile membrilor.",
-    adminModuleVolleyTitle: "Turneu volley",
-    adminModuleVolleySummary: "Înscrieri, echipe și aprobare",
-    adminModuleVolleyText: "Editează echipele înscrise și aprobă ce apare public.",
-    adminModuleEventsTitle: "Evenimente",
-    adminModuleEventsSummary: "Program, afișe și publicare",
-    adminModuleEventsText: "Creează evenimente care apar automat pe pagina principală.",
-    adminModuleFutureTitle: "Viitor",
-    adminModuleFutureSummary: "Alt modul",
-    adminModuleFutureText: "Spațiu pregătit pentru următoarea secțiune.",
-    adminGateTitle: "Control bibliotecă",
-    adminGateText: "Introdu codul privat de administrare pentru a gestiona cărți, cereri și istoric.",
-    adminCodeLabel: "Cod administrare",
-    adminCodePlaceholder: "Cod privat",
-    adminEnter: "Intră în panou",
-    adminLibraryEyebrow: "Biblioteca Betel",
-    adminControlTitle: "Panou de control",
-    adminViewLibrary: "Vezi biblioteca",
-    adminVolleyPageTitle: "Turneu volley",
-    adminVolleyGateText: "Introdu codul privat pentru a gestiona echipele înscrise.",
-    adminViewVolley: "Vezi pagina volley",
-    adminVolleyRegistrationsTitle: "Înscrieri echipe",
-    adminVolleyTableTitle: "Echipe și înscrieri",
-    adminVolleyTeam: "Echipă",
-    adminVolleyRepresentative: "Reprezentant",
-    adminVolleyChurch: "Biserică",
-    adminVolleyColor: "Culoare",
-    adminVolleyPlayers: "Jucători",
-    adminVolleyStatus: "Stare",
-    adminVolleyNotes: "Note",
-    adminVolleySave: "Salvează",
-    adminVolleyApprove: "Acceptă",
-    adminVolleyReject: "Respinge",
-    adminVolleyPending: "În așteptare",
-    adminVolleyApproved: "Acceptat",
-    adminVolleyRejected: "Respins",
-    adminVolleyEmpty: "Încă nu există înscrieri la volley.",
-    adminVolleyDeleted: "Înscriere ștearsă.",
-    adminVolleySavedMessage: "Înscriere salvată.",
-    adminVolleyStatusUpdated: "Stare actualizată.",
-    adminVolleySaveError: "Nu s-a putut salva înscrierea.",
-    eventModalDate: "Data",
-    eventModalTime: "Ora",
-    eventModalLocation: "Locație",
-    eventNoPoster: "Afișul va apărea aici",
-    adminEventsPageTitle: "Evenimente",
-    adminEventsGateText: "Introdu codul privat pentru a gestiona evenimentele de pe pagina principală.",
-    adminEventsViewLanding: "Vezi pagina principală",
-    adminEventsAdd: "+ Adaugă eveniment",
-    adminEventsSummaryEyebrow: "Rezumat",
-    adminEventsSummaryTitle: "Evenimente publicate",
-    adminEventsSummaryText: "Evenimentele publicate apar automat pe pagina principală.",
-    adminEventsListEyebrow: "Listă",
-    adminEventsListTitle: "Evenimente create",
-    adminEventsEmptyEyebrow: "Fără evenimente",
-    adminEventsEmptyTitle: "Încă nu există evenimente create",
-    adminEventsEmptyText: "Adaugă primul eveniment pentru ca acesta să poată apărea pe pagina principală.",
-    adminEventsEditorEyebrow: "Editor",
-    adminEventsNewTitle: "Adaugă eveniment",
-    adminEventsEditTitle: "Editează eveniment",
-    adminEventsClose: "Închide",
-    adminEventsGeneral: "Informații generale",
-    adminEventsDate: "Data",
-    adminEventsTime: "Ora",
-    adminEventsLocation: "Locație",
-    adminEventsCategory: "Categorie",
-    adminEventsPublished: "Publicat",
-    adminEventsFeatured: "Recomandat",
-    adminEventsAccent: "Culoare card",
-    adminEventsColorDetected: "Culoarea cardului a fost detectată din afiș.",
-    adminEventsColorDetectError: "Nu s-a putut detecta culoarea. Alege manual culoarea cardului.",
-    adminEventsTitleLabel: "Titlu",
-    adminEventsShortLabel: "Descriere scurtă",
-    adminEventsFullLabel: "Descriere completă",
-    adminEventsPosterRo: "Afiș română",
-    adminEventsTitleLabelEs: "Título",
-    adminEventsShortLabelEs: "Descripción corta",
-    adminEventsFullLabelEs: "Descripción completa",
-    adminEventsPosterEs: "Cartel español",
-    adminEventsPreview: "Previzualizare card",
-    adminEventsDelete: "Șterge eveniment",
-    adminEventsSaveDraft: "Salvează ca schiță",
-    adminEventsSave: "Salvează eveniment",
-    adminEventsPublishedStatus: "Publicat",
-    adminEventsHiddenStatus: "Ascuns",
-    adminEventsNoPoster: "Fără afiș",
-    adminEventsIncompleteRo: "RO incomplet",
-    adminEventsIncompleteEs: "ES incomplet",
-    adminEventsTotal: "Total",
-    adminEventsPublishedCount: "Publicate",
-    adminEventsHiddenCount: "Ascunse",
-    adminEventsFeaturedCount: "Recomandate",
-    adminEventsPublish: "Publică",
-    adminEventsHide: "Ascunde",
-    adminEventsSaved: "Eveniment salvat.",
-    adminEventsDeleted: "Eveniment șters.",
-    adminEventsSaveError: "Nu s-a putut salva evenimentul.",
-    adminEventsDeleteError: "Nu s-a putut șterge evenimentul.",
-    adminEventsConfirmDelete: "Sigur vrei să ștergi acest eveniment?",
-    adminBookFormTitle: "Carte",
-    adminTitlePlaceholder: "Titlul cărții",
-    adminCategoryLabel: "Categorie",
-    adminCategoryPlaceholder: "Biblii, Familie, Tineri...",
-    adminLanguageLabel: "Limbă",
-    adminRomanian: "Română",
-    adminSpanish: "Spaniolă",
-    adminEnglish: "Engleză",
-    adminSaveBook: "Salvează cartea",
-    adminUpdateBook: "Actualizează cartea",
-    adminBulkTitle: "Importă mai multe",
-    adminBulkHelp: "O linie pentru fiecare carte: titlu; autor; categorie; limbă; stoc; preț",
-    adminBulkPlaceholder: "Biblia de studiu; Autor; Biblii; ro; 3; 25.00",
-    adminImportBooks: "Importă cărți",
-    adminSearchPlaceholder: "Caută după titlu, autor sau categorie",
-    adminSaveStockChanges: "Salvează modificările de stoc",
-    adminSaveStockChangesCount: "Salvează modificările de stoc",
-    adminTableBook: "Carte",
-    adminReservedShort: "Rezerv.",
-    adminAvailableShort: "Disp.",
-    adminActions: "Acțiuni",
-    adminRequestsEyebrow: "Cereri",
-    adminRequestsTitle: "În așteptare și stare",
-    adminHistoryEyebrow: "Istoric",
-    adminHistoryTitle: "Ultimele modificări",
-    adminPrev: "Înapoi",
-    adminNext: "Înainte",
-    adminPage: "Pagina",
-    adminPageOf: "din",
-    adminReenterCode: "Introdu din nou codul de administrare.",
-    adminChecking: "Se verifică...",
-    adminWrongCode: "Cod incorect sau conexiune indisponibilă.",
-    adminSaving: "Se salvează...",
-    adminUpdating: "Se actualizează...",
-    adminAuthError: "Cod de administrare incorect.",
-    adminDbUpdateError: "Nu s-a putut actualiza în baza de date.",
-    adminDbSaveError: "Nu s-a putut salva în baza de date.",
-    adminDbImportError: "Nu s-a putut importa în baza de date.",
-    adminStockSaveError: "Nu s-a putut salva stocul.",
-    adminBookAddedSaving: "Carte adăugată. Se salvează în baza de date...",
-    adminSaved: "Salvat.",
-    adminStockSaving: "Se salvează stocul...",
-    adminStockSaved: "Stoc salvat.",
-    adminAddBulkLine: "Adaugă cel puțin o linie cu titlu și autor.",
-    adminBulkInvalidLine: "Linie incompletă",
-    adminImporting: "Se importă...",
-    adminBooksAddedSaving: "cărți adăugate. Se salvează în baza de date...",
-    adminBooksImported: "cărți importate.",
-    adminBooksImportedLocal: "cărți importate local.",
-    adminTotalStock: "Stoc total",
-    adminLowStock: "Stoc redus",
-    adminPendingRequests: "Cereri în așteptare",
-    adminEdit: "Editează",
-    adminDelete: "Șterge",
-    adminReady: "În lucru",
-    adminComplete: "Completată",
-    adminDelivered: "Completată",
-    adminCancel: "Anulează",
-    adminNoRequests: "Nu există cereri active.",
-    adminNoHistory: "Încă nu există modificări înregistrate.",
-    adminStatusPending: "În așteptare",
-    adminStatusApproved: "În lucru",
-    adminStatusCollected: "Completată",
-    adminStatusCancelled: "Anulată",
-    adminEntityBook: "carte",
-    adminEntityOrder: "cerere",
-    adminEntityReservation: "cerere",
-    adminEntityEvent: "eveniment",
-    adminActionMemberRequest: "Cerere trimisă de membru",
-    adminActionBookCreated: "Carte creată",
-    adminActionBookUpdated: "Carte actualizată",
-    adminActionBooksImported: "Cărți importate",
-    adminActionBookDeleted: "Carte ștearsă",
-    adminActionInventoryPlus: "Inventar: plus",
-    adminActionInventoryMinus: "Inventar: minus",
-    adminActionRequestMarked: "Cerere marcată ca"
+    title: "Betel Reus | Biserica Betel Reus",
+    description: "Biserica Betel Reus este o comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori.",
+    ogTitle: "Biserica Betel Reus | Biserică penticostală în Reus",
+    ogDescription: "Comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori.",
+    twitterTitle: "Biserica Betel Reus",
+    twitterDescription: "Comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori."
   },
   es: {
-    navHome: "Inicio",
-    navSchedule: "Horario",
-    navFirstVisit: "Primera visita",
-    navResources: "Recursos",
-    navLibrary: "Biblioteca",
-    navVideos: "Predicaciones",
-    navYoutube: "YouTube",
-    navLive: "Directo",
-    navAdmin: "Panel",
-    navContact: "Contacto",
-    eyebrow: "Iglesia pentecostal en Reus",
-    heroText: "Betel Reus, una casa de adoración. Una familia donde oramos, escuchamos la Palabra y crecemos juntos en Cristo.",
-    heroYoutube: "Ver predicaciones",
-    heroSchedule: "Ver horario",
-    heroVisit: "Ven el domingo a la iglesia",
-    heroMaps: "Abrir ubicación en Maps",
-    verseLabel: "Versículo del día",
-    verseLoading: "Cargando...",
-    authChecking: "Cargando...",
-    liveLabel: "Próximo directo",
-    liveLoading: "Calculando...",
-    liveYoutube: "Ver directo en YouTube",
-    liveNow: "En directo ahora",
-    liveUntil: "hasta las",
-    liveIn: "en",
-    scheduleEyebrow: "Nos reunimos juntos",
-    scheduleTitle: "Horario y eventos",
-    scheduleText: "El programa principal de la iglesia para miembros, familias y visitantes.",
-    scheduleColumnTitle: "Horarios",
-    eventsColumnTitle: "Eventos",
-    saturdayOther: "Otras actividades según programación",
-    sunday: "Domingo",
-    monday: "Lunes",
-    wednesday: "Miércoles",
-    friday: "Viernes",
-    saturday: "Sábado",
-    divineService: "Servicio divino",
-    prayer: "Oración",
-    youth: "Jóvenes",
-    volleyEventEyebrow: "Evento de jóvenes",
-    volleyEventTitle: "Volleyball Tournament",
-    volleyEventText: "4ª edición: un día deportivo para equipos, amigos y jóvenes en Reus.",
-    volleyEventDate: "13 Junio 2026 · 10:00",
-    volleyEventCta: "Ver página del evento",
-    firstVisitEyebrow: "¿Primera vez con nosotros?",
-    firstVisitTitle: "Información para visitantes",
-    firstVisitContact: "Contacta con nosotros",
-    faqParkingTitle: "¿Dónde puedo aparcar?",
-    faqParkingText: "Hay aparcamiento en la calle, delante de la iglesia y en la zona cercana.",
-    faqLanguageTitle: "¿En qué idioma es el servicio?",
-    faqLanguageText: "El servicio es en rumano, pero disponemos de sistema de traducción al español.",
-    faqWelcomeTitle: "¿Puedo venir si no soy rumano?",
-    faqWelcomeText: "Sí. Todo el mundo es bienvenido en Betel Reus.",
-    faqChildrenTitle: "¿Hay programa para niños?",
-    faqChildrenText: "Sí. Los domingos por la mañana, de 10:00 a 12:00, hay escuela dominical para niños.",
-    faqSundayTitle: "¿Qué puedo esperar un domingo?",
-    faqSundayText: "El programa generalmente se divide en tres partes: primero hay un tiempo de oración, canciones y pequeños mensajes; después hay un momento de alabanza, donde las personas pueden enviar un mensaje al pastor para participar alabando a Dios con canciones, poesías o mensajes; finalmente, hay aproximadamente una hora de predicación de la Palabra de Dios.",
-    libraryEyebrow: "Para miembros",
-    libraryTitle: "Biblioteca Betel",
-    libraryAccessTitle: "Biblioteca Betel",
-    libraryAccessText: "El acceso es para miembros de la comunidad. Introduce tu nombre y el código recibido del responsable de la biblioteca.",
-    libraryHelperText: "La biblioteca está disponible solo para miembros de la iglesia. ¿No tienes código? Envía un mensaje o contacta con Alin Enrique Nascutiu.",
-    memberName: "Nombre",
-    memberActive: "Miembro",
-    accessCode: "Código de acceso",
-    memberNamePlaceholder: "Tu nombre",
-    libraryCodePlaceholder: "Código de biblioteca",
-    bookSearchPlaceholder: "Busca por título o autor",
-    bookCategoryFilterLabel: "Filtro de categoría",
-    bookAvailabilityFilterLabel: "Filtro de biblioteca",
-    filterAllCategories: "Todas las categorías",
-    enterLibrary: "Entrar en biblioteca",
-    exitLibrary: "Salir",
-    accessDenied: "El código no es correcto. Revísalo e inténtalo otra vez. Si no tienes código, envía un mensaje o contacta con Alin Enrique Nascutiu.",
-    resetLibrary: "Reiniciar",
-    bookTitle: "Título",
-    bookAuthor: "Autor",
-    bookStock: "Stock",
-    bookPrice: "Precio",
-    addBook: "Añadir libro",
-    filterAll: "Todos",
-    filterAvailable: "Disponibles",
-    filterReserved: "Reservados",
-    videosTitle: "Últimas predicaciones y cantos",
-    socialEyebrow: "Redes sociales",
-    socialTitle: "Permanece cerca de la comunidad",
-    aboutEyebrow: "Sobre nosotros",
-    aboutTitle: "Una familia en la fe, en el corazón de Reus",
-    aboutText: "La Iglesia Betel es un lugar de la presencia de Dios, donde las vidas son transformadas por el Espíritu Santo. Aquí vivimos una vida nueva, en Cristo y con Cristo.",
-    contactAddress: "Carrer de Terrassa, 33, 43204 Reus, Tarragona",
-    contactEmail: "contacto@betelreus.com · +34 605 43 05 73",
-    contactPastor: "Teléfono del pastor: Dorel Abutnăriți",
-    contactTransport: "Parking: plazas en la calle, delante de la iglesia. Transporte público: revisa la ruta local hacia Carrer de Terrassa 33.",
-    contactCall: "Llámanos",
-    contactSendEmail: "Enviar email",
-    contactMapTitle: "Mapa Betel Reus",
-    contactLoadMap: "Cargar mapa",
-    contactFormTitle: "Envíanos un mensaje",
-    contactFormHint: "El mensaje se enviará a contacto@betelreus.com.",
-    contactFormName: "Nombre",
-    contactFormNamePlaceholder: "Tu nombre",
-    contactFormContact: "Email o teléfono",
-    contactFormContactPlaceholder: "¿Cómo podemos contactarte?",
-    contactFormMessage: "Mensaje",
-    contactFormMessagePlaceholder: "Escribe tu mensaje",
-    contactFormSent: "Se abre la aplicación de email.",
-    reserve: "Reservar",
-    request: "Pedir",
-    addToCart: "Añadir",
-    cartEyebrow: "Carrito",
-    cartTitle: "Tu pedido",
-    cartEmpty: "El carrito está vacío.",
-    cartTotal: "Total",
-    confirmCart: "Confirmar pedido",
-    cartSent: "Pedido enviado al panel.",
-    cartOpen: "Abrir carrito",
-    cartClose: "Cerrar carrito",
-    returnBook: "Devolver",
-    available: "disponibles",
-    unavailable: "no disponible",
-    reserved: "reservados",
-    adminPrivatePanel: "Panel privado",
-    adminHomeTitle: "Administración",
-    adminHomeText: "Introduce el código privado para elegir qué sección quieres gestionar.",
-    adminChooseSection: "Elige la sección",
-    adminAllSections: "Todas las secciones",
-    adminModuleLibraryTitle: "Biblioteca",
-    adminModuleLibrarySummary: "Libros, stock, pedidos e historial",
-    adminModuleLibraryText: "Gestiona el inventario de la biblioteca y los pedidos de los miembros.",
-    adminModuleVolleyTitle: "Torneo volley",
-    adminModuleVolleySummary: "Inscripciones, equipos y aprobación",
-    adminModuleVolleyText: "Edita los equipos inscritos y aprueba lo que aparece públicamente.",
-    adminModuleEventsTitle: "Eventos",
-    adminModuleEventsSummary: "Horario, carteles y publicación",
-    adminModuleEventsText: "Crea eventos que aparecen automáticamente en la página principal.",
-    adminModuleFutureTitle: "Futuro",
-    adminModuleFutureSummary: "Otro módulo",
-    adminModuleFutureText: "Espacio preparado para la próxima sección.",
-    adminGateTitle: "Control de biblioteca",
-    adminGateText: "Introduce el código privado de administración para gestionar libros, pedidos e historial.",
-    adminCodeLabel: "Código de administración",
-    adminCodePlaceholder: "Código privado",
-    adminEnter: "Entrar al panel",
-    adminLibraryEyebrow: "Biblioteca Betel",
-    adminControlTitle: "Panel de control",
-    adminViewLibrary: "Ver biblioteca",
-    adminVolleyPageTitle: "Torneo volley",
-    adminVolleyGateText: "Introduce el código privado para gestionar los equipos inscritos.",
-    adminViewVolley: "Ver página volley",
-    adminVolleyRegistrationsTitle: "Inscripciones de equipos",
-    adminVolleyTableTitle: "Equipos e inscripciones",
-    adminVolleyTeam: "Equipo",
-    adminVolleyRepresentative: "Representante",
-    adminVolleyChurch: "Iglesia",
-    adminVolleyColor: "Color",
-    adminVolleyPlayers: "Jugadores",
-    adminVolleyStatus: "Estado",
-    adminVolleyNotes: "Notas",
-    adminVolleySave: "Guardar",
-    adminVolleyApprove: "Aceptar",
-    adminVolleyReject: "Rechazar",
-    adminVolleyPending: "Pendiente",
-    adminVolleyApproved: "Aceptado",
-    adminVolleyRejected: "Rechazado",
-    adminVolleyEmpty: "Todavía no hay inscripciones de volley.",
-    adminVolleyDeleted: "Inscripción eliminada.",
-    adminVolleySavedMessage: "Inscripción guardada.",
-    adminVolleyStatusUpdated: "Estado actualizado.",
-    adminVolleySaveError: "No se pudo guardar la inscripción.",
-    eventModalDate: "Fecha",
-    eventModalTime: "Hora",
-    eventModalLocation: "Ubicación",
-    eventNoPoster: "El cartel aparecerá aquí",
-    adminEventsPageTitle: "Eventos",
-    adminEventsGateText: "Introduce el código privado para gestionar los eventos de la página principal.",
-    adminEventsViewLanding: "Ver página principal",
-    adminEventsAdd: "+ Añadir evento",
-    adminEventsSummaryEyebrow: "Resumen",
-    adminEventsSummaryTitle: "Eventos publicados",
-    adminEventsSummaryText: "Los eventos publicados aparecen automáticamente en la página principal.",
-    adminEventsListEyebrow: "Lista",
-    adminEventsListTitle: "Eventos creados",
-    adminEventsEmptyEyebrow: "Sin eventos",
-    adminEventsEmptyTitle: "Todavía no hay eventos creados",
-    adminEventsEmptyText: "Añade el primer evento para que pueda aparecer en la página principal.",
-    adminEventsEditorEyebrow: "Editor",
-    adminEventsNewTitle: "Añadir evento",
-    adminEventsEditTitle: "Editar evento",
-    adminEventsClose: "Cerrar",
-    adminEventsGeneral: "Información general",
-    adminEventsDate: "Fecha",
-    adminEventsTime: "Hora",
-    adminEventsLocation: "Ubicación",
-    adminEventsCategory: "Categoría",
-    adminEventsPublished: "Publicado",
-    adminEventsFeatured: "Destacado",
-    adminEventsAccent: "Color de la tarjeta",
-    adminEventsColorDetected: "Color de la tarjeta detectado desde el cartel.",
-    adminEventsColorDetectError: "No se pudo detectar el color. Elige manualmente el color de la tarjeta.",
-    adminEventsTitleLabel: "Título",
-    adminEventsShortLabel: "Descripción corta",
-    adminEventsFullLabel: "Descripción completa",
-    adminEventsPosterRo: "Cartel rumano",
-    adminEventsTitleLabelEs: "Título",
-    adminEventsShortLabelEs: "Descripción corta",
-    adminEventsFullLabelEs: "Descripción completa",
-    adminEventsPosterEs: "Cartel español",
-    adminEventsPreview: "Vista previa de la tarjeta",
-    adminEventsDelete: "Eliminar evento",
-    adminEventsSaveDraft: "Guardar como borrador",
-    adminEventsSave: "Guardar evento",
-    adminEventsPublishedStatus: "Publicado",
-    adminEventsHiddenStatus: "Oculto",
-    adminEventsNoPoster: "Sin cartel",
-    adminEventsIncompleteRo: "RO incompleto",
-    adminEventsIncompleteEs: "ES incompleto",
-    adminEventsTotal: "Total",
-    adminEventsPublishedCount: "Publicados",
-    adminEventsHiddenCount: "Ocultos",
-    adminEventsFeaturedCount: "Destacados",
-    adminEventsPublish: "Publicar",
-    adminEventsHide: "Ocultar",
-    adminEventsSaved: "Evento guardado.",
-    adminEventsDeleted: "Evento eliminado.",
-    adminEventsSaveError: "No se pudo guardar el evento.",
-    adminEventsDeleteError: "No se pudo eliminar el evento.",
-    adminEventsConfirmDelete: "¿Seguro que quieres eliminar este evento?",
-    adminBookFormTitle: "Libro",
-    adminTitlePlaceholder: "Título del libro",
-    adminCategoryLabel: "Categoría",
-    adminCategoryPlaceholder: "Biblias, Familia, Jóvenes...",
-    adminLanguageLabel: "Idioma",
-    adminRomanian: "Rumano",
-    adminSpanish: "Español",
-    adminEnglish: "Inglés",
-    adminSaveBook: "Guardar libro",
-    adminUpdateBook: "Actualizar libro",
-    adminBulkTitle: "Importar varios",
-    adminBulkHelp: "Una línea por cada libro: título; autor; categoría; idioma; stock; precio",
-    adminBulkPlaceholder: "Biblia de estudio; Autor; Biblias; ro; 3; 25.00",
-    adminImportBooks: "Importar libros",
-    adminSearchPlaceholder: "Buscar por título, autor o categoría",
-    adminSaveStockChanges: "Guardar cambios de stock",
-    adminSaveStockChangesCount: "Guardar cambios de stock",
-    adminTableBook: "Libro",
-    adminReservedShort: "Reserv.",
-    adminAvailableShort: "Disp.",
-    adminActions: "Acciones",
-    adminRequestsEyebrow: "Pedidos",
-    adminRequestsTitle: "Pendientes y estado",
-    adminHistoryEyebrow: "Historial",
-    adminHistoryTitle: "Últimos cambios",
-    adminPrev: "Atrás",
-    adminNext: "Siguiente",
-    adminPage: "Página",
-    adminPageOf: "de",
-    adminReenterCode: "Introduce de nuevo el código de administración.",
-    adminChecking: "Comprobando...",
-    adminWrongCode: "Código incorrecto o conexión no disponible.",
-    adminSaving: "Guardando...",
-    adminUpdating: "Actualizando...",
-    adminAuthError: "Código de administración incorrecto.",
-    adminDbUpdateError: "No se ha podido actualizar en la base de datos.",
-    adminDbSaveError: "No se ha podido guardar en la base de datos.",
-    adminDbImportError: "No se ha podido importar en la base de datos.",
-    adminStockSaveError: "No se ha podido guardar el stock.",
-    adminBookAddedSaving: "Libro añadido. Guardando en la base de datos...",
-    adminSaved: "Guardado.",
-    adminStockSaving: "Guardando stock...",
-    adminStockSaved: "Stock guardado.",
-    adminAddBulkLine: "Añade al menos una línea con título y autor.",
-    adminBulkInvalidLine: "Línea incompleta",
-    adminImporting: "Importando...",
-    adminBooksAddedSaving: "libros añadidos. Guardando en la base de datos...",
-    adminBooksImported: "libros importados.",
-    adminBooksImportedLocal: "libros importados localmente.",
-    adminTotalStock: "Stock total",
-    adminLowStock: "Stock bajo",
-    adminPendingRequests: "Pedidos pendientes",
-    adminEdit: "Editar",
-    adminDelete: "Eliminar",
-    adminReady: "En proceso",
-    adminComplete: "Completado",
-    adminDelivered: "Completado",
-    adminCancel: "Cancelar",
-    adminNoRequests: "No hay pedidos activos.",
-    adminNoHistory: "Todavía no hay cambios registrados.",
-    adminStatusPending: "Pendiente",
-    adminStatusApproved: "En proceso",
-    adminStatusCollected: "Completado",
-    adminStatusCancelled: "Cancelado",
-    adminEntityBook: "libro",
-    adminEntityOrder: "pedido",
-    adminEntityReservation: "pedido",
-    adminEntityEvent: "evento",
-    adminActionMemberRequest: "Pedido enviado por miembro",
-    adminActionBookCreated: "Libro creado",
-    adminActionBookUpdated: "Libro actualizado",
-    adminActionBooksImported: "Libros importados",
-    adminActionBookDeleted: "Libro eliminado",
-    adminActionInventoryPlus: "Inventario: suma",
-    adminActionInventoryMinus: "Inventario: resta",
-    adminActionRequestMarked: "Pedido marcado como"
+    title: "Betel Reus | Iglesia Betel Reus",
+    description: "Iglesia Betel Reus es una comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes.",
+    ogTitle: "Iglesia Betel Reus | Iglesia pentecostal en Reus",
+    ogDescription: "Comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes.",
+    twitterTitle: "Iglesia Betel Reus",
+    twitterDescription: "Comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes."
   }
 };
 
@@ -623,7 +33,7 @@ const seedBooks = [
   { id: crypto.randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", category: "Copii", stock: 6, price: 18, reserved: 2 }
 ];
 
-let lang = localStorage.getItem("betel-lang") || "ro";
+let lang = supportedLanguages.has(localStorage.getItem("betel-lang")) ? localStorage.getItem("betel-lang") : defaultLanguage;
 let books = seedBooks;
 let cart = JSON.parse(localStorage.getItem("betel-cart") || "[]");
 let usingServerData = false;
@@ -663,19 +73,29 @@ const statusLabelKeys = {
   cancelled: "adminStatusCancelled"
 };
 
-const volleyShirtColors = [
-  { id: "white", ro: "Alb", es: "Blanco" },
-  { id: "black", ro: "Negru", es: "Negro" },
-  { id: "red", ro: "Roșu", es: "Rojo" },
-  { id: "blue", ro: "Albastru", es: "Azul" },
-  { id: "green", ro: "Verde", es: "Verde" },
-  { id: "yellow", ro: "Galben", es: "Amarillo" },
-  { id: "pink", ro: "Roz", es: "Rosa" },
-  { id: "purple", ro: "Mov", es: "Morado" },
-  { id: "orange", ro: "Portocaliu", es: "Naranja" },
-  { id: "turquoise", ro: "Turcoaz", es: "Turquesa" },
-  { id: "navy", ro: "Bleumarin", es: "Azul marino" },
-  { id: "gray", ro: "Gri", es: "Gris" }
+let volleyShirtColors = [
+  { id: "white", ro: "Alb", es: "Blanco", hex: "#f7f3e8" },
+  { id: "black", ro: "Negru", es: "Negro", hex: "#242124" },
+  { id: "red", ro: "Roșu", es: "Rojo", hex: "#e8313a" },
+  { id: "blue", ro: "Albastru", es: "Azul", hex: "#2f6feb" },
+  { id: "green", ro: "Verde", es: "Verde", hex: "#596b36" },
+  { id: "yellow", ro: "Galben", es: "Amarillo", hex: "#ffd21d" },
+  { id: "pink", ro: "Roz", es: "Rosa", hex: "#e94aa9" },
+  { id: "purple", ro: "Mov", es: "Morado", hex: "#7c3aed" },
+  { id: "orange", ro: "Portocaliu", es: "Naranja", hex: "#f97316" },
+  { id: "turquoise", ro: "Turcoaz", es: "Turquesa", hex: "#14b8a6" },
+  { id: "navy", ro: "Bleumarin", es: "Azul marino", hex: "#1e3a8a" },
+  { id: "gray", ro: "Gri", es: "Gris", hex: "#8a8f98" },
+  { id: "burgundy", ro: "Vișiniu", es: "Granate", hex: "#7f1d1d" },
+  { id: "coral", ro: "Coral", es: "Coral", hex: "#fb7185" },
+  { id: "sky", ro: "Albastru deschis", es: "Azul claro", hex: "#38bdf8" },
+  { id: "mint", ro: "Mentă", es: "Menta", hex: "#86efac" },
+  { id: "lime", ro: "Verde lime", es: "Verde lima", hex: "#a3e635" },
+  { id: "beige", ro: "Bej", es: "Beige", hex: "#d6c3a5" },
+  { id: "brown", ro: "Maro", es: "Marrón", hex: "#7c2d12" },
+  { id: "silver", ro: "Argintiu", es: "Plateado", hex: "#cbd5e1" },
+  { id: "gold", ro: "Auriu", es: "Dorado", hex: "#fbbf24" },
+  { id: "lavender", ro: "Lavandă", es: "Lavanda", hex: "#c084fc" }
 ];
 
 const adminEntityKeys = {
@@ -686,6 +106,20 @@ const adminEntityKeys = {
 };
 
 const libraryCategories = ["Teologie", "Familie", "Tineri", "Copii", "Biografii", "Biblii", "Devoționale"];
+const categoryLabelKeys = {
+  Teologie: "categoryTheology",
+  Familie: "categoryFamily",
+  Tineri: "categoryYouth",
+  Copii: "categoryChildren",
+  Biografii: "categoryBiographies",
+  Biblii: "categoryBibles",
+  "Devoționale": "categoryDevotionals",
+  General: "categoryGeneral",
+  "Serviciu divin": "categoryDivineService",
+  "Eveniment tineret": "categoryYouthEvent",
+  "Sărbătoare": "categoryCelebration",
+  "Serviciu special": "categorySpecialService"
+};
 
 function escapeHtml(value = "") {
   return String(value)
@@ -701,7 +135,24 @@ function escapeAttribute(value = "") {
 }
 
 function tx(key) {
-  return translations[lang]?.[key] || translations.ro[key] || key;
+  return translations[lang]?.[key] || translations[defaultLanguage]?.[key] || key;
+}
+
+async function loadLanguageFile(language) {
+  if (translations[language]) return translations[language];
+  try {
+    const response = await fetch(`/i18n/${language}.json?v=${i18nAssetVersion}`);
+    if (!response.ok) throw new Error(`Could not load ${language} translations`);
+    translations[language] = await response.json();
+  } catch (error) {
+    translations[language] = {};
+  }
+  return translations[language];
+}
+
+async function loadTranslations(language = lang) {
+  await loadLanguageFile(defaultLanguage);
+  if (language !== defaultLanguage) await loadLanguageFile(language);
 }
 
 function getStatusLabel(status) {
@@ -726,6 +177,12 @@ function getAdminActionLabel(action = "") {
   const markedMatch = action.match(/^Cerere marcată ca (.+)$/);
   if (markedMatch) return `${tx("adminActionRequestMarked")} ${getStatusLabel(markedMatch[1])}`;
   return action;
+}
+
+function getCategoryLabel(category = "General") {
+  const normalized = category || "General";
+  const key = categoryLabelKeys[normalized];
+  return key ? tx(key) : normalized;
 }
 
 function saveBooks() {
@@ -766,14 +223,16 @@ async function loadAdminDataFromApi(throwOnError = false) {
     const requests = [
       apiRequest("/api/admin/orders?active=true"),
       apiRequest("/api/admin/audit"),
-      apiRequest("/api/admin/volley/registrations")
+      apiRequest("/api/admin/volley/registrations"),
+      apiRequest("/api/volley/colors")
     ];
     const shouldLoadEvents = Boolean($("#adminEventsList") || $("#adminEventForm"));
     if (shouldLoadEvents) requests.push(apiRequest("/api/admin/events"));
-    const [ordersData, auditData, volleyData, eventsData] = await Promise.all(requests);
+    const [ordersData, auditData, volleyData, volleyColorsData, eventsData] = await Promise.all(requests);
     reservations = ordersData.orders;
     auditLogs = auditData.auditLogs;
     volleyRegistrations = volleyData.registrations || [];
+    volleyShirtColors = volleyColorsData.colors || volleyShirtColors;
     if (eventsData) churchEvents = eventsData.events || [];
     saveReservations();
     saveAuditLogs();
@@ -797,31 +256,52 @@ function logAudit(action, entity, before = null, after = null) {
   saveAuditLogs();
 }
 
+function setMetaContent(selector, content) {
+  const meta = document.querySelector(selector);
+  if (meta && content) meta.setAttribute("content", content);
+}
+
+function applySeoLanguage() {
+  const seo = seoTranslations[lang] || seoTranslations[defaultLanguage];
+  document.title = seo.title;
+  setMetaContent('meta[name="description"]', seo.description);
+  setMetaContent('meta[property="og:title"]', seo.ogTitle);
+  setMetaContent('meta[property="og:description"]', seo.ogDescription);
+  setMetaContent('meta[property="og:locale"]', lang === "es" ? "es_ES" : "ro_RO");
+  setMetaContent('meta[name="twitter:title"]', seo.twitterTitle);
+  setMetaContent('meta[name="twitter:description"]', seo.twitterDescription);
+}
+
 function applyLanguage() {
   document.documentElement.lang = lang;
   $("#langToggle").textContent = lang === "ro" ? "ES" : "RO";
   $$("[data-i18n]").forEach((node) => {
     const key = node.dataset.i18n;
-    if (translations[lang][key]) node.textContent = translations[lang][key];
+    const value = tx(key);
+    if (value !== key) node.textContent = value;
   });
   $$("[data-i18n-placeholder]").forEach((node) => {
     const key = node.dataset.i18nPlaceholder;
-    if (translations[lang][key]) node.placeholder = translations[lang][key];
+    const value = tx(key);
+    if (value !== key) node.placeholder = value;
   });
   $$("[data-i18n-aria-label]").forEach((node) => {
     const key = node.dataset.i18nAriaLabel;
-    if (translations[lang][key]) node.setAttribute("aria-label", translations[lang][key]);
+    const value = tx(key);
+    if (value !== key) node.setAttribute("aria-label", value);
   });
   $$("[data-i18n-title]").forEach((node) => {
     const key = node.dataset.i18nTitle;
-    if (translations[lang][key]) node.title = translations[lang][key];
+    const value = tx(key);
+    if (value !== key) node.title = value;
   });
-  if ($("#bookSearch")) $("#bookSearch").placeholder = translations[lang].bookSearchPlaceholder;
+  if ($("#bookSearch")) $("#bookSearch").placeholder = tx("bookSearchPlaceholder");
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
   if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) renderAdmin();
   if ($("#landingEventsList")) renderLandingEvents();
   if (activeEventId) renderEventModal();
+  applySeoLanguage();
   setupContactEmailLinks();
   updateLiveCountdown();
 }
@@ -899,10 +379,9 @@ function renderBooks() {
   const query = $("#bookSearch").value.toLowerCase();
   const filter = $("#bookFilter").value;
   const categoryFilter = $("#bookCategoryFilter")?.value || "all";
-  const t = translations[lang];
   const categories = [...new Set([...libraryCategories, ...books.map((book) => book.category).filter(Boolean)])].sort();
   if ($("#bookCategoryFilter")) {
-    $("#bookCategoryFilter").innerHTML = `<option value="all">${translations[lang].filterAllCategories}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(item)}</option>`).join("")}`;
+    $("#bookCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(getCategoryLabel(item))}</option>`).join("")}`;
     $("#bookCategoryFilter").value = categoryFilter && [...categories, "all"].includes(categoryFilter) ? categoryFilter : "all";
   }
   const visibleBooks = books.filter((book) => {
@@ -920,14 +399,14 @@ function renderBooks() {
         <div>
           <h3>${escapeHtml(book.title)}</h3>
           <p>${escapeHtml(book.author)}</p>
-          <span class="book-category">${escapeHtml(book.category || "General")}</span>
+          <span class="book-category">${escapeHtml(getCategoryLabel(book.category))}</span>
         </div>
         <div class="book-meta">
-          <span>${available > 0 ? `${available} ${t.available}` : t.unavailable}</span>
+          <span>${available > 0 ? `${available} ${tx("available")}` : tx("unavailable")}</span>
           <strong>${book.price.toFixed(2)} €</strong>
         </div>
         <div class="book-actions">
-          <button type="button" data-action="add-cart" data-id="${book.id}" ${available === 0 ? "disabled" : ""}>${t.addToCart}</button>
+          <button type="button" data-action="add-cart" data-id="${book.id}" ${available === 0 ? "disabled" : ""}>${tx("addToCart")}</button>
         </div>
       </article>
     `;
@@ -1007,13 +486,13 @@ function renderLandingEvents() {
     return `
       <button class="event-card managed-event-card" type="button" data-event-id="${escapeAttribute(event.id)}" style="--event-accent: ${escapeAttribute(event.accentColor || "#7f090b")}">
         <div>
-          <p class="eyebrow">${escapeHtml(event.category || tx("eventsColumnTitle"))}</p>
+          <p class="eyebrow">${escapeHtml(getCategoryLabel(event.category || tx("eventsColumnTitle")))}</p>
           <h3>${escapeHtml(title)}</h3>
           <p>${escapeHtml(shortDescription)}</p>
           <strong>${escapeHtml(formatEventDate(event))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</strong>
           <div class="event-tags">
             ${event.location ? `<span>${escapeHtml(event.location)}</span>` : ""}
-            ${event.category ? `<span>${escapeHtml(event.category)}</span>` : ""}
+            ${event.category ? `<span>${escapeHtml(getCategoryLabel(event.category))}</span>` : ""}
           </div>
         </div>
         ${poster ? `<img src="${escapeAttribute(poster)}" width="220" height="300" alt="${escapeAttribute(title)}" loading="lazy" />` : `<span class="event-poster-placeholder">${tx("eventNoPoster")}</span>`}
@@ -1029,7 +508,7 @@ function renderEventModal() {
   if (!event || !modal) return;
   const title = eventField(event, "title");
   const poster = eventPoster(event);
-  $("#eventModalCategory").textContent = event.category || tx("eventsColumnTitle");
+  $("#eventModalCategory").textContent = getCategoryLabel(event.category || tx("eventsColumnTitle"));
   $("#eventModalTitle").textContent = title;
   $("#eventModalDescription").textContent = eventField(event, "shortDescription");
   $("#eventModalDate").textContent = formatEventDate(event);
@@ -1269,7 +748,7 @@ function setupLibrary() {
       await unlockLibrary();
       return;
     }
-    $("#accessMessage").textContent = translations[lang].accessDenied;
+    $("#accessMessage").textContent = tx("accessDenied");
   });
 
   $("#exitLibrary")?.addEventListener("click", () => {
@@ -1328,7 +807,7 @@ function addToCart(book) {
 
 function renderCart() {
   if (!$("#cartItems")) return;
-  const t = translations[lang];
+  const t = translations[lang] || translations[defaultLanguage] || {};
   const itemCount = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
   if ($("#mobileCartCount")) $("#mobileCartCount").textContent = String(itemCount);
   $("#mobileCartToggle")?.classList.toggle("has-items", itemCount > 0);
@@ -1383,7 +862,7 @@ async function confirmCart() {
   renderCart();
   document.body.classList.remove("cart-open");
   $("#mobileCartToggle")?.setAttribute("aria-expanded", "false");
-  $("#cartMessage").textContent = translations[lang].cartSent;
+  $("#cartMessage").textContent = tx("cartSent");
 }
 
 async function unlockAdmin(code = currentAdminCode || defaultAdminCode) {
@@ -1852,7 +1331,7 @@ function renderAdminBooks() {
   const query = $("#adminSearch").value.toLowerCase();
   const category = $("#adminCategoryFilter").value;
   const categories = [...new Set(books.map((book) => book.category).filter(Boolean))].sort();
-  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(item)}</option>`).join("")}`;
+  $("#adminCategoryFilter").innerHTML = `<option value="all">${tx("filterAllCategories")}</option>${categories.map((item) => `<option value="${escapeAttribute(item)}">${escapeHtml(getCategoryLabel(item))}</option>`).join("")}`;
   $("#adminCategoryFilter").value = category && [...categories, "all"].includes(category) ? category : "all";
 
   const visibleBooks = books.filter((book) => {
@@ -1868,7 +1347,7 @@ function renderAdminBooks() {
     return `
       <tr>
         <td><strong>${escapeHtml(book.title)}</strong><span>${escapeHtml(book.author)}</span></td>
-        <td>${escapeHtml(book.category || "General")}</td>
+        <td>${escapeHtml(getCategoryLabel(book.category))}</td>
         <td>${escapeHtml(book.language || "ro")}</td>
         <td${stockClass}>${stockLabel}</td>
         <td>${book.reserved || 0}</td>
@@ -1926,7 +1405,11 @@ function getVolleyColorLabel(colorId) {
 }
 
 function volleyColorOptions(selectedColor) {
-  return `<option value="">-</option>${volleyShirtColors.map((color) =>
+  const knownColor = volleyShirtColors.some((color) => color.id === selectedColor);
+  const unknownSelectedColor = selectedColor && !knownColor
+    ? `<option value="${escapeAttribute(selectedColor)}" selected>${escapeHtml(selectedColor)}</option>`
+    : "";
+  return `<option value="">-</option>${unknownSelectedColor}${volleyShirtColors.map((color) =>
     `<option value="${escapeAttribute(color.id)}" ${color.id === selectedColor ? "selected" : ""}>${escapeHtml(color[lang] || color.ro)}</option>`
   ).join("")}`;
 }
@@ -1972,7 +1455,7 @@ function eventPreviewMarkup(event) {
   return `
     <article class="event-card managed-event-card admin-preview-event-card" style="--event-accent: ${escapeAttribute(event.accentColor || "#7f090b")}">
       <div>
-        <p class="eyebrow">${escapeHtml(event.category || tx("eventsColumnTitle"))}</p>
+        <p class="eyebrow">${escapeHtml(getCategoryLabel(event.category || tx("eventsColumnTitle")))}</p>
         <h3>${escapeHtml(eventField(event, "title") || tx("adminEventsNewTitle"))}</h3>
         <p>${escapeHtml(eventField(event, "shortDescription") || tx("adminEventsSummaryText"))}</p>
         <strong>${escapeHtml(event.date ? formatEventDate(event) : tx("adminEventsDate"))}${event.time ? ` · ${escapeHtml(event.time)}` : ""}</strong>
@@ -1998,8 +1481,9 @@ function renderAdminEvents() {
   $("#adminEventsEmpty")?.classList.toggle("is-hidden", total > 0);
   $("#adminEventsList").classList.toggle("is-hidden", total === 0);
   $("#adminEventsList").innerHTML = churchEvents.map((event) => {
-    const title = event.titleRo || event.titleEs || tx("adminEventsNewTitle");
-    const poster = event.posterRo || event.posterEs || "";
+    const title = eventField(event, "title") || tx("adminEventsNewTitle");
+    const description = eventField(event, "shortDescription") || "";
+    const poster = eventField(event, "poster") || "";
     const roComplete = eventLanguageComplete(event, "Ro");
     const esComplete = eventLanguageComplete(event, "Es");
     return `
@@ -2007,7 +1491,7 @@ function renderAdminEvents() {
         <div class="admin-event-thumb">${poster ? `<img src="${escapeAttribute(poster)}" alt="" loading="lazy" />` : `<span>${tx("adminEventsNoPoster")}</span>`}</div>
         <div class="admin-event-row-copy">
           <h3>${escapeHtml(title)}</h3>
-          <p>${escapeHtml(event.shortDescriptionRo || event.shortDescriptionEs || "")}</p>
+          <p>${escapeHtml(description)}</p>
           <div class="admin-event-badges">
             <span class="${event.published ? "success" : "muted"}">${event.published ? tx("adminEventsPublishedStatus") : tx("adminEventsHiddenStatus")}</span>
       ${event.featured ? `<span>${tx("adminEventsFeatured")}</span>` : ""}
@@ -2344,7 +1828,7 @@ function updateLiveCountdown() {
   if (!node) return;
   const now = new Date();
   const next = nextSundayLive(now);
-  const t = translations[lang];
+  const t = translations[lang] || translations[defaultLanguage] || {};
   const locale = lang === "ro" ? "ro-RO" : "es-ES";
   if (next.live) {
     node.textContent = `${t.liveNow} · ${t.liveUntil} ${next.end.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}`;
@@ -2366,13 +1850,13 @@ function setupContactForm() {
     const message = data.get("message").trim();
     const website = data.get("website").trim();
     if (website || Date.now() < formReadyAt) {
-      $("#contactFormMessage").textContent = translations[lang].contactFormSent;
+      $("#contactFormMessage").textContent = tx("contactFormSent");
       return;
     }
     const subject = encodeURIComponent(`${lang === "ro" ? "Mesaj de pe site" : "Mensaje desde la web"} - ${name}`);
-    const body = encodeURIComponent(`${translations[lang].contactFormName}: ${name}\n${translations[lang].contactFormContact}: ${contact}\n\n${translations[lang].contactFormMessage}:\n${message}`);
+    const body = encodeURIComponent(`${tx("contactFormName")}: ${name}\n${tx("contactFormContact")}: ${contact}\n\n${tx("contactFormMessage")}:\n${message}`);
     window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
-    $("#contactFormMessage").textContent = translations[lang].contactFormSent;
+    $("#contactFormMessage").textContent = tx("contactFormSent");
   });
 }
 
@@ -2486,27 +1970,34 @@ function setupNavigationMenu() {
   });
 }
 
-$("#langToggle")?.addEventListener("click", () => {
-  lang = lang === "ro" ? "es" : "ro";
-  localStorage.setItem("betel-lang", lang);
+async function initializeApp() {
+  await loadTranslations(lang);
+
+  $("#langToggle")?.addEventListener("click", async () => {
+    lang = lang === "ro" ? "es" : "ro";
+    localStorage.setItem("betel-lang", lang);
+    await loadTranslations(lang);
+    applyLanguage();
+    loadVerse();
+  });
+
+  if ($("#year")) $("#year").textContent = new Date().getFullYear();
+
+  startHeroRotation();
+  setupNavigationMenu();
+  setupLibrary();
+  setupAdmin();
+  setupEvents();
+  setupLandingEffects();
   applyLanguage();
   loadVerse();
-});
+  loadVideos();
+  loadEvents();
+  updateLiveCountdown();
+  setInterval(updateLiveCountdown, 60000);
+  setupContactForm();
+  setupDeferredMap();
+  setupDesktopHeaderScroll();
+}
 
-$("#year").textContent = new Date().getFullYear();
-
-startHeroRotation();
-setupNavigationMenu();
-setupLibrary();
-setupAdmin();
-setupEvents();
-setupLandingEffects();
-applyLanguage();
-loadVerse();
-loadVideos();
-loadEvents();
-updateLiveCountdown();
-setInterval(updateLiveCountdown, 60000);
-setupContactForm();
-setupDeferredMap();
-setupDesktopHeaderScroll();
+initializeApp();
