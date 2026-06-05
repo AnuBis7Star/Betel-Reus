@@ -6,7 +6,7 @@
     <title>Administrare turneu volley Betel Reus</title>
     <meta name="description" content="Panou privat pentru gestionarea înscrierilor la torneo volley Betel Reus." />
     <link rel="icon" href="/assets/icon-dark.png" />
-    <link rel="stylesheet" href="/css/styles.css?v=site-20260602b" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260605b" />
   </head>
   <body>
     <header class="site-header">
@@ -77,6 +77,34 @@
             </div>
             <span class="form-note" id="volleyAdminMessage"></span>
           </section>
+
+          <aside class="admin-drawer" id="volleyManageDrawer" aria-hidden="true">
+            <button class="admin-drawer-backdrop" type="button" tabindex="-1" data-volley-drawer-close aria-label="Închide" data-i18n-aria-label="adminClose"></button>
+            <div class="admin-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="volleyDrawerTitle">
+              <div class="admin-drawer-header">
+                <div>
+                  <p class="eyebrow" data-i18n="adminVolleyManageEyebrow">Gestionare echipă</p>
+                  <h2 id="volleyDrawerTitle">Echipă</h2>
+                </div>
+                <button class="button secondary compact-button" type="button" data-volley-drawer-close data-i18n="adminClose" data-i18n-aria-label="adminClose">Închide</button>
+              </div>
+              <div class="admin-drawer-content" id="volleyDrawerContent"></div>
+            </div>
+          </aside>
+
+          <div class="admin-confirm-modal" id="volleyDeleteConfirmModal" aria-hidden="true">
+            <button class="admin-confirm-backdrop" type="button" tabindex="-1" data-volley-delete-cancel aria-label="Închide" data-i18n-aria-label="adminClose"></button>
+            <div class="admin-confirm-panel" role="dialog" aria-modal="true" aria-labelledby="volleyDeleteConfirmTitle" aria-describedby="volleyDeleteConfirmText">
+              <p class="eyebrow" data-i18n="adminVolleyDeleteEyebrow">Confirmare ștergere</p>
+              <h2 id="volleyDeleteConfirmTitle" data-i18n="adminVolleyDeleteTitle">Ștergi această înscriere?</h2>
+              <p id="volleyDeleteConfirmText"></p>
+              <div class="admin-confirm-actions">
+                <button class="button secondary" type="button" data-volley-delete-cancel data-i18n="adminCancel">Anulează</button>
+                <button class="button primary danger-button" type="button" id="confirmVolleyDelete" data-i18n="adminVolleyConfirmDeleteAction">Da, șterge înscrierea</button>
+              </div>
+              <span class="admin-drawer-feedback" id="volleyDeleteConfirmFeedback"></span>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -86,6 +114,6 @@
       <span>© <span id="year"></span> Biserica Betel Reus</span>
     </footer>
 
-    <script src="/js/app.min.js?v=app-20260604e-i18n" type="module"></script>
+    <script src="/js/app.min.js?v=app-20260605b-volley-delete-modal" type="module"></script>
   </body>
 </html>
