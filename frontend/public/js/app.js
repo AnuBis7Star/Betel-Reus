@@ -5,7 +5,7 @@ const contactFormMinimumMs = 3000;
 
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260604c";
+const i18nAssetVersion = "i18n-20260605a";
 const translations = {};
 const seoTranslations = {
   ro: {
@@ -65,6 +65,8 @@ let churchEvents = [];
 let activeEventId = null;
 let editingEventId = null;
 let currentEventPosters = { ro: "", es: "" };
+let activeVolleyRegistrationId = null;
+let volleyDrawerSectionSnapshots = {};
 
 const statusLabelKeys = {
   pending: "adminStatusPending",
@@ -298,7 +300,10 @@ function applyLanguage() {
   if ($("#bookSearch")) $("#bookSearch").placeholder = tx("bookSearchPlaceholder");
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
-  if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) renderAdmin();
+  if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) {
+    renderAdmin();
+    if (activeVolleyRegistrationId) renderVolleyManageDrawer();
+  }
   if ($("#landingEventsList")) renderLandingEvents();
   if (activeEventId) renderEventModal();
   applySeoLanguage();
@@ -1064,37 +1069,16 @@ function setupAdmin() {
   $("#volleyRegistrationsList")?.addEventListener("click", async (event) => {
     const button = event.target.closest("button");
     if (!button) return;
-    const row = button.closest("tr");
     const registration = volleyRegistrations.find((item) => item.id === button.dataset.id);
-    if (!row || !registration) return;
-    const message = $("#volleyAdminMessage");
-    const action = button.dataset.action;
+    if (!registration || button.dataset.action !== "manage") return;
+    openVolleyManageDrawer(registration.id);
+  });
 
-    try {
-      if (action === "delete") {
-        await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "DELETE" });
-        volleyRegistrations = volleyRegistrations.filter((item) => item.id !== registration.id);
-        message.textContent = tx("adminVolleyDeleted");
-      } else {
-        const status = action === "approve" ? "approved" : action === "reject" ? "rejected" : row.querySelector("[data-field='status']").value;
-        const payload = {
-          teamName: row.querySelector("[data-field='teamName']").value.trim(),
-          representativeName: row.querySelector("[data-field='representativeName']").value.trim(),
-          churchName: row.querySelector("[data-field='churchName']").value.trim(),
-          shirtColor: row.querySelector("[data-field='shirtColor']").value,
-          players: row.querySelector("[data-field='players']").value.split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean),
-          notes: row.querySelector("[data-field='notes']").value.trim(),
-          status
-        };
-        const data = await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "PATCH", body: payload });
-        Object.assign(registration, data.registration);
-        message.textContent = action === "save" ? tx("adminVolleySavedMessage") : tx("adminVolleyStatusUpdated");
-      }
-      renderAdminVolleyRegistrations();
-      renderAuditLog();
-    } catch (error) {
-      message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminVolleySaveError");
-    }
+  $("#volleyManageDrawer")?.addEventListener("click", handleVolleyDrawerClick);
+  $("#volleyManageDrawer")?.addEventListener("input", updateVolleyDrawerDirtyState);
+  $("#volleyManageDrawer")?.addEventListener("change", updateVolleyDrawerDirtyState);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && activeVolleyRegistrationId) closeVolleyManageDrawer();
   });
 
   $("#addEventButton")?.addEventListener("click", () => openEventEditor());
@@ -1404,43 +1388,357 @@ function getVolleyColorLabel(colorId) {
   return color ? color[lang] || color.ro : colorId || "-";
 }
 
+function getVolleyColorHex(colorId) {
+  return volleyShirtColors.find((item) => item.id === colorId)?.hex || "#d8d0c2";
+}
+
 function volleyColorOptions(selectedColor) {
   const knownColor = volleyShirtColors.some((color) => color.id === selectedColor);
   const unknownSelectedColor = selectedColor && !knownColor
     ? `<option value="${escapeAttribute(selectedColor)}" selected>${escapeHtml(selectedColor)}</option>`
     : "";
   return `<option value="">-</option>${unknownSelectedColor}${volleyShirtColors.map((color) =>
-    `<option value="${escapeAttribute(color.id)}" ${color.id === selectedColor ? "selected" : ""}>${escapeHtml(color[lang] || color.ro)}</option>`
+    `<option value="${escapeAttribute(color.id)}" ${color.id === selectedColor ? "selected" : ""}>${escapeHtml(color[lang] || color.ro)}${color.full && color.id !== selectedColor ? ` · ${tx("volleyColorComplete")}` : ""}</option>`
   ).join("")}`;
+}
+
+function volleyStatusClass(status) {
+  return ["pending", "approved", "rejected"].includes(status) ? status : "pending";
+}
+
+function volleyPlayersPreview(players = []) {
+  const list = Array.isArray(players) ? players : [];
+  const preview = list.slice(0, 3).join(", ");
+  if (!preview) return tx("adminVolleyNoPlayers");
+  return list.length > 3 ? `${preview} +${list.length - 3}` : preview;
+}
+
+function volleyPayloadFromRegistration(registration, overrides = {}) {
+  return {
+    teamName: registration.teamName || "",
+    representativeName: registration.representativeName || "",
+    churchName: registration.churchName || "",
+    shirtColor: registration.shirtColor || "",
+    players: Array.isArray(registration.players) ? registration.players : [],
+    notes: registration.notes || "",
+    status: registration.status || "pending",
+    ...overrides
+  };
+}
+
+function getActiveVolleyRegistration() {
+  return volleyRegistrations.find((item) => item.id === activeVolleyRegistrationId);
+}
+
+function volleyDrawerSectionValues(section) {
+  const drawer = $("#volleyManageDrawer");
+  if (!drawer) return null;
+  if (section === "team") {
+    return {
+      teamName: drawer.querySelector("[data-volley-field='teamName']")?.value.trim() || "",
+      representativeName: drawer.querySelector("[data-volley-field='representativeName']")?.value.trim() || "",
+      churchName: drawer.querySelector("[data-volley-field='churchName']")?.value.trim() || "",
+      shirtColor: drawer.querySelector("[data-volley-field='shirtColor']")?.value || ""
+    };
+  }
+  if (section === "players") {
+    return {
+      players: (drawer.querySelector("[data-volley-field='players']")?.value || "")
+        .split(/\r?\n|,/)
+        .map((item) => item.trim())
+        .filter(Boolean)
+    };
+  }
+  if (section === "notes") {
+    return { notes: drawer.querySelector("[data-volley-field='notes']")?.value.trim() || "" };
+  }
+  return null;
+}
+
+function setVolleyDrawerSectionValues(section, values = {}) {
+  const drawer = $("#volleyManageDrawer");
+  if (!drawer) return;
+  if (section === "team") {
+    const fields = ["teamName", "representativeName", "churchName", "shirtColor"];
+    fields.forEach((field) => {
+      const input = drawer.querySelector(`[data-volley-field='${field}']`);
+      if (input && field in values) input.value = values[field];
+    });
+  }
+  if (section === "players") {
+    const textarea = drawer.querySelector("[data-volley-field='players']");
+    if (textarea) textarea.value = (values.players || []).join("\n");
+  }
+  if (section === "notes") {
+    const textarea = drawer.querySelector("[data-volley-field='notes']");
+    if (textarea) textarea.value = values.notes || "";
+  }
+}
+
+function setVolleyDrawerSnapshots(registration) {
+  volleyDrawerSectionSnapshots = {
+    team: JSON.stringify({
+      teamName: registration.teamName || "",
+      representativeName: registration.representativeName || "",
+      churchName: registration.churchName || "",
+      shirtColor: registration.shirtColor || ""
+    }),
+    players: JSON.stringify({ players: Array.isArray(registration.players) ? registration.players : [] }),
+    notes: JSON.stringify({ notes: registration.notes || "" })
+  };
+}
+
+function volleyDrawerHasUnsavedChanges() {
+  return ["team", "players", "notes"].some((section) => {
+    const values = volleyDrawerSectionValues(section);
+    return values && JSON.stringify(values) !== volleyDrawerSectionSnapshots[section];
+  });
+}
+
+function updateVolleyDrawerDirtyState() {
+  const drawer = $("#volleyManageDrawer");
+  if (!drawer?.classList.contains("is-open")) return;
+  drawer.classList.toggle("has-unsaved-changes", volleyDrawerHasUnsavedChanges());
+}
+
+function setVolleyDrawerFeedback(section, text, state = "") {
+  const target = $(`[data-volley-feedback='${section}']`);
+  if (!target) return;
+  target.textContent = text;
+  target.className = `admin-drawer-feedback${state ? ` is-${state}` : ""}`;
+}
+
+function setVolleyDrawerButtons(section, disabled) {
+  $$(`[data-volley-section='${section}'] button`).forEach((button) => {
+    button.disabled = disabled;
+  });
+}
+
+function openVolleyManageDrawer(registrationId) {
+  activeVolleyRegistrationId = registrationId;
+  const drawer = $("#volleyManageDrawer");
+  if (!drawer) return;
+  renderVolleyManageDrawer();
+  drawer.classList.add("is-open");
+  drawer.setAttribute("aria-hidden", "false");
+  document.body.classList.add("admin-drawer-open");
+  window.setTimeout(() => drawer.querySelector(".admin-drawer-panel [data-volley-drawer-close]")?.focus(), 0);
+}
+
+function closeVolleyManageDrawer({ force = false } = {}) {
+  if (!activeVolleyRegistrationId) return;
+  if (!force && volleyDrawerHasUnsavedChanges() && !window.confirm(tx("adminVolleyUnsavedConfirm"))) return;
+  const drawer = $("#volleyManageDrawer");
+  drawer?.classList.remove("is-open", "has-unsaved-changes");
+  drawer?.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("admin-drawer-open");
+  activeVolleyRegistrationId = null;
+  volleyDrawerSectionSnapshots = {};
+  $("#volleyDrawerContent") && ($("#volleyDrawerContent").innerHTML = "");
+  $("#volleyRegistrationsList button[data-action='manage']")?.focus();
+}
+
+function volleyStatusActions(status) {
+  if (status === "approved") return [
+    ["rejected", "adminVolleyRejectTeam"],
+    ["pending", "adminVolleyMarkPending"]
+  ];
+  if (status === "rejected") return [
+    ["approved", "adminVolleyAcceptTeam"],
+    ["pending", "adminVolleyMarkPending"]
+  ];
+  return [
+    ["approved", "adminVolleyAcceptTeam"],
+    ["rejected", "adminVolleyRejectTeam"]
+  ];
+}
+
+function renderVolleyManageDrawer() {
+  const registration = getActiveVolleyRegistration();
+  const drawer = $("#volleyManageDrawer");
+  const content = $("#volleyDrawerContent");
+  if (!drawer || !content || !registration) return;
+  $("#volleyDrawerTitle").textContent = registration.teamName || tx("adminVolleyTeam");
+  setVolleyDrawerSnapshots(registration);
+  const status = volleyStatusClass(registration.status);
+  const colorLabel = getVolleyColorLabel(registration.shirtColor);
+  content.innerHTML = `
+    <section class="admin-drawer-section" data-volley-section="status">
+      <h3>${tx("adminVolleyStatusSection")}</h3>
+      <span class="volley-status ${escapeAttribute(status)}">${escapeHtml(getVolleyStatusLabel(status))}</span>
+      <div class="admin-drawer-actions">
+        ${volleyStatusActions(status).map(([nextStatus, labelKey]) => `
+          <button class="button secondary" type="button" data-volley-action="status" data-status="${escapeAttribute(nextStatus)}">${tx(labelKey)}</button>
+        `).join("")}
+      </div>
+      <span class="admin-drawer-feedback" data-volley-feedback="status"></span>
+    </section>
+
+    <section class="admin-drawer-section" data-volley-section="team">
+      <h3>${tx("adminVolleyTeamDataSection")}</h3>
+      <div class="admin-drawer-grid">
+        <label>
+          <span>${tx("adminVolleyTeam")}</span>
+          <input data-volley-field="teamName" value="${escapeAttribute(registration.teamName)}" />
+        </label>
+        <label>
+          <span>${tx("adminVolleyRepresentative")}</span>
+          <input data-volley-field="representativeName" value="${escapeAttribute(registration.representativeName)}" />
+        </label>
+        <label>
+          <span>${tx("adminVolleyChurch")}</span>
+          <input data-volley-field="churchName" value="${escapeAttribute(registration.churchName || "")}" />
+        </label>
+        <label>
+          <span>${tx("adminVolleyColor")}</span>
+          <select data-volley-field="shirtColor" title="${escapeAttribute(colorLabel)}">
+            ${volleyColorOptions(registration.shirtColor)}
+          </select>
+        </label>
+      </div>
+      <div class="admin-drawer-actions">
+        <button class="button primary" type="button" data-volley-action="save-team">${tx("adminVolleySaveTeamData")}</button>
+      </div>
+      <span class="admin-drawer-feedback" data-volley-feedback="team"></span>
+    </section>
+
+    <section class="admin-drawer-section" data-volley-section="players">
+      <h3>${tx("adminVolleyPlayersSection")}</h3>
+      <label>
+        <span>${tx("adminVolleyPlayersHelp")}</span>
+        <textarea data-volley-field="players">${escapeHtml((registration.players || []).join("\n"))}</textarea>
+      </label>
+      <div class="admin-drawer-actions">
+        <button class="button primary" type="button" data-volley-action="save-players">${tx("adminVolleySavePlayers")}</button>
+      </div>
+      <span class="admin-drawer-feedback" data-volley-feedback="players"></span>
+    </section>
+
+    <section class="admin-drawer-section" data-volley-section="notes">
+      <h3>${tx("adminVolleyNotesSection")}</h3>
+      <label>
+        <span>${tx("adminVolleyNotes")}</span>
+        <textarea data-volley-field="notes">${escapeHtml(registration.notes || "")}</textarea>
+      </label>
+      <div class="admin-drawer-actions">
+        <button class="button primary" type="button" data-volley-action="save-notes">${tx("adminVolleySaveNotes")}</button>
+      </div>
+      <span class="admin-drawer-feedback" data-volley-feedback="notes"></span>
+    </section>
+
+    <section class="admin-drawer-section admin-danger-zone" data-volley-section="danger">
+      <h3>${tx("adminVolleyDangerSection")}</h3>
+      <p>${tx("adminVolleyDangerText")}</p>
+      <div class="admin-drawer-actions">
+        <button class="button secondary" type="button" data-volley-action="delete">${tx("adminVolleyDeleteRegistration")}</button>
+      </div>
+      <span class="admin-drawer-feedback" data-volley-feedback="danger"></span>
+    </section>
+  `;
+  updateVolleyDrawerDirtyState();
+}
+
+async function saveVolleyRegistrationSection(section, overrides) {
+  const registration = getActiveVolleyRegistration();
+  if (!registration) return;
+  const sections = ["team", "players", "notes"];
+  const dirtySections = sections
+    .map((item) => ({ section: item, values: volleyDrawerSectionValues(item), snapshot: volleyDrawerSectionSnapshots[item] }))
+    .filter((item) => item.values && JSON.stringify(item.values) !== item.snapshot);
+  setVolleyDrawerButtons(section, true);
+  setVolleyDrawerFeedback(section, tx("adminSaving"));
+  try {
+    const payload = volleyPayloadFromRegistration(registration, overrides);
+    const data = await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "PATCH", body: payload });
+    Object.assign(registration, data.registration);
+    setVolleyDrawerSnapshots(registration);
+    renderAdminVolleyRegistrations();
+    renderVolleyManageDrawer();
+    dirtySections
+      .filter((item) => item.section !== section)
+      .forEach((item) => {
+        setVolleyDrawerSectionValues(item.section, item.values);
+        volleyDrawerSectionSnapshots[item.section] = item.snapshot;
+      });
+    updateVolleyDrawerDirtyState();
+    renderAuditLog();
+    setVolleyDrawerFeedback(section, tx(section === "status" ? "adminVolleyStatusUpdated" : "adminVolleySavedMessage"), "success");
+  } catch (error) {
+    setVolleyDrawerFeedback(section, error.status === 401 ? tx("adminAuthError") : tx("adminVolleySaveError"), "error");
+  } finally {
+    setVolleyDrawerButtons(section, false);
+  }
+}
+
+async function handleVolleyDrawerClick(event) {
+  const closeTrigger = event.target.closest("[data-volley-drawer-close]");
+  if (closeTrigger) {
+    closeVolleyManageDrawer();
+    return;
+  }
+  const button = event.target.closest("[data-volley-action]");
+  if (!button) return;
+  const action = button.dataset.volleyAction;
+  if (action === "status") {
+    await saveVolleyRegistrationSection("status", { status: button.dataset.status });
+    return;
+  }
+  if (action === "save-team") {
+    await saveVolleyRegistrationSection("team", volleyDrawerSectionValues("team"));
+    return;
+  }
+  if (action === "save-players") {
+    await saveVolleyRegistrationSection("players", volleyDrawerSectionValues("players"));
+    return;
+  }
+  if (action === "save-notes") {
+    await saveVolleyRegistrationSection("notes", volleyDrawerSectionValues("notes"));
+    return;
+  }
+  if (action === "delete") {
+    await deleteActiveVolleyRegistration();
+  }
+}
+
+async function deleteActiveVolleyRegistration() {
+  const registration = getActiveVolleyRegistration();
+  if (!registration) return;
+  const teamName = registration.teamName || tx("adminVolleyTeam");
+  if (!window.confirm(tx("adminVolleyDeleteConfirm").replace("{team}", teamName))) return;
+  setVolleyDrawerButtons("danger", true);
+  setVolleyDrawerFeedback("danger", tx("adminDeleting"));
+  try {
+    await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "DELETE" });
+    volleyRegistrations = volleyRegistrations.filter((item) => item.id !== registration.id);
+    $("#volleyAdminMessage").textContent = tx("adminVolleyDeleted");
+    closeVolleyManageDrawer({ force: true });
+    renderAdminVolleyRegistrations();
+    renderAuditLog();
+  } catch (error) {
+    setVolleyDrawerFeedback("danger", error.status === 401 ? tx("adminAuthError") : tx("adminVolleyDeleteError"), "error");
+  } finally {
+    setVolleyDrawerButtons("danger", false);
+  }
 }
 
 function renderAdminVolleyRegistrations() {
   if (!$("#volleyRegistrationsList")) return;
   $("#volleyRegistrationsList").innerHTML = volleyRegistrations.map((registration) => `
     <tr>
-      <td><input data-field="teamName" value="${escapeAttribute(registration.teamName)}" /></td>
-      <td><input data-field="representativeName" value="${escapeAttribute(registration.representativeName)}" /></td>
-      <td><input data-field="churchName" value="${escapeAttribute(registration.churchName || "")}" /></td>
+      <td class="volley-admin-team"><strong>${escapeHtml(registration.teamName)}</strong></td>
+      <td>${escapeHtml(registration.representativeName)}</td>
+      <td>${escapeHtml(registration.churchName || "-")}</td>
       <td>
-        <select data-field="shirtColor" title="${escapeAttribute(getVolleyColorLabel(registration.shirtColor))}">
-          ${volleyColorOptions(registration.shirtColor)}
-        </select>
+        <span class="volley-admin-color">
+          <span class="volley-admin-color-swatch" style="--shirt-color: ${escapeAttribute(getVolleyColorHex(registration.shirtColor))}"></span>
+          <span>${escapeHtml(getVolleyColorLabel(registration.shirtColor))}</span>
+        </span>
       </td>
-      <td><textarea data-field="players">${escapeHtml((registration.players || []).join("\n"))}</textarea></td>
-      <td>
-        <span class="volley-status ${escapeAttribute(registration.status)}">${escapeHtml(getVolleyStatusLabel(registration.status))}</span>
-        <select data-field="status">
-          <option value="pending" ${registration.status === "pending" ? "selected" : ""}>${tx("adminVolleyPending")}</option>
-          <option value="approved" ${registration.status === "approved" ? "selected" : ""}>${tx("adminVolleyApproved")}</option>
-          <option value="rejected" ${registration.status === "rejected" ? "selected" : ""}>${tx("adminVolleyRejected")}</option>
-        </select>
-      </td>
-      <td><textarea data-field="notes">${escapeHtml(registration.notes || "")}</textarea></td>
+      <td class="volley-admin-players"><strong>${(registration.players || []).length}</strong><span>${escapeHtml(volleyPlayersPreview(registration.players))}</span></td>
+      <td><span class="volley-status ${escapeAttribute(volleyStatusClass(registration.status))}">${escapeHtml(getVolleyStatusLabel(registration.status))}</span></td>
+      <td class="volley-admin-note">${escapeHtml(registration.notes || "-")}</td>
       <td class="table-actions">
-        <button type="button" data-action="save" data-id="${registration.id}">${tx("adminVolleySave")}</button>
-        <button type="button" data-action="approve" data-id="${registration.id}">${tx("adminVolleyApprove")}</button>
-        <button type="button" data-action="reject" data-id="${registration.id}">${tx("adminVolleyReject")}</button>
-        <button type="button" data-action="delete" data-id="${registration.id}">${tx("adminDelete")}</button>
+        <button type="button" data-action="manage" data-id="${registration.id}">${tx("adminVolleyManage")}</button>
       </td>
     </tr>
   `).join("") || `<tr><td colspan="8">${tx("adminVolleyEmpty")}</td></tr>`;

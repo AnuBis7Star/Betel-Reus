@@ -1351,7 +1351,7 @@ cite {
 }
 
 .volley-admin-table {
-  min-width: 1080px;
+  min-width: 1040px;
 }
 
 .volley-admin-table input,
@@ -1391,6 +1391,205 @@ cite {
 .volley-status.rejected {
   background: #f0d7d0;
   color: #773327;
+}
+
+.volley-admin-team strong,
+.volley-admin-team span,
+.volley-admin-players strong,
+.volley-admin-players span {
+  display: block;
+}
+
+.volley-admin-team span,
+.volley-admin-players span,
+.volley-admin-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.volley-admin-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volley-admin-color-swatch {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  background: var(--shirt-color, #d8d0c2);
+  box-shadow: 0 0 0 1px var(--line), 0 5px 14px rgba(0, 0, 0, 0.08);
+}
+
+.admin-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.admin-drawer.is-open {
+  pointer-events: auto;
+}
+
+.admin-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(20, 20, 20, 0);
+  cursor: pointer;
+  transition: background 180ms ease;
+}
+
+.admin-drawer.is-open .admin-drawer-backdrop {
+  background: rgba(20, 20, 20, 0.34);
+}
+
+.admin-drawer-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(720px, calc(100vw - 24px));
+  height: 100%;
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  box-shadow: -22px 0 50px rgba(0, 0, 0, 0.18);
+  transform: translateX(102%);
+  transition: transform 220ms ease;
+}
+
+.admin-drawer.is-open .admin-drawer-panel {
+  transform: translateX(0);
+}
+
+.admin-drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 28px;
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+.admin-drawer-header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: 0;
+}
+
+.admin-drawer-content {
+  display: grid;
+  gap: 16px;
+  overflow-y: auto;
+  padding: 20px 28px 32px;
+}
+
+.admin-drawer-section {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.admin-drawer-section h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.admin-drawer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-drawer-section label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.admin-drawer-section input,
+.admin-drawer-section select,
+.admin-drawer-section textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.admin-drawer-section textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.admin-drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-drawer-feedback {
+  min-height: 22px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.admin-drawer-feedback.is-success {
+  color: #2f6b3d;
+}
+
+.admin-drawer-feedback.is-error {
+  color: #8f3b2c;
+}
+
+.admin-danger-zone {
+  border-color: #e6bdb4;
+  background: #fff8f6;
+}
+
+.admin-danger-zone .button {
+  border-color: #8f3b2c;
+  color: #8f3b2c;
+}
+
+.admin-danger-zone .button:hover {
+  background: #8f3b2c;
+  color: var(--white);
+}
+
+.compact-button {
+  min-height: 42px;
+  padding: 8px 14px;
+}
+
+@media (max-width: 860px) {
+  .admin-drawer-panel {
+    width: 100vw;
+  }
+
+  .admin-drawer-header,
+  .admin-drawer-content {
+    padding-inline: 18px;
+  }
+
+  .admin-drawer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-drawer-actions .button {
+    width: 100%;
+  }
 }
 
 .volley-teams {
