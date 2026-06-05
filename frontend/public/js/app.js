@@ -5,7 +5,7 @@ const contactFormMinimumMs = 3000;
 
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260605a";
+const i18nAssetVersion = "i18n-20260605b";
 const translations = {};
 const seoTranslations = {
   ro: {
@@ -67,6 +67,7 @@ let editingEventId = null;
 let currentEventPosters = { ro: "", es: "" };
 let activeVolleyRegistrationId = null;
 let volleyDrawerSectionSnapshots = {};
+let pendingVolleyDeleteId = null;
 
 const statusLabelKeys = {
   pending: "adminStatusPending",
@@ -1077,8 +1078,14 @@ function setupAdmin() {
   $("#volleyManageDrawer")?.addEventListener("click", handleVolleyDrawerClick);
   $("#volleyManageDrawer")?.addEventListener("input", updateVolleyDrawerDirtyState);
   $("#volleyManageDrawer")?.addEventListener("change", updateVolleyDrawerDirtyState);
+  $("#volleyDeleteConfirmModal")?.addEventListener("click", handleVolleyDeleteConfirmClick);
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && activeVolleyRegistrationId) closeVolleyManageDrawer();
+    if (event.key !== "Escape") return;
+    if (pendingVolleyDeleteId) {
+      closeVolleyDeleteConfirm();
+      return;
+    }
+    if (activeVolleyRegistrationId) closeVolleyManageDrawer();
   });
 
   $("#addEventButton")?.addEventListener("click", () => openEventEditor());
@@ -1696,28 +1703,77 @@ async function handleVolleyDrawerClick(event) {
     return;
   }
   if (action === "delete") {
-    await deleteActiveVolleyRegistration();
+    openVolleyDeleteConfirm();
   }
 }
 
-async function deleteActiveVolleyRegistration() {
+function openVolleyDeleteConfirm() {
   const registration = getActiveVolleyRegistration();
   if (!registration) return;
+  pendingVolleyDeleteId = registration.id;
   const teamName = registration.teamName || tx("adminVolleyTeam");
-  if (!window.confirm(tx("adminVolleyDeleteConfirm").replace("{team}", teamName))) return;
+  const modal = $("#volleyDeleteConfirmModal");
+  if (!modal) return;
+  $("#volleyDeleteConfirmText").textContent = tx("adminVolleyDeleteConfirm").replace("{team}", teamName);
+  $("#volleyDeleteConfirmFeedback").textContent = "";
+  $("#volleyDeleteConfirmFeedback").className = "admin-drawer-feedback";
+  $("#confirmVolleyDelete").disabled = false;
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("admin-confirm-open");
+  window.setTimeout(() => $("#confirmVolleyDelete")?.focus(), 0);
+}
+
+function closeVolleyDeleteConfirm() {
+  const modal = $("#volleyDeleteConfirmModal");
+  if (!modal) return;
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("admin-confirm-open");
+  pendingVolleyDeleteId = null;
+  $("#volleyDeleteConfirmFeedback").textContent = "";
+  $("#confirmVolleyDelete").disabled = false;
+  $("#volleyManageDrawer [data-volley-action='delete']")?.focus();
+}
+
+async function confirmVolleyDelete() {
+  const registration = volleyRegistrations.find((item) => item.id === pendingVolleyDeleteId);
+  if (!registration) {
+    closeVolleyDeleteConfirm();
+    return;
+  }
+  const confirmButton = $("#confirmVolleyDelete");
+  const feedback = $("#volleyDeleteConfirmFeedback");
+  confirmButton.disabled = true;
+  feedback.textContent = tx("adminDeleting");
+  feedback.className = "admin-drawer-feedback";
   setVolleyDrawerButtons("danger", true);
   setVolleyDrawerFeedback("danger", tx("adminDeleting"));
   try {
     await apiRequest(`/api/admin/volley/registrations/${registration.id}`, { method: "DELETE" });
     volleyRegistrations = volleyRegistrations.filter((item) => item.id !== registration.id);
     $("#volleyAdminMessage").textContent = tx("adminVolleyDeleted");
+    closeVolleyDeleteConfirm();
     closeVolleyManageDrawer({ force: true });
     renderAdminVolleyRegistrations();
     renderAuditLog();
   } catch (error) {
+    feedback.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminVolleyDeleteError");
+    feedback.className = "admin-drawer-feedback is-error";
     setVolleyDrawerFeedback("danger", error.status === 401 ? tx("adminAuthError") : tx("adminVolleyDeleteError"), "error");
   } finally {
+    confirmButton.disabled = false;
     setVolleyDrawerButtons("danger", false);
+  }
+}
+
+async function handleVolleyDeleteConfirmClick(event) {
+  if (event.target.closest("[data-volley-delete-cancel]")) {
+    closeVolleyDeleteConfirm();
+    return;
+  }
+  if (event.target.closest("#confirmVolleyDelete")) {
+    await confirmVolleyDelete();
   }
 }
 
