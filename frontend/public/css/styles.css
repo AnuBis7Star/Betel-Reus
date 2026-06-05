@@ -2194,29 +2194,30 @@ textarea {
 }
 
 .social-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(112px, 1fr));
+  gap: 12px;
+  width: min(760px, 100%);
 }
 
 .social-links a {
-  display: inline-flex;
-  align-items: center;
-  flex: 1 1 150px;
+  display: grid;
+  align-content: start;
+  justify-items: center;
   gap: 8px;
   min-width: 0;
-  max-width: 220px;
   --social-color: rgba(255, 255, 255, 0.36);
   border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 8px;
-  padding: 11px 14px;
-  white-space: nowrap;
+  padding: 16px 12px 14px;
+  text-align: center;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
 .social-links a:hover {
   border-color: color-mix(in srgb, var(--social-color), white 18%);
   background: color-mix(in srgb, var(--social-color), transparent 86%);
+  transform: translateY(-2px);
 }
 
 .social-links .social-instagram {
@@ -2236,11 +2237,10 @@ textarea {
 }
 
 .social-links .social-icon {
-  flex: 0 0 auto;
   display: inline-grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 38px;
+  height: 38px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--social-color), transparent 72%);
@@ -2248,16 +2248,28 @@ textarea {
   font-weight: 800;
 }
 
-.social-links .social-label {
+.social-links strong,
+.social-links small {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.social-links strong {
+  color: var(--white);
+  font-size: 0.98rem;
+  line-height: 1.1;
+}
+
+.social-links small {
+  max-width: 18ch;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.76rem;
+  line-height: 1.3;
 }
 
 .social-links img {
   display: block;
-  width: 17px;
-  height: 17px;
+  width: 22px;
+  height: 22px;
 }
 
 .identity-verse {
@@ -3453,7 +3465,25 @@ footer img {
   .header-actions,
   .social-links {
     align-items: stretch;
-    flex-direction: column;
+  }
+
+  .social-links {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .social-links a {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: start;
+    text-align: left;
+  }
+
+  .social-links .social-icon {
+    grid-row: span 2;
+  }
+
+  .social-links small {
+    max-width: none;
   }
 
   .contact-actions .button,
