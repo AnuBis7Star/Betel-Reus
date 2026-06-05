@@ -79,6 +79,15 @@ select {
   position: relative;
 }
 
+.nav-menu::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: -18px;
+  right: -18px;
+  height: 18px;
+}
+
 .nav-menu button {
   display: inline-flex;
   align-items: center;
@@ -2187,17 +2196,22 @@ textarea {
 .social-links {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 10px;
 }
 
 .social-links a {
   display: inline-flex;
   align-items: center;
+  flex: 1 1 150px;
   gap: 8px;
+  min-width: 0;
+  max-width: 220px;
   --social-color: rgba(255, 255, 255, 0.36);
   border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 8px;
   padding: 11px 14px;
+  white-space: nowrap;
 }
 
 .social-links a:hover {
@@ -2221,7 +2235,8 @@ textarea {
   --social-color: #1877f2;
 }
 
-.social-links span {
+.social-links .social-icon {
+  flex: 0 0 auto;
   display: inline-grid;
   place-items: center;
   width: 26px;
@@ -2231,6 +2246,12 @@ textarea {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--social-color), transparent 72%);
   font-size: 0.72rem;
   font-weight: 800;
+}
+
+.social-links .social-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .social-links img {
@@ -3443,6 +3464,7 @@ footer img {
   .cart-panel .button,
   .book-form .button {
     width: 100%;
+    max-width: none;
   }
 
   .mobile-cart-toggle {
