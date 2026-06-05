@@ -74,7 +74,21 @@
         <a href="#contact" data-i18n="navContact">Contact</a>
       </nav>
       <button class="lang-toggle" type="button" id="langToggle">ES</button>
+      <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-controls="mobileMenu" aria-expanded="false" data-i18n-aria-label="mobileMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </header>
+
+    <div class="mobile-menu-overlay" id="mobileMenu" aria-hidden="true">
+      <nav class="mobile-menu-nav" aria-label="Navigare mobilă">
+        <a href="#program" data-i18n="navSchedule">Program</a>
+        <a href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
+        <a href="/volley.html" data-i18n="navVolley">Volley</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
+      </nav>
+    </div>
 
     <main id="top">
       <section class="hero" style="--hero-image: url('https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg')">
@@ -292,6 +306,6 @@
       <span>© <span id="year"></span> Biserica Betel Reus</span>
     </footer>
 
-    <script src="/js/app.min.js?v=app-20260604e-i18n" type="module"></script>
+    <script src="/js/app.min.js?v=app-20260605-mobile-menu" type="module"></script>
   </body>
 </html>

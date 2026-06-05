@@ -309,6 +309,7 @@ function applyLanguage() {
   if (activeEventId) renderEventModal();
   applySeoLanguage();
   setupContactEmailLinks();
+  updateMobileMenuLabel();
   updateLiveCountdown();
 }
 
@@ -2324,6 +2325,60 @@ function setupNavigationMenu() {
   });
 }
 
+function updateMobileMenuLabel() {
+  const button = $("#mobileMenuToggle");
+  if (!button) return;
+  const isOpen = document.body.classList.contains("mobile-menu-open");
+  button.setAttribute("aria-label", tx(isOpen ? "mobileMenuClose" : "mobileMenuOpen"));
+}
+
+function setupMobileMenu() {
+  const button = $("#mobileMenuToggle");
+  const overlay = $("#mobileMenu");
+  if (!button || !overlay) return;
+
+  const desktopQuery = window.matchMedia("(min-width: 861px)");
+
+  const closeMenu = ({ restoreFocus = false } = {}) => {
+    document.body.classList.remove("mobile-menu-open");
+    overlay.setAttribute("aria-hidden", "true");
+    button.setAttribute("aria-expanded", "false");
+    updateMobileMenuLabel();
+    if (restoreFocus) button.focus();
+  };
+
+  const openMenu = () => {
+    document.body.classList.add("mobile-menu-open");
+    overlay.setAttribute("aria-hidden", "false");
+    button.setAttribute("aria-expanded", "true");
+    updateMobileMenuLabel();
+  };
+
+  button.addEventListener("click", () => {
+    if (document.body.classList.contains("mobile-menu-open")) {
+      closeMenu({ restoreFocus: true });
+      return;
+    }
+    openMenu();
+  });
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target.closest("a")) closeMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.body.classList.contains("mobile-menu-open")) {
+      closeMenu({ restoreFocus: true });
+    }
+  });
+
+  desktopQuery.addEventListener?.("change", (event) => {
+    if (event.matches) closeMenu();
+  });
+
+  updateMobileMenuLabel();
+}
+
 async function initializeApp() {
   await loadTranslations(lang);
 
@@ -2339,6 +2394,7 @@ async function initializeApp() {
 
   startHeroRotation();
   setupNavigationMenu();
+  setupMobileMenu();
   setupLibrary();
   setupAdmin();
   setupEvents();
