@@ -3187,9 +3187,8 @@ footer img {
   }
 
   .brand img {
-    content: url("/assets/icon-dark-160.png");
-    width: 44px;
-    height: 44px;
+    width: clamp(128px, 38vw, 156px);
+    height: auto;
   }
 
   .nav {
@@ -3535,6 +3534,14 @@ footer img {
 }
 
 @media (min-width: 861px) {
+  html {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
   .site-header.is-hidden-on-scroll {
     transform: translateY(-100%);
   }
@@ -3571,8 +3578,8 @@ footer img {
   }
 
   .brand img {
-    width: 42px;
-    height: 42px;
+    width: clamp(118px, 36vw, 148px);
+    height: auto;
   }
 
   .lang-toggle,
