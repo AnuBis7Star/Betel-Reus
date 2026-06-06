@@ -91,6 +91,61 @@ function prepareRevealElements(root = document) {
   });
 }
 
+function revealVisibleElements(root = document) {
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  root.querySelectorAll(".reveal-on-scroll:not(.is-visible)").forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    if (rect.top < viewportHeight * 0.92 && rect.bottom > 0) {
+      element.classList.add("is-visible");
+      revealObserver?.unobserve(element);
+    }
+  });
+}
+
+function revealCurrentAnchorElements() {
+  if (!window.location.hash) {
+    revealVisibleElements();
+    return;
+  }
+
+  let targetId = window.location.hash.slice(1);
+  try {
+    targetId = decodeURIComponent(targetId);
+  } catch {
+    targetId = window.location.hash.slice(1);
+  }
+
+  const target = document.getElementById(targetId);
+  if (!target) {
+    revealVisibleElements();
+    return;
+  }
+
+  if (target.getBoundingClientRect().bottom > 0) {
+    target.querySelectorAll(".reveal-on-scroll").forEach((element) => {
+      element.classList.add("is-visible");
+      revealObserver?.unobserve(element);
+    });
+    return;
+  }
+
+  revealVisibleElements();
+}
+
+function scheduleAnchorReveal() {
+  revealCurrentAnchorElements();
+  requestAnimationFrame(revealCurrentAnchorElements);
+  window.setTimeout(revealCurrentAnchorElements, 120);
+  window.setTimeout(revealCurrentAnchorElements, 420);
+}
+
+function setupAnchorReveal() {
+  scheduleAnchorReveal();
+  window.addEventListener("hashchange", () => {
+    requestAnimationFrame(scheduleAnchorReveal);
+  });
+}
+
 function setupVolleyEffects() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.querySelectorAll(".volley-hero-copy > *, .volley-poster").forEach((element) => {
@@ -118,6 +173,7 @@ function setupVolleyEffects() {
   }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
 
   prepareRevealElements();
+  setupAnchorReveal();
 }
 
 function applyLanguage() {
@@ -370,6 +426,7 @@ function renderTeams(teams) {
     </article>
   `).join("") || `<p>${tx("volleyNoTeams")}</p>`;
   prepareRevealElements(teamsContainer);
+  revealVisibleElements(teamsContainer);
 }
 
 async function loadApprovedTeams() {
