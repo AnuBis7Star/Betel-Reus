@@ -15,7 +15,7 @@
     "minify:app": "terser frontend/public/js/app.js -c -m -o frontend/public/js/app.min.js",
     "minify:volley": "terser frontend/public/js/volley.js -c -m -o frontend/public/js/volley.min.js",
     "minify": "npm run minify:app && npm run minify:volley",
-    "check": "node --check server.mjs && find backend/src frontend/public/js -name '*.mjs' -o -name '*.js' | xargs -I{} node --check {}"
+    "check": "node --check server.mjs && find backend/src frontend/public/js scripts -name '*.mjs' -o -name '*.js' | xargs -I{} node --check {} && node scripts/check-i18n.mjs"
   },
   "dependencies": {
     "pg": "^8.13.1"

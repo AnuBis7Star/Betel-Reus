@@ -14,7 +14,10 @@ const seoTranslations = {
     ogTitle: "Biserica Betel Reus | Biserică penticostală în Reus",
     ogDescription: "Comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori.",
     twitterTitle: "Biserica Betel Reus",
-    twitterDescription: "Comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori."
+    twitterDescription: "Comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori.",
+    schemaName: "Biserica Betel Reus",
+    schemaDescription: "Biserica Betel Reus este o comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori.",
+    schemaLanguage: "ro-RO"
   },
   es: {
     title: "Betel Reus | Iglesia Betel Reus",
@@ -22,7 +25,10 @@ const seoTranslations = {
     ogTitle: "Iglesia Betel Reus | Iglesia pentecostal en Reus",
     ogDescription: "Comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes.",
     twitterTitle: "Iglesia Betel Reus",
-    twitterDescription: "Comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes."
+    twitterDescription: "Comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes.",
+    schemaName: "Iglesia Betel Reus",
+    schemaDescription: "Iglesia Betel Reus es una comunidad pentecostal en Reus con horarios, predicaciones, eventos y recursos para familias, jóvenes y visitantes.",
+    schemaLanguage: "es-ES"
   }
 };
 
@@ -264,6 +270,39 @@ function setMetaContent(selector, content) {
   if (meta && content) meta.setAttribute("content", content);
 }
 
+function updateStructuredData(seo) {
+  const script = document.querySelector('script[type="application/ld+json"]');
+  if (!script) return;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Church",
+    name: seo.schemaName,
+    description: seo.schemaDescription,
+    url: "https://betelreus.com/",
+    email: contactEmail,
+    telephone: "+34605430573",
+    inLanguage: seo.schemaLanguage,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Carrer de Terrassa, 33",
+      addressLocality: "Reus",
+      postalCode: "43204",
+      addressRegion: "Tarragona",
+      addressCountry: "ES"
+    },
+    sameAs: [
+      "https://www.instagram.com/bisericabetelreus/",
+      "https://www.instagram.com/tineriibetelreus/",
+      "https://www.youtube.com/@BisericaBetelReus",
+      "https://www.tiktok.com/@bisericabetelreus",
+      "https://www.facebook.com/BBetelReus"
+    ]
+  };
+
+  script.textContent = JSON.stringify(structuredData, null, 2);
+}
+
 function applySeoLanguage() {
   const seo = seoTranslations[lang] || seoTranslations[defaultLanguage];
   document.title = seo.title;
@@ -273,6 +312,7 @@ function applySeoLanguage() {
   setMetaContent('meta[property="og:locale"]', lang === "es" ? "es_ES" : "ro_RO");
   setMetaContent('meta[name="twitter:title"]', seo.twitterTitle);
   setMetaContent('meta[name="twitter:description"]', seo.twitterDescription);
+  updateStructuredData(seo);
 }
 
 function applyLanguage() {
