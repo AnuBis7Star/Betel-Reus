@@ -6,6 +6,9 @@
     <title>Betel Reus | Biserica Betel Reus</title>
     <meta name="description" content="Biserica Betel Reus este o comunitate penticostală în Reus, cu program, predici, evenimente și resurse pentru familii, tineri și vizitatori." />
     <link rel="canonical" href="https://betelreus.com/" />
+    <link rel="alternate" hreflang="ro" href="https://betelreus.com/" />
+    <link rel="alternate" hreflang="es" href="https://betelreus.com/?lang=es" />
+    <link rel="alternate" hreflang="x-default" href="https://betelreus.com/" />
     <meta name="robots" content="index, follow" />
     <meta property="og:locale" content="ro_RO" />
     <meta property="og:type" content="website" />
@@ -27,7 +30,7 @@
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preconnect" href="https://i.ytimg.com" />
     <link rel="preload" as="image" href="https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=site-20260602b" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260606-video-loading" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -75,7 +78,7 @@
         <a class="nav-library" href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="#contact" data-i18n="navContact">Contact</a>
       </nav>
-      <button class="lang-toggle" type="button" id="langToggle">ES</button>
+      <button class="lang-toggle" type="button" id="langToggle" aria-label="Schimbă limba în spaniolă">ES</button>
       <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-controls="mobileMenu" aria-expanded="false" data-i18n-aria-label="mobileMenuOpen">
         <span></span>
         <span></span>
@@ -124,7 +127,9 @@
           </div>
           <a class="button secondary" href="https://www.youtube.com/@BisericaBetelReus" target="_blank" rel="noreferrer">YouTube</a>
         </div>
-        <div class="video-rail" id="videoRail"></div>
+        <div class="video-rail is-loading" id="videoRail" aria-busy="true" aria-live="polite">
+          <div class="video-loading" data-i18n="videosLoading">Se încarcă ultimele videoclipuri...</div>
+        </div>
       </section>
 
       <section class="section split program-layout" id="program">
@@ -308,6 +313,6 @@
       <span>© <span id="year"></span> Biserica Betel Reus</span>
     </footer>
 
-    <script src="/js/app.min.js?v=app-20260605-mobile-menu" type="module"></script>
+    <script src="/js/app.min.js?v=app-20260606-seo-accessibility" type="module"></script>
   </body>
 </html>

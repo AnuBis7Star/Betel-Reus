@@ -5,8 +5,9 @@ const contactFormMinimumMs = 3000;
 
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260605b";
+const i18nAssetVersion = "i18n-20260606-accessibility";
 const translations = {};
+const initialLanguageParam = new URLSearchParams(window.location.search).get("lang");
 const seoTranslations = {
   ro: {
     title: "Betel Reus | Biserica Betel Reus",
@@ -39,7 +40,11 @@ const seedBooks = [
   { id: crypto.randomUUID(), title: "Biblia pentru copii", author: "Resurse familie", category: "Copii", stock: 6, price: 18, reserved: 2 }
 ];
 
-let lang = supportedLanguages.has(localStorage.getItem("betel-lang")) ? localStorage.getItem("betel-lang") : defaultLanguage;
+let lang = supportedLanguages.has(initialLanguageParam)
+  ? initialLanguageParam
+  : supportedLanguages.has(localStorage.getItem("betel-lang"))
+    ? localStorage.getItem("betel-lang")
+    : defaultLanguage;
 let books = seedBooks;
 let cart = JSON.parse(localStorage.getItem("betel-cart") || "[]");
 let usingServerData = false;
@@ -49,6 +54,7 @@ let pendingStockChanges = new Map();
 let processingReservationIds = new Set();
 let auditPage = 0;
 const auditPageSize = 5;
+let heroRotationTimer;
 let videoRotationFrame;
 let videoResumeTimer;
 
@@ -57,12 +63,13 @@ const $$ = (selector) => [...document.querySelectorAll(selector)];
 const accessCode = "BETEL-REUS";
 const defaultAdminCode = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname) ? "ADMIN-BETEL" : "";
 const adminSessionMs = 10 * 60 * 1000;
-const heroImages = [
-  "https://i.ytimg.com/vi/5ANLpkgxZGE/maxresdefault.jpg",
-  "https://i.ytimg.com/vi/V-w7Xf8OvDg/maxresdefault.jpg",
-  "https://i.ytimg.com/vi/R5RH-wUQHd0/maxresdefault.jpg",
-  "https://i.ytimg.com/vi/J3lrKcTgpmU/maxresdefault.jpg"
+const featuredYouTubeVideos = [
+  { id: "5ANLpkgxZGE", title: "Predică Betel Reus" },
+  { id: "V-w7Xf8OvDg", title: "Închinare Betel Reus" },
+  { id: "R5RH-wUQHd0", title: "Mesaj Betel Reus" },
+  { id: "J3lrKcTgpmU", title: "Cântare Betel Reus" }
 ];
+const heroImages = featuredYouTubeVideos.map((video) => `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`);
 
 let reservations = [];
 let auditLogs = [];
@@ -315,9 +322,23 @@ function applySeoLanguage() {
   updateStructuredData(seo);
 }
 
+function updateLanguageUrl() {
+  const url = new URL(window.location.href);
+  if (lang === defaultLanguage) {
+    url.searchParams.delete("lang");
+  } else {
+    url.searchParams.set("lang", lang);
+  }
+  window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
 function applyLanguage() {
   document.documentElement.lang = lang;
-  $("#langToggle").textContent = lang === "ro" ? "ES" : "RO";
+  const languageToggle = $("#langToggle");
+  if (languageToggle) {
+    languageToggle.textContent = lang === "ro" ? "ES" : "RO";
+    languageToggle.setAttribute("aria-label", tx(lang === "ro" ? "languageToggleSpanish" : "languageToggleRomanian"));
+  }
   $$("[data-i18n]").forEach((node) => {
     const key = node.dataset.i18n;
     const value = tx(key);
@@ -481,16 +502,15 @@ async function loadVerse() {
 
 async function loadVideos() {
   if (!$("#videoRail")) return;
-  const fallback = ["V-w7Xf8OvDg", "5ANLpkgxZGE", "R5RH-wUQHd0", "J3lrKcTgpmU"];
   try {
     const data = await fetch("/api/youtube").then((res) => res.json());
     renderVideos(data.videos);
   } catch {
-    renderVideos(fallback.map((id) => ({
-      id,
-      title: "Biserica Betel Reus",
-      thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
-      url: `https://www.youtube.com/watch?v=${id}`,
+    renderVideos(featuredYouTubeVideos.map((video) => ({
+      id: video.id,
+      title: video.title,
+      thumbnail: `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`,
+      url: `https://www.youtube.com/watch?v=${video.id}`,
       published: ""
     })));
   }
@@ -595,6 +615,8 @@ function setupEvents() {
 }
 
 function renderVideos(videos) {
+  const rail = $("#videoRail");
+  if (!rail) return;
   const selectedVideos = videos.slice(0, 30);
   const videoCards = selectedVideos.map((video) => `
     <a class="video-card" href="${escapeAttribute(video.url)}" target="_blank" rel="noreferrer" draggable="false">
@@ -603,22 +625,30 @@ function renderVideos(videos) {
       <h3>${escapeHtml(video.title)}</h3>
     </a>
   `).join("");
-  $("#videoRail").innerHTML = `
+  rail.classList.remove("is-loading");
+  rail.setAttribute("aria-busy", "false");
+  rail.innerHTML = `
     <div class="video-track">
       ${videoCards}
       ${videoCards}
     </div>
   `;
   startVideoRotation();
-  prepareRevealElements($("#videoRail"));
+  prepareRevealElements(rail);
 }
 
 function startHeroRotation() {
   const hero = $(".hero");
   if (!hero) return;
+  clearInterval(heroRotationTimer);
   let index = 0;
   hero.style.setProperty("--hero-image", `url("${heroImages[index]}")`);
-  setInterval(() => {
+  heroRotationTimer = setInterval(() => {
+    if (!hero.isConnected) {
+      clearInterval(heroRotationTimer);
+      heroRotationTimer = undefined;
+      return;
+    }
     index = (index + 1) % heroImages.length;
     hero.style.setProperty("--hero-image", `url("${heroImages[index]}")`);
   }, 16000);
@@ -2425,6 +2455,7 @@ async function initializeApp() {
   $("#langToggle")?.addEventListener("click", async () => {
     lang = lang === "ro" ? "es" : "ro";
     localStorage.setItem("betel-lang", lang);
+    updateLanguageUrl();
     await loadTranslations(lang);
     applyLanguage();
     loadVerse();

@@ -2130,6 +2130,17 @@ textarea {
   touch-action: pan-y;
 }
 
+.video-loading {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 700;
+}
+
 .video-track {
   display: flex;
   gap: 18px;
