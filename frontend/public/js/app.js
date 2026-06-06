@@ -70,6 +70,25 @@ const featuredYouTubeVideos = [
   { id: "J3lrKcTgpmU", title: "Cântare Betel Reus" }
 ];
 const heroImages = featuredYouTubeVideos.map((video) => `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`);
+const weeklySchedule = [
+  {
+    dayKey: "sunday",
+    services: [
+      { time: "10:00 - 12:00", labelKey: "divineService" },
+      { time: "18:00 - 20:00", labelKey: "divineService" }
+    ]
+  },
+  { dayKey: "monday", services: [{ time: "20:00 - 21:30", labelKey: "prayer" }] },
+  { dayKey: "wednesday", services: [{ time: "20:00 - 21:30", labelKey: "prayer" }] },
+  { dayKey: "friday", services: [{ time: "20:00 - 21:30", labelKey: "prayer" }] },
+  {
+    dayKey: "saturday",
+    services: [
+      { time: "19:00 - 21:00", labelKey: "youth" },
+      { labelKey: "saturdayOther" }
+    ]
+  }
+];
 
 let reservations = [];
 let auditLogs = [];
@@ -332,6 +351,28 @@ function updateLanguageUrl() {
   window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
+function renderSchedule() {
+  const scheduleGrid = $("#scheduleGrid");
+  if (!scheduleGrid) return;
+
+  scheduleGrid.innerHTML = weeklySchedule.map((day) => {
+    const services = day.services.map((service) => {
+      const label = tx(service.labelKey);
+      return service.time
+        ? `<span>${escapeHtml(service.time)} · <span>${escapeHtml(label)}</span></span>`
+        : `<span>${escapeHtml(label)}</span>`;
+    }).join("");
+
+    return `
+      <article>
+        <strong>${escapeHtml(tx(day.dayKey))}</strong>
+        ${services}
+      </article>
+    `;
+  }).join("");
+  prepareRevealElements(scheduleGrid);
+}
+
 function applyLanguage() {
   document.documentElement.lang = lang;
   const languageToggle = $("#langToggle");
@@ -360,6 +401,7 @@ function applyLanguage() {
     if (value !== key) node.title = value;
   });
   if ($("#bookSearch")) $("#bookSearch").placeholder = tx("bookSearchPlaceholder");
+  renderSchedule();
   if ($("#books")) renderBooks();
   if ($("#cartItems")) renderCart();
   if ($("#adminShell") && !$("#adminShell").classList.contains("is-hidden")) {
