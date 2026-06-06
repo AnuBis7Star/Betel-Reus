@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,11 +10,17 @@ import { isValidUuid, normalizeText } from "../utils/helpers.mjs";
 import { audit } from "./audit.service.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadsDir = path.resolve(__dirname, "../../../frontend/public/uploads/events");
-const uploadPublicPath = "/uploads/events";
+const defaultUploadsDir = path.resolve(__dirname, "../../../frontend/public/uploads/events");
+const uploadsDir = path.resolve(process.env.UPLOADS_DIR || defaultUploadsDir);
+const uploadPublicPath = normalizePublicPath(process.env.UPLOADS_PUBLIC_PATH || "/uploads/events");
 const maxPosterBytes = 4 * 1024 * 1024;
 
 let schemaReady = false;
+
+function normalizePublicPath(value) {
+  const normalized = `/${String(value || "").replace(/^\/+|\/+$/g, "")}`;
+  return normalized === "/" ? "/uploads/events" : normalized;
+}
 
 async function ensureEventsSchema(client = pool) {
   if (!client || schemaReady) return;
@@ -124,6 +130,39 @@ async function savePoster(upload, language) {
   return `${uploadPublicPath}/${filename}`;
 }
 
+function posterDiskPaths(publicPath = "") {
+  if (!publicPath.startsWith(`${uploadPublicPath}/`)) return [];
+  const relativePath = path.normalize(publicPath.slice(uploadPublicPath.length + 1).replaceAll("\\", "/"));
+  if (!relativePath || relativePath.startsWith("..") || path.isAbsolute(relativePath)) return [];
+
+  const paths = [path.join(uploadsDir, relativePath)];
+  const fallbackPath = path.join(defaultUploadsDir, relativePath);
+  if (fallbackPath !== paths[0]) paths.push(fallbackPath);
+  return paths;
+}
+
+async function deletePosterFile(publicPath) {
+  await Promise.all(posterDiskPaths(publicPath).map(async (filePath) => {
+    try {
+      await unlink(filePath);
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }));
+}
+
+async function deleteReplacedPosters(before, after) {
+  const oldPaths = [before.posterRo, before.posterEs].filter(Boolean);
+  const keptPaths = new Set([after.posterRo, after.posterEs].filter(Boolean));
+  await Promise.all(oldPaths
+    .filter((publicPath) => !keptPaths.has(publicPath))
+    .map(deletePosterFile));
+}
+
+async function deleteEventPosters(event) {
+  await Promise.all([event.posterRo, event.posterEs].filter(Boolean).map(deletePosterFile));
+}
+
 async function applyPosterUploads(event) {
   const [posterRo, posterEs] = await Promise.all([
     savePoster(event.posterRoUpload, "ro"),
@@ -219,6 +258,7 @@ async function updateEvent(id, payload) {
     const updatedPayload = await applyPosterUploads(normalizeEventPayload(payload, before));
     const updated = { ...before, ...updatedPayload, updatedAt: new Date().toISOString() };
     memory.events[index] = updated;
+    await deleteReplacedPosters(before, updated);
     await audit("Eveniment actualizat", "event", id, before, updated);
     return updated;
   }
@@ -255,6 +295,7 @@ async function updateEvent(id, payload) {
     ]
   );
   const updated = eventFromRow(result.rows[0]);
+  await deleteReplacedPosters(before, updated);
   await audit("Eveniment actualizat", "event", id, before, updated);
   return updated;
 }
@@ -266,6 +307,7 @@ async function deleteEvent(id) {
     const before = memory.events.find((item) => item.id === id);
     if (!before) throw httpError(404, "Event not found");
     memory.events = memory.events.filter((item) => item.id !== id);
+    await deleteEventPosters(before);
     await audit("Eveniment șters", "event", id, before, null);
     return { ok: true };
   }
@@ -273,7 +315,9 @@ async function deleteEvent(id) {
   await ensureEventsSchema();
   const result = await pool.query("DELETE FROM church_events WHERE id = $1 RETURNING *", [id]);
   if (!result.rowCount) throw httpError(404, "Event not found");
-  await audit("Eveniment șters", "event", id, eventFromRow(result.rows[0]), null);
+  const deleted = eventFromRow(result.rows[0]);
+  await deleteEventPosters(deleted);
+  await audit("Eveniment șters", "event", id, deleted, null);
   return { ok: true };
 }
 

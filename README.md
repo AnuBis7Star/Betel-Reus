@@ -106,6 +106,19 @@ La raíz mantiene `npm run dev` y `npm start` para desarrollo y Render. Internam
 - `backend/src/utils/`: respuestas HTTP, estáticos y helpers compartidos.
 - `frontend/public/`: contiene las vistas HTML, estilos, JS del navegador y assets.
 
+## Imágenes De Eventos En Producción
+
+Los carteles subidos desde el panel de eventos no se guardan en la base de datos. La base de datos guarda solo la ruta pública de la imagen.
+
+En producción, configura una carpeta persistente fuera del despliegue de Git:
+
+```env
+UPLOADS_DIR=/home/u505086669/domains/betelreus.com/event-uploads
+UPLOADS_PUBLIC_PATH=/uploads/events
+```
+
+Si `UPLOADS_DIR` no existe, el proyecto usa el fallback local `frontend/public/uploads/events`.
+
 ## Flujo Seguro De Cambios
 
 `main` se considera producción/live. Los cambios normales deben hacerse en una rama corta y revisarse mediante pull request antes de mezclar.

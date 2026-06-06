@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { extname, join, normalize } from "node:path";
+import { extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { brotliCompressSync, constants, gzipSync } from "node:zlib";
 
@@ -7,9 +7,17 @@ import { mime } from "./response.mjs";
 
 const root = fileURLToPath(new URL("../../..", import.meta.url));
 const publicDir = join(root, "frontend", "public");
+const defaultUploadsDir = join(publicDir, "uploads", "events");
+const uploadsDir = resolve(process.env.UPLOADS_DIR || defaultUploadsDir);
+const uploadPublicPath = normalizePublicPath(process.env.UPLOADS_PUBLIC_PATH || "/uploads/events");
 const compressedTypes = new Set([".html", ".css", ".js", ".json", ".svg", ".txt", ".xml"]);
 const immutableTypes = new Set([".png", ".jpg", ".jpeg", ".svg"]);
 const compressedCache = new Map();
+
+function normalizePublicPath(value) {
+  const normalized = `/${String(value || "").replace(/^\/+|\/+$/g, "")}`;
+  return normalized === "/" ? "/uploads/events" : normalized;
+}
 
 function cacheControl(ext, searchParams = new URLSearchParams()) {
   if (ext === ".html") return "no-cache";
@@ -57,6 +65,10 @@ function sendFile(req, res, filePath, file, searchParams) {
   res.end(req.method === "HEAD" ? undefined : body);
 }
 
+function isInsideDir(filePath, dirPath) {
+  return filePath === dirPath || filePath.startsWith(`${dirPath}${sep}`);
+}
+
 async function serveStatic(req, url, res) {
   const pathname = typeof url === "string" ? url : url.pathname;
   const searchParams = typeof url === "string" ? new URLSearchParams() : url.searchParams;
@@ -78,4 +90,37 @@ async function serveStatic(req, url, res) {
   }
 }
 
-export { serveStatic };
+async function serveUploadedFile(req, url, res) {
+  const pathname = typeof url === "string" ? url : url.pathname;
+  const searchParams = typeof url === "string" ? new URLSearchParams() : url.searchParams;
+  if (!pathname.startsWith(`${uploadPublicPath}/`)) return false;
+
+  const relativePath = normalize(decodeURIComponent(pathname.slice(uploadPublicPath.length + 1)).replaceAll("\\", "/"));
+  if (!relativePath || relativePath.startsWith("..") || relativePath.startsWith("/")) {
+    res.writeHead(403);
+    res.end("Forbidden");
+    return true;
+  }
+
+  const candidatePaths = [resolve(uploadsDir, relativePath)];
+  const fallbackPath = resolve(defaultUploadsDir, relativePath);
+  if (fallbackPath !== candidatePaths[0]) candidatePaths.push(fallbackPath);
+
+  for (const filePath of candidatePaths) {
+    const baseDir = isInsideDir(filePath, uploadsDir) ? uploadsDir : defaultUploadsDir;
+    if (!isInsideDir(filePath, baseDir)) continue;
+    try {
+      const file = await readFile(filePath);
+      sendFile(req, res, filePath, file, searchParams);
+      return true;
+    } catch {
+      // Try next upload location.
+    }
+  }
+
+  res.writeHead(404);
+  res.end("Not found");
+  return true;
+}
+
+export { serveStatic, serveUploadedFile };

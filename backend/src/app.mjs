@@ -1,7 +1,7 @@
 import { handleApiRoutes } from "./routes/api.routes.mjs";
 import { applySecurityHeaders, handleCorsPreflight, isRateLimited } from "./middleware/security.middleware.mjs";
 import { sendError, sendJson } from "./utils/response.mjs";
-import { serveStatic } from "./utils/static.mjs";
+import { serveStatic, serveUploadedFile } from "./utils/static.mjs";
 
 async function app(req, res) {
   const url = new URL(req.url ?? "/", "http://localhost");
@@ -15,6 +15,7 @@ async function app(req, res) {
       await handleApiRoutes(req, res, url);
       return;
     }
+    if (await serveUploadedFile(req, url, res)) return;
     await serveStatic(req, url, res);
   } catch (error) {
     if (!error.status || error.status >= 500) console.error(error);
