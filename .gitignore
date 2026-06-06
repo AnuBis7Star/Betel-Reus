@@ -12,6 +12,9 @@ node_modules/
 # Verification files
 verification-*.png
 
+# Local agent context
+graphify-out/
+
 # Build output
 dist/
 build/
