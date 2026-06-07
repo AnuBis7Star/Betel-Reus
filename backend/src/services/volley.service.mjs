@@ -7,7 +7,7 @@ import { httpError } from "../utils/response.mjs";
 import { isValidUuid, normalizeText } from "../utils/helpers.mjs";
 
 let schemaReady = false;
-const minimumPlayers = 6;
+const minimumPlayers = 5;
 const colorCapacity = 5;
 const shirtColors = [
   { id: "white", ro: "Alb", es: "Blanco", hex: "#f7f3e8" },

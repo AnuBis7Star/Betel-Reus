@@ -7,7 +7,7 @@
     <meta name="description" content="Informații și înscriere pentru turneul de volley organizat de tinerii Betel Reus pe 13 iunie 2026." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preload" as="image" href="/assets/volley-tournament-transparent-900.png" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=site-20260602b" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260607-volley-five" />
   </head>
   <body class="volley-page" id="top">
     <header class="volley-header">
@@ -80,7 +80,7 @@
         <div class="volley-rule-list">
           <article>
             <h3 data-i18n="volleyTeamsRuleTitle">Echipe</h3>
-            <p data-i18n="volleyTeamsRuleText">Echipele sunt mixte. Pe teren joacă 6 persoane, cu cel puțin o fată în orice moment. Echipa trebuie să aibă minimum 6 jucători înscriși și pot exista rezerve.</p>
+            <p data-i18n="volleyTeamsRuleText">Echipele sunt mixte. Pe teren joacă 5 persoane, cu cel puțin o fată în orice moment. Echipa trebuie să aibă minimum 5 jucători înscriși și pot exista rezerve.</p>
           </article>
           <article>
             <h3 data-i18n="volleySpiritRuleTitle">Ambient</h3>
@@ -150,7 +150,7 @@
           <div class="volley-players-field">
             <div class="volley-field-heading">
               <span data-i18n="volleyPlayersLabel">Jucători</span>
-              <small data-i18n="volleyMinimumPlayers">Minimum 6 jucători</small>
+              <small data-i18n="volleyMinimumPlayers">Minimum 5 jucători</small>
             </div>
             <div class="volley-player-grid" id="volleyPlayerGrid"></div>
             <button class="volley-add-player" id="addVolleyPlayer" type="button" data-i18n="volleyAddPlayer">+ Adaugă jucător</button>
@@ -196,6 +196,14 @@
       <img src="/assets/icon-light-160.png" width="160" height="160" alt="" loading="lazy" />
       <span>© 2026 Biserica Betel Reus</span>
     </footer>
-    <script src="/js/volley.min.js?v=volley-20260606-anchor" type="module"></script>
+    <div class="volley-rule-notice" id="volleyRuleNotice" role="status" aria-live="polite" aria-hidden="true" hidden>
+      <div class="volley-rule-notice-panel">
+        <p class="volley-kicker" data-i18n="volleyRuleNoticeEyebrow">Actualizare regulament</p>
+        <h2 id="volleyRuleNoticeTitle" data-i18n="volleyRuleNoticeTitle">Se joacă în 5 pe teren</h2>
+        <p id="volleyRuleNoticeText" data-i18n="volleyRuleNoticeText">Regula turneului s-a schimbat: pe teren joacă 5 persoane, nu 6. Echipele au nevoie de minimum 5 jucători înscriși și pot avea rezerve.</p>
+        <button class="volley-button primary" type="button" data-volley-rule-notice-close data-i18n="volleyRuleNoticeCta">Am înțeles</button>
+      </div>
+    </div>
+    <script src="/js/volley.min.js?v=volley-20260607-five-player-rule" type="module"></script>
   </body>
 </html>

@@ -8,11 +8,13 @@ const addPlayerButton = document.querySelector("#addVolleyPlayer");
 const colorGrid = document.querySelector("#volleyColorGrid");
 const extraColorGrid = document.querySelector("#volleyExtraColorGrid");
 const colorSummary = document.querySelector("#volleyColorSummary");
-const minimumPlayers = 6;
+const ruleNotice = document.querySelector("#volleyRuleNotice");
+const minimumPlayers = 5;
+const ruleNoticeStorageKey = "betel-volley-five-player-rule-notice-20260607";
 const teamNameCache = new Set();
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260605b";
+const i18nAssetVersion = "i18n-20260607-five-player-rule";
 const translations = {};
 let shirtColors = [];
 let approvedTeams = [];
@@ -336,6 +338,33 @@ function setupVolleyHeaderScroll() {
   });
 }
 
+function dismissRuleNotice() {
+  if (!ruleNotice) return;
+  ruleNotice.hidden = true;
+  ruleNotice.setAttribute("aria-hidden", "true");
+  try {
+    localStorage.setItem(ruleNoticeStorageKey, "dismissed");
+  } catch {
+    // Storage can be unavailable in restricted browser modes.
+  }
+}
+
+function setupRuleNotice() {
+  try {
+    if (!ruleNotice || localStorage.getItem(ruleNoticeStorageKey) === "dismissed") return;
+  } catch {
+    if (!ruleNotice) return;
+  }
+  ruleNotice.hidden = false;
+  ruleNotice.setAttribute("aria-hidden", "false");
+  ruleNotice.querySelectorAll("[data-volley-rule-notice-close]").forEach((button) => {
+    button.addEventListener("click", dismissRuleNotice);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !ruleNotice.hidden) dismissRuleNotice();
+  });
+}
+
 async function loadColorAvailability() {
   if (!colorGrid || !extraColorGrid) return;
   try {
@@ -558,6 +587,7 @@ async function initializeVolleyPage() {
   applyLanguage();
   setupExtraColorScroller();
   setupVolleyHeaderScroll();
+  setupRuleNotice();
   loadColorAvailability();
 
   document.querySelector("#langToggle")?.addEventListener("click", async () => {
