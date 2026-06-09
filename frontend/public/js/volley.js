@@ -9,12 +9,19 @@ const colorGrid = document.querySelector("#volleyColorGrid");
 const extraColorGrid = document.querySelector("#volleyExtraColorGrid");
 const colorSummary = document.querySelector("#volleyColorSummary");
 const ruleNotice = document.querySelector("#volleyRuleNotice");
+const deadlineNotice = document.querySelector("#volleyDeadlineNotice");
+const closedMessage = document.querySelector("#volleyClosedMessage");
+const heroDeadlineText = document.querySelector("#volleyHeroDeadlineText");
 const minimumPlayers = 5;
+// Registration closes Friday 12 June 2026 at 18:00 Europe/Madrid.
+const volleyRegistrationDeadlineIso = "2026-06-12T18:00:00+02:00";
+const volleyRegistrationDeadline = new Date(volleyRegistrationDeadlineIso);
 const ruleNoticeStorageKey = "betel-volley-five-player-rule-notice-20260607";
+const deadlineNoticeStorageKey = "betel-volley-registration-deadline-notice-20260609";
 const teamNameCache = new Set();
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260608-contact-note";
+const i18nAssetVersion = "i18n-20260609-registration-deadline";
 const translations = {};
 let shirtColors = [];
 let approvedTeams = [];
@@ -71,6 +78,81 @@ function setMessage(text, state = "") {
   message.textContent = text;
   if (state) message.removeAttribute("data-i18n");
   message.className = `volley-form-note${state ? ` is-${state}` : ""}`;
+}
+
+function isVolleyRegistrationClosed(now = new Date()) {
+  return now >= volleyRegistrationDeadline;
+}
+
+function deadlineRemainingParts(now = new Date()) {
+  const remainingMs = Math.max(0, volleyRegistrationDeadline.getTime() - now.getTime());
+  const totalHours = Math.ceil(remainingMs / (60 * 60 * 1000));
+  return {
+    days: Math.floor(totalHours / 24),
+    hours: totalHours % 24
+  };
+}
+
+function deadlineRemainingText(now = new Date()) {
+  const { days, hours } = deadlineRemainingParts(now);
+  return formatTx("volleyDeadlineNoticeText", { days, hours });
+}
+
+function closeDeadlineNotice() {
+  if (!deadlineNotice) return;
+  deadlineNotice.hidden = true;
+  deadlineNotice.setAttribute("aria-hidden", "true");
+  try {
+    localStorage.setItem(deadlineNoticeStorageKey, "dismissed");
+  } catch {
+    // Storage can be unavailable in restricted browser modes.
+  }
+}
+
+function goToRegistrationForm(event) {
+  closeDeadlineNotice();
+  if (window.location.pathname.endsWith("/volley.html") || window.location.pathname === "/volley") {
+    event.preventDefault();
+    document.querySelector("#inscripcion")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.replaceState(null, "", "#inscripcion");
+  }
+}
+
+function setupRegistrationDeadline() {
+  const closed = isVolleyRegistrationClosed();
+  document.body.classList.toggle("volley-registration-closed", closed);
+  if (heroDeadlineText) {
+    heroDeadlineText.textContent = closed ? "" : deadlineRemainingText();
+  }
+  if (form) {
+    form.hidden = closed;
+    form.setAttribute("aria-hidden", String(closed));
+    form.querySelectorAll("input, textarea, button").forEach((control) => {
+      control.disabled = closed;
+    });
+  }
+  if (closedMessage) {
+    closedMessage.hidden = !closed;
+  }
+  if (!deadlineNotice || closed) {
+    if (deadlineNotice) deadlineNotice.hidden = true;
+    return;
+  }
+
+  const noticeText = deadlineNotice.querySelector("#volleyDeadlineNoticeText");
+  if (noticeText) noticeText.textContent = deadlineRemainingText();
+  deadlineNotice.querySelector("[data-volley-deadline-cta]")?.addEventListener("click", goToRegistrationForm);
+  deadlineNotice.querySelectorAll("[data-volley-deadline-close]").forEach((button) => {
+    button.addEventListener("click", closeDeadlineNotice);
+  });
+
+  try {
+    if (localStorage.getItem(deadlineNoticeStorageKey) === "dismissed") return;
+  } catch {
+    // Show the notice if storage cannot be read.
+  }
+  deadlineNotice.hidden = false;
+  deadlineNotice.setAttribute("aria-hidden", "false");
 }
 
 let revealObserver = null;
@@ -203,6 +285,9 @@ function applyLanguage() {
   renderColorPicker();
   renumberPlayers();
   loadApprovedTeams();
+  const deadlineNoticeText = deadlineNotice?.querySelector("#volleyDeadlineNoticeText");
+  if (deadlineNoticeText) deadlineNoticeText.textContent = deadlineRemainingText();
+  if (heroDeadlineText) heroDeadlineText.textContent = isVolleyRegistrationClosed() ? "" : deadlineRemainingText();
 }
 
 function selectedColor() {
@@ -470,6 +555,11 @@ async function loadApprovedTeams() {
 
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (isVolleyRegistrationClosed()) {
+    setMessage(tx("volleyClosedSubmitError"), "error");
+    setupRegistrationDeadline();
+    return;
+  }
   const submitButton = form.querySelector("button[type='submit']");
   const data = new FormData(form);
   const players = playerValues();
@@ -545,6 +635,8 @@ form?.addEventListener("submit", async (event) => {
       setMessage(error.message?.toLowerCase().includes("color") ? tx("volleyColorUnavailable") : tx("volleyDuplicate"), "error");
     } else if (error.status === 429) {
       setMessage(tx("volleyRateLimited"), "error");
+    } else if (error.status === 403) {
+      setMessage(tx("volleyClosedSubmitError"), "error");
     } else {
       setMessage(tx("volleySubmitError"), "error");
     }
@@ -585,6 +677,7 @@ async function initializeVolleyPage() {
   resetPlayerGrid();
   setupVolleyEffects();
   applyLanguage();
+  setupRegistrationDeadline();
   setupExtraColorScroller();
   setupVolleyHeaderScroll();
   setupRuleNotice();
