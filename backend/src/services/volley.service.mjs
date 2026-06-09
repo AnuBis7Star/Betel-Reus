@@ -9,6 +9,9 @@ import { isValidUuid, normalizeText } from "../utils/helpers.mjs";
 let schemaReady = false;
 const minimumPlayers = 5;
 const colorCapacity = 5;
+// Registration closes Friday 12 June 2026 at 18:00 Europe/Madrid.
+const volleyRegistrationDeadlineIso = "2026-06-12T18:00:00+02:00";
+const volleyRegistrationDeadline = new Date(volleyRegistrationDeadlineIso);
 const shirtColors = [
   { id: "white", ro: "Alb", es: "Blanco", hex: "#f7f3e8" },
   { id: "black", ro: "Negru", es: "Negro", hex: "#242124" },
@@ -169,6 +172,10 @@ function validateVolleyRegistration(registration, { allowRejectedIncomplete = fa
   if (registration.players.length < minimumPlayers) throw httpError(400, `At least ${minimumPlayers} players are required`);
 }
 
+function isVolleyRegistrationClosed(now = new Date()) {
+  return now >= volleyRegistrationDeadline;
+}
+
 function volleyRegistrationFromRow(row) {
   return {
     id: row.id,
@@ -185,6 +192,7 @@ function volleyRegistrationFromRow(row) {
 }
 
 async function createVolleyRegistration(payload) {
+  if (isVolleyRegistrationClosed()) throw httpError(403, "Volley registrations are closed");
   if (normalizeText(payload.website, 80)) throw httpError(400, "Invalid registration");
   if (payload.gdprConsent !== true && payload.gdprConsent !== "true" && payload.gdprConsent !== "on") {
     throw httpError(400, "Privacy consent is required");
@@ -281,8 +289,10 @@ async function deleteVolleyRegistration(id) {
 export {
   createVolleyRegistration,
   deleteVolleyRegistration,
+  isVolleyRegistrationClosed,
   listApprovedVolleyTeams,
   listVolleyColorAvailability,
   listVolleyRegistrations,
+  volleyRegistrationDeadlineIso,
   updateVolleyRegistration
 };

@@ -7,7 +7,7 @@
     <meta name="description" content="Informații și înscriere pentru turneul de volley organizat de tinerii Betel Reus pe plaja din La Pineda pe 13 iunie 2026." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preload" as="image" href="/assets/volley-tournament-transparent-900.png" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=site-20260608-volley-location" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260609-registration-deadline-hero" />
   </head>
   <body class="volley-page" id="top">
     <header class="volley-header">
@@ -36,6 +36,7 @@
             <a class="volley-button primary" href="#inscripcion" data-i18n="volleyRegisterCta">Înscrie echipa</a>
             <a class="volley-button secondary" href="#info" data-i18n="volleyInfoCta">Vezi informațiile</a>
           </div>
+          <p class="volley-hero-deadline" id="volleyHeroDeadlineText"></p>
         </div>
         <div class="volley-poster">
           <img src="/assets/volley-tournament-transparent-900.png" width="900" height="600" alt="Jucători de volley sărind în fața unei mingi" data-i18n-alt="volleyPosterAlt" fetchpriority="high" />
@@ -146,6 +147,11 @@
           <p class="volley-kicker" data-i18n="volleyFormEyebrow">Preînscriere</p>
           <h2 data-i18n="volleyFormTitle">Înscriere echipă</h2>
           <p data-i18n="volleyFormText">Reprezentantul lasă datele echipei și va fi persoana de contact cu organizarea. Verifică numele înainte de a trimite înscrierea.</p>
+          <p class="volley-deadline-message" data-i18n="volleyDeadlineMessage">Înscrierile sunt deschise până vineri, 12 iunie, la ora 18:00.</p>
+          <div class="volley-closed-message" id="volleyClosedMessage" hidden>
+            <p class="volley-kicker" data-i18n="volleyClosedEyebrow">Înscrieri închise</p>
+            <h3 data-i18n="volleyClosedTitle">Înscrierile sunt închise.</h3>
+          </div>
         </div>
         <form class="volley-form" id="volleyRegistrationForm">
           <input class="volley-hidden-field" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -218,6 +224,17 @@
         <button class="volley-button primary" type="button" data-volley-rule-notice-close data-i18n="volleyRuleNoticeCta">Am înțeles</button>
       </div>
     </div>
-    <script src="/js/volley.min.js?v=volley-20260608-location-info" type="module"></script>
+    <div class="volley-rule-notice volley-deadline-notice" id="volleyDeadlineNotice" role="status" aria-live="polite" aria-hidden="true" hidden>
+      <div class="volley-rule-notice-panel">
+        <p class="volley-kicker" data-i18n="volleyDeadlineNoticeEyebrow">Ultimele zile pentru înscriere</p>
+        <h2 data-i18n="volleyDeadlineNoticeTitle">Înscrierile se închid curând</h2>
+        <p id="volleyDeadlineNoticeText"></p>
+        <div class="volley-notice-actions">
+          <a class="volley-button primary" href="#inscripcion" data-volley-deadline-cta data-i18n="volleyDeadlineNoticeCta">Mergi la formularul de înscriere</a>
+          <button class="volley-button secondary" type="button" data-volley-deadline-close data-i18n="volleyDeadlineNoticeClose">Închide</button>
+        </div>
+      </div>
+    </div>
+    <script src="/js/volley.min.js?v=volley-20260609-registration-deadline" type="module"></script>
   </body>
 </html>
