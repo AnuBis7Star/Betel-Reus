@@ -4,7 +4,7 @@ Web oficial de **Biserica Betel Reus**, una iglesia cristiana pentecostal en Reu
 
 ## Estado del proyecto
 
-El proyecto está en desarrollo. La web ya tiene una primera estructura funcional, pero todavía hay decisiones pendientes antes de publicarla definitivamente, especialmente en las áreas de autenticación, base de datos, privacidad, contenido final e imágenes reales.
+El proyecto está desplegado y funcional, con una experiencia pública activa y paneles internos operativos. Aun así, sigue en evolución y todavía quedan mejoras y decisiones pendientes en áreas como autenticación, base de datos, privacidad, contenido final e imágenes reales.
 
 ## Funcionalidades principales
 
@@ -91,12 +91,10 @@ Betel-Reus/
 ├── server.mjs
 ├── package.json
 ├── DATABASE_SETUP.md
-├── PRODUCTION.md
-├── TODO.txt
-└── TODO_HECHOS.txt
+└── PRODUCTION.md
 ```
 
-La raíz mantiene `npm run dev` y `npm start` para desarrollo y Render. Internamente, `server.mjs` delega en `backend/src/server.mjs`, y el backend sirve los archivos estáticos desde `frontend/public`.
+La raíz mantiene `npm run dev` y `npm start` para desarrollo local y ejecución directa en Node. Internamente, `server.mjs` delega en `backend/src/server.mjs`, y el backend sirve los archivos estáticos desde `frontend/public`.
 
 - `backend/src/routes/`: define las rutas API existentes.
 - `backend/src/controllers/`: traduce cada petición HTTP a llamadas de servicio.

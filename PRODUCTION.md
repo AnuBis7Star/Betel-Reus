@@ -1,13 +1,13 @@
 # Preparación Profesional Para Producción
 
-Este documento resume la configuración recomendada antes de pasar de Render provisional a hosting de pago y dominio propio.
+Este documento resume la configuración recomendada para la instalación actual en hosting de pago y dominio propio.
 
 ## Arquitectura
 
 - `frontend/public` contiene la web estática.
 - `backend/src` contiene API, MVC, PostgreSQL, seguridad básica y servidor.
 - El navegador solo se comunica con PostgreSQL a través de `/api/*`.
-- La raíz conserva `npm run dev` y `npm start` para compatibilidad con Render.
+- La raíz conserva `npm run dev` y `npm start` para desarrollo local y ejecución directa en Node.
 
 ## Variables De Entorno
 
@@ -25,7 +25,7 @@ ADMIN_RATE_LIMIT_MAX=120
 MAX_JSON_BODY_BYTES=102400
 ```
 
-Antes de producción final hay que quitar el fallback temporal `ADMIN-BETEL` del middleware admin.
+En hosting real, configura siempre `ADMIN_CODE` explícitamente y no dependas del fallback local de desarrollo.
 
 ## Dominio Y HTTPS
 
@@ -59,14 +59,11 @@ Pendiente recomendado:
 - Política de privacidad y retención de datos.
 - Monitorización de errores y logs.
 
-## Hosting De Pago
+## Hosting Actual
 
-Opciones razonables:
+La web está alojada en Hostinger con plan de pago y dominio de pago.
 
-- Render paid web service + Render PostgreSQL.
-- Railway.
-- Fly.io + PostgreSQL gestionado externo.
-- VPS con Node, reverse proxy y PostgreSQL gestionado.
+Mantén esta documentación centrada en la instalación actual salvo que se planifique una migración real.
 
 Para esta app, lo más simple es mantener Node sirviendo frontend y API desde el mismo dominio:
 

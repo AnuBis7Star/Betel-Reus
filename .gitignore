@@ -14,6 +14,7 @@ verification-*.png
 
 # Local agent context
 graphify-out/
+.ai-local/
 ARCHITECTURE.md
 
 # Build output

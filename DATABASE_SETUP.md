@@ -16,10 +16,11 @@ Estado actual
 
 1. Crear la base de datos
 -------------------------
-Opcion recomendada en Render:
-- En Render, crea un servicio nuevo de tipo PostgreSQL.
-- Copia el valor de "External Database URL" o "Internal Database URL".
-- Para la app web en Render, normalmente conviene usar la "Internal Database URL" si la web y la DB estan en Render.
+Opcion recomendada:
+- Crea PostgreSQL en el proveedor que uses actualmente.
+- Copia la cadena `DATABASE_URL` que te entregue ese proveedor.
+- Si la web esta alojada en Hostinger y la base de datos vive en otro servicio, usa la URL externa que te entregue el proveedor de PostgreSQL.
+- Guarda la conexion como variable de entorno y no en archivos frontend.
 
 
 2. Crear tablas
@@ -37,25 +38,25 @@ Ese archivo crea:
 Tambien inserta libros demo iniciales si la tabla esta vacia.
 
 
-3. Variables de entorno en Render
----------------------------------
-En tu servicio web de Render, anade:
+3. Variables de entorno en hosting
+----------------------------------
+En tu hosting actual, anade:
 
 ```env
 DATABASE_URL=postgresql://usuario:password@host:5432/database
-ADMIN_CODE=ADMIN-BETEL
+ADMIN_CODE=un-codigo-largo-y-privado
 DATABASE_SSL=true
 ```
 
 Notas:
 - Puedes cambiar `ADMIN_CODE` por otro codigo privado.
 - Si tu PostgreSQL no requiere SSL, usa `DATABASE_SSL=false`.
-- En Render Postgres normalmente deja `DATABASE_SSL=true` o no pongas la variable.
+- Si tu proveedor exige SSL, deja `DATABASE_SSL=true` o no pongas la variable.
 
 
-4. Configuracion del servicio web en Render
--------------------------------------------
-Build command:
+4. Configuracion del servicio web
+--------------------------------
+Install command:
 
 ```bash
 npm install
@@ -67,15 +68,15 @@ Start command:
 node server.mjs
 ```
 
-El servidor ya usa `process.env.PORT`, asi que Render puede asignar el puerto automaticamente.
+El servidor ya usa `process.env.PORT`, asi que el proveedor puede asignar el puerto automaticamente.
 
 
 5. Como comprobar que funciona
 ------------------------------
-Cuando redeploye Render, abre:
+Cuando despliegues o reinicies la app, abre:
 
 ```text
-https://TU-APP.onrender.com/api/books
+https://betelreus.com/api/books
 ```
 
 Si ves:
