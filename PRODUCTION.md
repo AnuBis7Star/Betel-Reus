@@ -27,6 +27,8 @@ MAX_JSON_BODY_BYTES=102400
 
 En hosting real, configura siempre `ADMIN_CODE` explícitamente y no dependas del fallback local de desarrollo.
 
+El fallback local existe para facilitar pruebas y desarrollo sin PostgreSQL, pero no debe tratarse como configuración de producción.
+
 ## Dominio Y HTTPS
 
 - Comprar dominio final.

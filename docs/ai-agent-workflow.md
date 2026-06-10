@@ -153,7 +153,7 @@ These routes are protected by `x-admin-code`, and the project includes a local/d
 
 ### Database vs in-memory fallback behavior
 
-The app can run with PostgreSQL or with in-memory demo data. Agents must consider both paths before changing services or persistence logic.
+The app can run with PostgreSQL or with in-memory demo data. That fallback is useful for local development and testing, but agents must not confuse it with production configuration. Any change to services or persistence logic must consider both execution paths.
 
 ### File uploads and public upload serving
 

@@ -6,6 +6,7 @@ Estado actual
 - El proyecto ya tiene endpoints preparados para PostgreSQL.
 - Si existe `DATABASE_URL`, `server.mjs` usa PostgreSQL.
 - Si no existe `DATABASE_URL`, usa memoria temporal de demo.
+- Ese modo en memoria es solo un fallback local de desarrollo para poder probar la app sin PostgreSQL.
 - El frontend ya llama a la API para:
   - Leer libros.
   - Crear pedidos desde el carrito.
@@ -93,7 +94,7 @@ Si ves:
 {"source":"memory", ...}
 ```
 
-la app no esta leyendo `DATABASE_URL`.
+la app no esta leyendo `DATABASE_URL` y esta funcionando en fallback local de desarrollo.
 
 
 6. Flujo esperado
