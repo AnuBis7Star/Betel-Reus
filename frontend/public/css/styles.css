@@ -1365,7 +1365,58 @@ cite {
 }
 
 .volley-admin-table {
-  min-width: 1040px;
+  min-width: 1280px;
+  table-layout: fixed;
+}
+
+.volley-admin-table th,
+.volley-admin-table td {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.volley-admin-table td:first-child {
+  display: table-cell;
+}
+
+.volley-admin-table th:nth-child(1),
+.volley-admin-table td:nth-child(1) {
+  width: 10%;
+}
+
+.volley-admin-table th:nth-child(2),
+.volley-admin-table td:nth-child(2) {
+  width: 11%;
+}
+
+.volley-admin-table th:nth-child(3),
+.volley-admin-table td:nth-child(3) {
+  width: 10%;
+}
+
+.volley-admin-table th:nth-child(4),
+.volley-admin-table td:nth-child(4) {
+  width: 8%;
+}
+
+.volley-admin-table th:nth-child(5),
+.volley-admin-table td:nth-child(5) {
+  width: 19%;
+}
+
+.volley-admin-table th:nth-child(6),
+.volley-admin-table td:nth-child(6) {
+  width: 7%;
+}
+
+.volley-admin-table th:nth-child(7),
+.volley-admin-table td:nth-child(7) {
+  width: 26%;
+}
+
+.volley-admin-table th:nth-child(8),
+.volley-admin-table td:nth-child(8) {
+  width: 9%;
 }
 
 .volley-admin-table input,
@@ -1425,6 +1476,11 @@ cite {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  max-width: 100%;
+}
+
+.volley-admin-color span:last-child {
+  min-width: 0;
 }
 
 .volley-admin-color-swatch {
