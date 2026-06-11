@@ -1365,7 +1365,7 @@ cite {
 }
 
 .volley-admin-table {
-  min-width: 1280px;
+  min-width: 1120px;
   table-layout: fixed;
 }
 
@@ -1373,6 +1373,11 @@ cite {
 .volley-admin-table td {
   overflow-wrap: anywhere;
   word-break: normal;
+  padding: 10px 10px;
+}
+
+.volley-admin-table tbody tr {
+  height: 96px;
 }
 
 .volley-admin-table td:first-child {
@@ -1381,17 +1386,17 @@ cite {
 
 .volley-admin-table th:nth-child(1),
 .volley-admin-table td:nth-child(1) {
-  width: 10%;
+  width: 11%;
 }
 
 .volley-admin-table th:nth-child(2),
 .volley-admin-table td:nth-child(2) {
-  width: 11%;
+  width: 12%;
 }
 
 .volley-admin-table th:nth-child(3),
 .volley-admin-table td:nth-child(3) {
-  width: 10%;
+  width: 12%;
 }
 
 .volley-admin-table th:nth-child(4),
@@ -1401,7 +1406,7 @@ cite {
 
 .volley-admin-table th:nth-child(5),
 .volley-admin-table td:nth-child(5) {
-  width: 19%;
+  width: 18%;
 }
 
 .volley-admin-table th:nth-child(6),
@@ -1411,12 +1416,12 @@ cite {
 
 .volley-admin-table th:nth-child(7),
 .volley-admin-table td:nth-child(7) {
-  width: 26%;
+  width: 22%;
 }
 
 .volley-admin-table th:nth-child(8),
 .volley-admin-table td:nth-child(8) {
-  width: 9%;
+  width: 10%;
 }
 
 .volley-admin-table input,
@@ -1465,6 +1470,27 @@ cite {
   display: block;
 }
 
+.volley-admin-team strong,
+.volley-admin-table td:nth-child(2),
+.volley-admin-table td:nth-child(3),
+.volley-admin-players span,
+.volley-admin-note {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.volley-admin-team strong,
+.volley-admin-table td:nth-child(2),
+.volley-admin-table td:nth-child(3) {
+  -webkit-line-clamp: 1;
+}
+
+.volley-admin-players span,
+.volley-admin-note {
+  -webkit-line-clamp: 2;
+}
+
 .volley-admin-team span,
 .volley-admin-players span,
 .volley-admin-note {
@@ -1477,10 +1503,13 @@ cite {
   align-items: center;
   gap: 8px;
   max-width: 100%;
+  white-space: nowrap;
 }
 
 .volley-admin-color span:last-child {
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .volley-admin-color-swatch {
@@ -1490,6 +1519,14 @@ cite {
   border-radius: 999px;
   background: var(--shirt-color, #d8d0c2);
   box-shadow: 0 0 0 1px var(--line), 0 5px 14px rgba(0, 0, 0, 0.08);
+}
+
+.volley-admin-table .table-actions {
+  white-space: nowrap;
+}
+
+.volley-admin-table .table-actions button {
+  white-space: nowrap;
 }
 
 .admin-drawer {
