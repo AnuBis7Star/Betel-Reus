@@ -7,7 +7,7 @@
     <meta name="description" content="Informații și înscriere pentru turneul de volley organizat de tinerii Betel Reus pe plaja din La Pineda pe 13 iunie 2026." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preload" as="image" href="/assets/volley-tournament-transparent-900.png" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=site-20260609-registration-deadline-hero" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260612-closed-only-hide-form" />
   </head>
   <body class="volley-page" id="top">
     <header class="volley-header">
@@ -18,7 +18,7 @@
       <nav class="volley-nav" aria-label="Navigare turneu">
         <a class="volley-nav-link" href="#top" data-i18n="volleyNavHome">Acasă</a>
         <a class="volley-nav-link" href="#reguli" data-i18n="volleyNavRules">Reguli</a>
-        <a class="volley-nav-link" href="#inscripcion" data-i18n="volleyNavRegistration">Înscrieri</a>
+        <a class="volley-nav-link" href="#inscripcion" data-volley-registration-link data-i18n="volleyNavRegistration">Înscrieri</a>
       </nav>
       <div class="volley-header-actions">
         <a class="volley-header-link" href="https://www.instagram.com/tineriibetelreus/" target="_blank" rel="noreferrer">@tineriibetelreus</a>
@@ -33,7 +33,7 @@
           <h1><span data-i18n="volleyHeroTitleLine1">Turneu</span><span data-i18n="volleyHeroTitleLine2">Volley</span></h1>
           <p data-i18n="volleyHeroText">A patra ediție a turneului adună echipe, prieteni și tineri în Reus în jurul sportului, respectului și unui ambient sănătos.</p>
           <div class="volley-actions">
-            <a class="volley-button primary" href="#inscripcion" data-i18n="volleyRegisterCta">Înscrie echipa</a>
+            <a class="volley-button primary" href="#inscripcion" data-volley-registration-link data-i18n="volleyRegisterCta">Înscrie echipa</a>
             <a class="volley-button secondary" href="#info" data-i18n="volleyInfoCta">Vezi informațiile</a>
           </div>
           <p class="volley-hero-deadline" id="volleyHeroDeadlineText"></p>
@@ -202,7 +202,7 @@
         </form>
       </section>
 
-      <section class="volley-section volley-teams-section">
+      <section class="volley-section volley-teams-section" id="echipe">
         <div>
           <p class="volley-kicker" data-i18n="volleyConfirmedEyebrow">Echipe confirmate</p>
           <h2 data-i18n="volleyConfirmedTitle">Echipe înscrise</h2>
@@ -216,25 +216,17 @@
       <img src="/assets/icon-light-160.png" width="160" height="160" alt="" loading="lazy" />
       <span>© 2026 Biserica Betel Reus</span>
     </footer>
-    <div class="volley-rule-notice" id="volleyRuleNotice" role="status" aria-live="polite" aria-hidden="true" hidden>
+    <div class="volley-rule-notice volley-closed-notice" id="volleyClosedNotice" role="status" aria-live="polite" aria-hidden="true" hidden>
       <div class="volley-rule-notice-panel">
-        <p class="volley-kicker" data-i18n="volleyRuleNoticeEyebrow">Actualizare regulament</p>
-        <h2 id="volleyRuleNoticeTitle" data-i18n="volleyRuleNoticeTitle">Se joacă în 5 pe teren</h2>
-        <p id="volleyRuleNoticeText" data-i18n="volleyRuleNoticeText">Regula turneului s-a schimbat: pe teren joacă 5 persoane, nu 6. Echipele au nevoie de minimum 5 jucători înscriși și pot avea rezerve.</p>
-        <button class="volley-button primary" type="button" data-volley-rule-notice-close data-i18n="volleyRuleNoticeCta">Am înțeles</button>
-      </div>
-    </div>
-    <div class="volley-rule-notice volley-deadline-notice" id="volleyDeadlineNotice" role="status" aria-live="polite" aria-hidden="true" hidden>
-      <div class="volley-rule-notice-panel">
-        <p class="volley-kicker" data-i18n="volleyDeadlineNoticeEyebrow">Ultimele zile pentru înscriere</p>
-        <h2 data-i18n="volleyDeadlineNoticeTitle">Înscrierile se închid curând</h2>
-        <p id="volleyDeadlineNoticeText"></p>
+        <p class="volley-kicker" data-i18n="volleyClosedNoticeEyebrow">Turneul începe!</p>
+        <h2 data-i18n="volleyClosedNoticeTitle">Înscrierile sunt închise.</h2>
+        <p data-i18n="volleyClosedNoticeText">Vezi echipele active pentru turneul de volley.</p>
         <div class="volley-notice-actions">
-          <a class="volley-button primary" href="#inscripcion" data-volley-deadline-cta data-i18n="volleyDeadlineNoticeCta">Mergi la formularul de înscriere</a>
-          <button class="volley-button secondary" type="button" data-volley-deadline-close data-i18n="volleyDeadlineNoticeClose">Închide</button>
+          <a class="volley-button primary" href="#echipe" data-volley-closed-cta data-i18n="volleyClosedNoticeCta">Vezi echipele active</a>
+          <button class="volley-button secondary" type="button" data-volley-closed-close data-i18n="volleyClosedNoticeClose">Închide</button>
         </div>
       </div>
     </div>
-    <script src="/js/volley.min.js?v=volley-20260609-registration-deadline" type="module"></script>
+    <script src="/js/volley.min.js?v=volley-20260612-closed-only" type="module"></script>
   </body>
 </html>

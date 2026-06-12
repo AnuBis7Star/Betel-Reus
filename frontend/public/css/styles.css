@@ -2747,6 +2747,11 @@ footer img {
   z-index: 121;
 }
 
+.volley-closed-notice {
+  bottom: 232px;
+  z-index: 121;
+}
+
 .volley-rule-notice[hidden] {
   display: none;
 }
@@ -2955,6 +2960,11 @@ footer img {
   padding: 22px;
 }
 
+.volley-form[hidden],
+.volley-registration-closed .volley-form {
+  display: none !important;
+}
+
 .volley-deadline-message,
 .volley-closed-message {
   border: 1px solid rgba(255, 210, 29, 0.34);
@@ -2985,6 +2995,14 @@ footer img {
 
 .volley-registration-closed .volley-deadline-message {
   display: none;
+}
+
+.volley-registration-closed .volley-registration {
+  opacity: 0.92;
+}
+
+.volley-registration-closed [data-volley-registration-link] {
+  display: none !important;
 }
 
 .volley-form.reveal-on-scroll {
@@ -3409,6 +3427,10 @@ footer img {
   }
 
   .volley-deadline-notice {
+    bottom: 188px;
+  }
+
+  .volley-closed-notice {
     bottom: 188px;
   }
 }
