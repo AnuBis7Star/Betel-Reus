@@ -105,10 +105,10 @@ let state = {
   playoffScores: {}
 };
 
-let saveTimer = null;
 let saveStatus = "idle";
 let remoteLoaded = false;
 let saveStatusElement = null;
+let saveToken = 0;
 
 function defaultState() {
   return { groupScores: {}, playoffScores: {} };
@@ -153,20 +153,16 @@ function setSaveStatus(status) {
   saveStatusElement.textContent = labels[status] || TEXT.saveIdle;
 }
 
-function schedulePersist() {
-  if (!remoteLoaded) return;
-  setSaveStatus("pending");
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(persistState, 400);
-}
-
 async function persistState() {
-  saveTimer = null;
+  if (!remoteLoaded) return;
+  const token = ++saveToken;
+  setSaveStatus("pending");
   try {
     const result = await apiRequest(API_PATH, {
       method: "POST",
       body: { groupScores: state.groupScores, playoffScores: state.playoffScores }
     });
+    if (token !== saveToken) return;
     if (result && result.state) {
       const sanitized = sanitizeRemoteState(result);
       state.groupScores = sanitized.groupScores;
@@ -174,6 +170,7 @@ async function persistState() {
     }
     setSaveStatus("idle");
   } catch (error) {
+    if (token !== saveToken) return;
     console.warn("No se pudo guardar el estado del torneo.", error);
     setSaveStatus(navigator.onLine === false ? "offline" : "error");
   }
@@ -217,14 +214,14 @@ function getLoser(match, score) {
 function setGroupScore(matchId, side, value) {
   if (!state.groupScores[matchId]) state.groupScores[matchId] = { a: "", b: "" };
   state.groupScores[matchId][side] = value === "" ? "" : Math.max(0, Number(value));
-  schedulePersist();
+  persistState();
   renderAll();
 }
 
 function setPlayoffScore(matchId, side, value) {
   if (!state.playoffScores[matchId]) state.playoffScores[matchId] = { a: "", b: "" };
   state.playoffScores[matchId][side] = value === "" ? "" : Math.max(0, Number(value));
-  schedulePersist();
+  persistState();
   renderAll();
 }
 
@@ -628,7 +625,7 @@ function fillSampleScores() {
 
   state.groupScores = sample;
   state.playoffScores = playoffs;
-  schedulePersist();
+  persistState();
   renderAll();
 }
 
@@ -636,7 +633,7 @@ function clearScores() {
   if (!confirm(TEXT.clearConfirm)) return;
   state.groupScores = {};
   state.playoffScores = {};
-  schedulePersist();
+  persistState();
   renderAll();
 }
 
@@ -666,9 +663,6 @@ function bindEvents() {
   });
   document.getElementById("demoScoresBtn").addEventListener("click", fillSampleScores);
   document.getElementById("clearScoresBtn").addEventListener("click", clearScores);
-  window.addEventListener("online", () => {
-    if (saveStatus === "offline") schedulePersist();
-  });
 }
 
 function init() {
