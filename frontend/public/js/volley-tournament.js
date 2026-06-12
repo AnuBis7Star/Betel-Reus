@@ -572,15 +572,33 @@ function renderBracket() {
   document.getElementById("championName").textContent = champion || TEXT.pending;
 }
 
+function renderHeroStats() {
+  const teams = Object.values(groups).reduce((sum, list) => sum + list.length, 0);
+  const matches = Object.keys(groupMatches).length + Object.keys(playoffStructure).length;
+  const courts = new Set();
+  for (const slot of groupSlots) {
+    if (slot.c1) courts.add("c1");
+    if (slot.c2) courts.add("c2");
+  }
+  const statTeams = document.getElementById("statTeams");
+  const statMatches = document.getElementById("statMatches");
+  const statCourts = document.getElementById("statCourts");
+  if (statTeams) statTeams.textContent = String(teams);
+  if (statMatches) statMatches.textContent = String(matches);
+  if (statCourts) statCourts.textContent = String(courts.size);
+}
+
 function renderSummary() {
   const completedGroups = getCompletedGroupCount();
   const totalGroups = Object.keys(groupMatches).length;
+  const totalPlayoffs = Object.keys(playoffStructure).length;
+  const totalQualifiers = 2 * Object.keys(groups).length;
   const completedPlayoffs = getCompletedPlayoffCount();
   const champion = getChampion();
 
   document.getElementById("groupProgress").textContent = `${completedGroups} / ${totalGroups}`;
-  document.getElementById("qualifierProgress").textContent = allGroupsComplete() ? "8 / 8" : TEXT.pending;
-  document.getElementById("playoffProgress").textContent = `${completedPlayoffs} / 8`;
+  document.getElementById("qualifierProgress").textContent = allGroupsComplete() ? `${totalQualifiers} / ${totalQualifiers}` : TEXT.pending;
+  document.getElementById("playoffProgress").textContent = `${completedPlayoffs} / ${totalPlayoffs}`;
   document.getElementById("championSummary").textContent = champion || TEXT.pending;
   document.getElementById("statusText").textContent = champion
     ? TEXT.championDecided
@@ -637,6 +655,7 @@ function clearScores() {
 }
 
 function renderAll() {
+  renderHeroStats();
   renderTeamFilter();
   renderGroups();
   renderGroupSchedule();
