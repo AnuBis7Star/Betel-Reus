@@ -1905,7 +1905,7 @@ function renderAdminVolleyRegistrations() {
       </td>
       <td class="volley-admin-players"><strong>${(registration.players || []).length}</strong><span>${escapeHtml(volleyPlayersPreview(registration.players))}</span></td>
       <td><span class="volley-status ${escapeAttribute(volleyStatusClass(registration.status))}">${escapeHtml(getVolleyStatusLabel(registration.status))}</span></td>
-      <td class="volley-admin-note">${escapeHtml(registration.notes || "-")}</td>
+      <td class="volley-admin-note"><span class="volley-admin-note-text">${escapeHtml(registration.notes || "-")}</span></td>
       <td class="table-actions">
         <button type="button" data-action="manage" data-id="${registration.id}">${tx("adminVolleyManage")}</button>
       </td>

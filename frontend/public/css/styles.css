@@ -1457,7 +1457,7 @@ cite {
 .volley-admin-table td:nth-child(2),
 .volley-admin-table td:nth-child(3),
 .volley-admin-players span,
-.volley-admin-note {
+.volley-admin-note-text {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -1470,7 +1470,7 @@ cite {
 }
 
 .volley-admin-players span,
-.volley-admin-note {
+.volley-admin-note-text {
   -webkit-line-clamp: 2;
 }
 
@@ -1479,6 +1479,14 @@ cite {
 .volley-admin-note {
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.volley-admin-note {
+  justify-content: center;
+}
+
+.volley-admin-note-text {
+  max-height: calc(1.35em * 2);
 }
 
 .volley-admin-color {
