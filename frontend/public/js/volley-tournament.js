@@ -27,6 +27,7 @@ const TEXT = {
   enterScore: "Introduce puntos",
   waitingPrevious: "Esperando partido anterior",
   clearConfirm: "¿Borrar todos los puntos de grupos y eliminatorias?",
+  demoConfirm: "¿Rellenar todos los puntos de ejemplo? Esto sobrescribirá los puntos que ya hayas introducido.",
   saveIdle: "Sincronizado",
   savePending: "Guardando…",
   saveError: "Error al guardar",
@@ -576,18 +577,18 @@ function renderHeroStats() {
   const totalMatches = Object.keys(groupMatches).length + Object.keys(playoffStructure).length;
   const completed = getCompletedGroupCount() + getCompletedPlayoffCount();
   const remaining = Math.max(totalMatches - completed, 0);
-  const courts = new Set();
+  const courtKeys = new Set();
   for (const slot of groupSlots) {
-    if (slot.c1) courts.add("c1");
-    if (slot.c2) courts.add("c2");
-    if (slot.c3) courts.add("c3");
+    for (const key of Object.keys(slot)) {
+      if (/^c\d+$/.test(key)) courtKeys.add(key);
+    }
   }
   const statTeams = document.getElementById("statTeams");
   const statMatches = document.getElementById("statMatches");
   const statCourts = document.getElementById("statCourts");
   if (statTeams) statTeams.textContent = String(teams);
   if (statMatches) statMatches.textContent = String(remaining);
-  if (statCourts) statCourts.textContent = String(courts.size);
+  if (statCourts) statCourts.textContent = String(courtKeys.size);
 }
 
 function renderSummary() {
@@ -621,6 +622,7 @@ function renderTeamFilter() {
 }
 
 function fillSampleScores() {
+  if (!confirm(TEXT.demoConfirm)) return;
   const sample = {
     "G-A-1": { a: 25, b: 18 }, "G-A-2": { a: 22, b: 25 }, "G-A-3": { a: 25, b: 21 },
     "G-A-4": { a: 17, b: 25 }, "G-A-5": { a: 25, b: 19 }, "G-A-6": { a: 25, b: 16 },

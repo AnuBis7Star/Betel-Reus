@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a0102" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Gestor del Torneo de Voleibol</title>
   <meta name="description" content="Gestor en directo del torneo de voleibol: introduce los puntos, sigue la clasificación, los cuartos, semifinales, final y campeón." />
   <meta name="robots" content="noindex,nofollow" />
@@ -39,7 +42,9 @@
 
     * { box-sizing: border-box; }
 
-    body:not([data-tab="overview"]) [data-overview-only] { display: none; }
+    body[data-tab="schedule"] .hero,
+    body[data-tab="playoffs"] .hero,
+    body[data-tab="rules"] .hero { display: none; }
 
     body {
       margin: 0;
@@ -50,7 +55,11 @@
         radial-gradient(circle at 18% 12%, rgba(255, 210, 29, 0.08), transparent 24%),
         radial-gradient(circle at 80% 22%, rgba(240, 94, 104, 0.10), transparent 25%),
         linear-gradient(135deg, #2a0203 0%, #5d0709 48%, #180102 100%);
+      background-attachment: fixed;
       padding: 22px;
+      padding-top: max(22px, env(safe-area-inset-top, 0px));
+      padding-left: max(22px, env(safe-area-inset-left, 0px));
+      padding-right: max(22px, env(safe-area-inset-right, 0px));
     }
 
     .app { max-width: 1400px; margin: 0 auto; }
@@ -236,6 +245,7 @@
       top: 0;
       z-index: 20;
       padding: 10px 4px;
+      padding-top: max(10px, env(safe-area-inset-top, 0px));
       background: rgba(22, 6, 8, 0.82);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -1110,6 +1120,6 @@
     </section>
   </main>
 
-  <script type="module" src="/js/volley-tournament.min.js?v=volley-tournament-20260613"></script>
+  <script type="module" src="/js/volley-tournament.min.js?v=volley-tournament-20260613-2"></script>
 </body>
 </html>
