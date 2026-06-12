@@ -77,6 +77,77 @@
         </div>
       </section>
 
+      <section class="volley-section volley-live-section" id="live">
+        <section class="volley-live-widget" aria-labelledby="volleyLiveTitle">
+          <div class="volley-live-widget__header">
+            <div>
+              <p class="volley-live-widget__eyebrow" data-i18n="volleyLiveEyebrow">Turneu de volley</p>
+              <h2 id="volleyLiveTitle" data-i18n="volleyLiveTitle">Turneul este în joc</h2>
+            </div>
+            <div class="volley-live-widget__badge">
+              <span aria-hidden="true"></span>
+              <strong data-i18n="volleyLiveBadge">În direct</strong>
+            </div>
+          </div>
+
+          <div class="volley-live-widget__body">
+            <div class="volley-live-widget__court" aria-hidden="true">
+              <div class="volley-live-widget__court-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="volley-live-widget__net"></div>
+              <div class="volley-live-widget__ball"></div>
+
+              <div class="volley-live-widget__team volley-live-widget__team--left">
+                <span class="volley-live-widget__player volley-live-widget__player--one"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--two"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--three"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--four"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--five"></span>
+              </div>
+
+              <div class="volley-live-widget__team volley-live-widget__team--right">
+                <span class="volley-live-widget__player volley-live-widget__player--one"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--two"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--three"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--four"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--five"></span>
+              </div>
+            </div>
+
+            <div class="volley-live-widget__progress">
+              <article class="volley-live-widget__match volley-live-widget__match--done">
+                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundOne">Grupe</span>
+                <strong data-i18n="volleyLiveRoundOneState">Meciuri gata</strong>
+              </article>
+              <article class="volley-live-widget__match volley-live-widget__match--active">
+                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundTwo">Eliminatorii</span>
+                <strong data-i18n="volleyLiveRoundTwoState">Puncte în joc</strong>
+              </article>
+              <article class="volley-live-widget__match">
+                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundThree">Finală</span>
+                <strong data-i18n="volleyLiveRoundThreeState">Se apropie</strong>
+              </article>
+            </div>
+          </div>
+
+          <p class="volley-live-widget__status" id="volleyLiveStatus" data-live-status-index="0" data-i18n="volleyLiveStatusOne">
+            Serviciu în desfășurare...
+          </p>
+        </section>
+      </section>
+
+      <section class="volley-section volley-teams-section" id="echipe">
+        <div>
+          <p class="volley-kicker" data-i18n="volleyConfirmedEyebrow">Echipe confirmate</p>
+          <h2 data-i18n="volleyConfirmedTitle">Echipe înscrise</h2>
+          <p data-i18n="volleyConfirmedText">Apar doar echipele acceptate de administrator.</p>
+        </div>
+        <div class="volley-teams" id="volleyTeams"></div>
+      </section>
+
       <section class="volley-section volley-rules">
         <div>
           <p class="volley-kicker" data-i18n="volleyRulesEyebrow">Participare</p>
@@ -202,73 +273,6 @@
         </form>
       </section>
 
-      <section class="volley-section volley-live-section" id="live">
-        <section class="volley-live-widget" aria-labelledby="volleyLiveTitle">
-          <div class="volley-live-widget__header">
-            <div>
-              <p class="volley-live-widget__eyebrow" data-i18n="volleyLiveEyebrow">Turneu de volley</p>
-              <h2 id="volleyLiveTitle" data-i18n="volleyLiveTitle">Turneul este în joc</h2>
-            </div>
-            <div class="volley-live-widget__badge">
-              <span aria-hidden="true"></span>
-              <strong data-i18n="volleyLiveBadge">În direct</strong>
-            </div>
-          </div>
-
-          <div class="volley-live-widget__body">
-            <div class="volley-live-widget__court" aria-hidden="true">
-              <div class="volley-live-widget__court-lines">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div class="volley-live-widget__net"></div>
-              <div class="volley-live-widget__ball"></div>
-              <div class="volley-live-widget__shadow"></div>
-
-              <div class="volley-live-widget__team volley-live-widget__team--left">
-                <span class="volley-live-widget__player volley-live-widget__player--one"></span>
-                <span class="volley-live-widget__player volley-live-widget__player--two"></span>
-                <span class="volley-live-widget__player volley-live-widget__player--three"></span>
-              </div>
-
-              <div class="volley-live-widget__team volley-live-widget__team--right">
-                <span class="volley-live-widget__player volley-live-widget__player--one"></span>
-                <span class="volley-live-widget__player volley-live-widget__player--two"></span>
-                <span class="volley-live-widget__player volley-live-widget__player--three"></span>
-              </div>
-            </div>
-
-            <div class="volley-live-widget__progress">
-              <article class="volley-live-widget__match volley-live-widget__match--done">
-                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundOne">Grupe</span>
-                <strong data-i18n="volleyLiveRoundOneState">Meciuri gata</strong>
-              </article>
-              <article class="volley-live-widget__match volley-live-widget__match--active">
-                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundTwo">Eliminatorii</span>
-                <strong data-i18n="volleyLiveRoundTwoState">Puncte în joc</strong>
-              </article>
-              <article class="volley-live-widget__match">
-                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundThree">Finală</span>
-                <strong data-i18n="volleyLiveRoundThreeState">Se apropie</strong>
-              </article>
-            </div>
-          </div>
-
-          <p class="volley-live-widget__status" id="volleyLiveStatus" data-live-status-index="0" data-i18n="volleyLiveStatusOne">
-            Serviciu în desfășurare...
-          </p>
-        </section>
-      </section>
-
-      <section class="volley-section volley-teams-section" id="echipe">
-        <div>
-          <p class="volley-kicker" data-i18n="volleyConfirmedEyebrow">Echipe confirmate</p>
-          <h2 data-i18n="volleyConfirmedTitle">Echipe înscrise</h2>
-          <p data-i18n="volleyConfirmedText">Apar doar echipele acceptate de administrator.</p>
-        </div>
-        <div class="volley-teams" id="volleyTeams"></div>
-      </section>
     </main>
 
     <footer class="volley-footer">

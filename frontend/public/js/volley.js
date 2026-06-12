@@ -27,6 +27,7 @@ let shirtColors = [];
 let approvedTeams = [];
 let selectedShirtColor = "";
 let lang = supportedLanguages.has(localStorage.getItem("betel-lang")) ? localStorage.getItem("betel-lang") : defaultLanguage;
+let liveStatusIntervalId = null;
 
 function liveStatusMessages() {
   return [
@@ -34,7 +35,10 @@ function liveStatusMessages() {
     tx("volleyLiveStatusTwo"),
     tx("volleyLiveStatusThree"),
     tx("volleyLiveStatusFour"),
-    tx("volleyLiveStatusFive")
+    tx("volleyLiveStatusFive"),
+    tx("volleyLiveStatusSix"),
+    tx("volleyLiveStatusSeven"),
+    tx("volleyLiveStatusEight")
   ];
 }
 
@@ -448,17 +452,22 @@ function applyLiveStatusText() {
 function setupLiveWidgetStatusRotation() {
   if (!liveStatus) return;
   applyLiveStatusText();
+  if (liveStatusIntervalId) {
+    window.clearInterval(liveStatusIntervalId);
+    liveStatusIntervalId = null;
+  }
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const statuses = liveStatusMessages();
-  if (statuses.length < 2) return;
+  if (liveStatusMessages().length < 2) return;
 
-  window.setInterval(() => {
+  liveStatusIntervalId = window.setInterval(() => {
+    const statuses = liveStatusMessages();
+    if (statuses.length < 2) return;
     const currentIndex = Number.parseInt(liveStatus.dataset.liveStatusIndex || "0", 10);
     const nextIndex = (currentIndex + 1) % statuses.length;
     liveStatus.dataset.liveStatusIndex = String(nextIndex);
     liveStatus.textContent = statuses[nextIndex];
-  }, 2400);
+  }, 4400);
 }
 
 async function loadColorAvailability() {

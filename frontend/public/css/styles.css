@@ -3092,22 +3092,12 @@ footer img {
   min-height: 240px;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(255, 246, 232, 0.08), rgba(255, 246, 232, 0.02)),
-    linear-gradient(90deg, rgba(255, 210, 29, 0.06), rgba(255, 210, 29, 0.02));
-}
-
-.volley-live-widget__court::before,
-.volley-live-widget__court::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 34%;
-  background: linear-gradient(180deg, rgba(255, 210, 29, 0.02), rgba(255, 210, 29, 0.12));
+    radial-gradient(circle at top left, rgba(255, 246, 232, 0.06), transparent 38%),
+    linear-gradient(145deg, rgba(101, 20, 28, 0.86), rgba(72, 14, 20, 0.9));
 }
 
 .volley-live-widget__court-lines span,
 .volley-live-widget__net,
-.volley-live-widget__shadow,
 .volley-live-widget__ball,
 .volley-live-widget__player {
   position: absolute;
@@ -3136,8 +3126,8 @@ footer img {
 }
 
 .volley-live-widget__net {
-  top: 28%;
-  bottom: 18%;
+  top: 18px;
+  bottom: 18px;
   left: 50%;
   width: 10px;
   transform: translateX(-50%);
@@ -3159,83 +3149,101 @@ footer img {
 }
 
 .volley-live-widget__player {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border: 2px solid rgba(255, 246, 232, 0.65);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 246, 232, 0.95), rgba(255, 246, 232, 0.18));
+  background: rgba(255, 246, 232, 0.38);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  animation: volleyLivePlayerFloat 6.8s ease-in-out infinite;
 }
 
 .volley-live-widget__team--left .volley-live-widget__player {
+  border-color: rgba(192, 219, 236, 0.68);
+  background: #7da0b7;
   box-shadow:
-    0 0 0 4px rgba(255, 210, 29, 0.08),
+    0 0 0 4px rgba(125, 160, 183, 0.12),
     0 8px 18px rgba(0, 0, 0, 0.16);
 }
 
 .volley-live-widget__team--right .volley-live-widget__player {
+  border-color: rgba(213, 213, 213, 0.3);
+  background: #2b2b2b;
   box-shadow:
-    0 0 0 4px rgba(240, 94, 104, 0.1),
+    0 0 0 4px rgba(43, 43, 43, 0.12),
     0 8px 18px rgba(0, 0, 0, 0.16);
 }
 
 .volley-live-widget__team--left .volley-live-widget__player--one {
-  top: 34%;
-  left: 20%;
-  animation: volleyLiveShiftLeft 3.2s ease-in-out infinite;
+  top: 32%;
+  left: 16%;
+  animation-delay: 0ms;
 }
 
 .volley-live-widget__team--left .volley-live-widget__player--two {
-  top: 56%;
-  left: 28%;
-  animation: volleyLiveShiftLeft 3.2s ease-in-out infinite 180ms;
+  top: 50%;
+  left: 26%;
+  animation-delay: 240ms;
 }
 
 .volley-live-widget__team--left .volley-live-widget__player--three {
   top: 68%;
-  left: 12%;
-  animation: volleyLiveShiftLeft 3.2s ease-in-out infinite 320ms;
+  left: 14%;
+  animation-delay: 520ms;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--four {
+  top: 39%;
+  left: 35%;
+  animation-delay: 780ms;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--five {
+  top: 70%;
+  left: 34%;
+  animation-delay: 1020ms;
 }
 
 .volley-live-widget__team--right .volley-live-widget__player--one {
-  top: 34%;
-  right: 22%;
-  animation: volleyLiveShiftRight 3.2s ease-in-out infinite 140ms;
+  top: 32%;
+  right: 16%;
+  animation-delay: 180ms;
 }
 
 .volley-live-widget__team--right .volley-live-widget__player--two {
-  top: 54%;
-  right: 12%;
-  animation: volleyLiveShiftRight 3.2s ease-in-out infinite 280ms;
+  top: 50%;
+  right: 26%;
+  animation-delay: 460ms;
 }
 
 .volley-live-widget__team--right .volley-live-widget__player--three {
   top: 68%;
-  right: 28%;
-  animation: volleyLiveShiftRight 3.2s ease-in-out infinite 420ms;
+  right: 14%;
+  animation-delay: 720ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--four {
+  top: 39%;
+  right: 35%;
+  animation-delay: 980ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--five {
+  top: 70%;
+  right: 34%;
+  animation-delay: 1240ms;
 }
 
 .volley-live-widget__ball {
-  top: 48%;
-  left: 18%;
+  top: 33%;
+  left: 17%;
   width: 18px;
   height: 18px;
   border: 2px solid rgba(255, 246, 232, 0.8);
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #fff7ea 0 28%, var(--volley-yellow) 29% 64%, #c48b00 65% 100%);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
-  animation: volleyLiveBallFlight 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-
-.volley-live-widget__shadow {
-  left: 18%;
-  bottom: 16%;
-  width: 22px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(22, 6, 8, 0.32);
-  filter: blur(1px);
-  animation: volleyLiveBallShadow 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation: volleyLiveBallFlight 18s linear infinite;
 }
 
 .volley-live-widget__progress {
@@ -3309,84 +3317,86 @@ footer img {
 
 @keyframes volleyLiveBallFlight {
   0% {
-    transform: translate(0, 0) scale(0.92);
+    top: 33%;
+    left: 17%;
+    transform: scale(0.94);
   }
 
-  18% {
-    transform: translate(72px, -54px) scale(1);
+  10% {
+    top: 33%;
+    left: 17%;
+    transform: scale(0.94);
   }
 
-  34% {
-    transform: translate(142px, -110px) scale(1.04);
+  22% {
+    top: 48%;
+    left: 27%;
+    transform: scale(0.98);
   }
 
-  52% {
-    transform: translate(236px, -22px) scale(0.98);
+  32% {
+    top: 48%;
+    left: 27%;
+    transform: scale(0.98);
   }
 
-  72% {
-    transform: translate(318px, -84px) scale(1.02);
+  44% {
+    top: 38%;
+    left: 36%;
+    transform: scale(1.02);
+  }
+
+  54% {
+    top: 38%;
+    left: 36%;
+    transform: scale(1.02);
+  }
+
+  70% {
+    top: 49%;
+    left: 73%;
+    transform: scale(0.97);
+  }
+
+  82% {
+    top: 38%;
+    left: 64%;
+    transform: scale(1.01);
+  }
+
+  90% {
+    top: 38%;
+    left: 64%;
+    transform: scale(1.01);
   }
 
   100% {
-    transform: translate(408px, -10px) scale(0.95);
+    top: 33%;
+    left: 17%;
+    transform: scale(0.97);
   }
 }
 
-@keyframes volleyLiveBallShadow {
-  0% {
-    transform: translateX(0) scale(1.1);
-    opacity: 0.34;
-  }
-
-  34% {
-    transform: translateX(142px) scale(0.72);
-    opacity: 0.14;
-  }
-
-  52% {
-    transform: translateX(236px) scale(0.96);
-    opacity: 0.26;
-  }
-
-  72% {
-    transform: translateX(318px) scale(0.76);
-    opacity: 0.18;
-  }
-
-  100% {
-    transform: translateX(408px) scale(1.04);
-    opacity: 0.3;
-  }
-}
-
-@keyframes volleyLiveShiftLeft {
+@keyframes volleyLivePlayerFloat {
   0%,
   100% {
     transform: translate(0, 0);
   }
 
-  35% {
-    transform: translate(5px, -4px);
+  20% {
+    transform: translate(-1px, -3px);
+  }
+
+  45% {
+    transform: translate(2px, -5px);
   }
 
   70% {
-    transform: translate(-4px, 3px);
-  }
-}
-
-@keyframes volleyLiveShiftRight {
-  0%,
-  100% {
-    transform: translate(0, 0);
+    transform: translate(-2px, 3px);
   }
 
-  35% {
-    transform: translate(-5px, -4px);
-  }
-
-  70% {
-    transform: translate(4px, 3px);
+  85% {
+    transform: translate(1px, 1px);
   }
 }
 
@@ -3832,13 +3842,6 @@ footer img {
     min-height: 220px;
   }
 
-  .volley-live-widget__ball {
-    animation-name: volleyLiveBallFlightCompact;
-  }
-
-  .volley-live-widget__shadow {
-    animation-name: volleyLiveBallShadowCompact;
-  }
 }
 
 @media (min-width: 901px) {
@@ -3956,59 +3959,6 @@ footer img {
 
   .volley-live-widget__progress {
     padding: 14px;
-  }
-}
-
-@keyframes volleyLiveBallFlightCompact {
-  0% {
-    transform: translate(0, 0) scale(0.92);
-  }
-
-  20% {
-    transform: translate(40px, -38px) scale(1);
-  }
-
-  40% {
-    transform: translate(88px, -78px) scale(1.04);
-  }
-
-  58% {
-    transform: translate(136px, -20px) scale(0.98);
-  }
-
-  80% {
-    transform: translate(176px, -60px) scale(1.02);
-  }
-
-  100% {
-    transform: translate(216px, -8px) scale(0.95);
-  }
-}
-
-@keyframes volleyLiveBallShadowCompact {
-  0% {
-    transform: translateX(0) scale(1.1);
-    opacity: 0.34;
-  }
-
-  40% {
-    transform: translateX(88px) scale(0.72);
-    opacity: 0.14;
-  }
-
-  58% {
-    transform: translateX(136px) scale(0.96);
-    opacity: 0.26;
-  }
-
-  80% {
-    transform: translateX(176px) scale(0.76);
-    opacity: 0.18;
-  }
-
-  100% {
-    transform: translateX(216px) scale(1.04);
-    opacity: 0.3;
   }
 }
 
