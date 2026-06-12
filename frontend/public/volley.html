@@ -7,7 +7,7 @@
     <meta name="description" content="Informații și înscriere pentru turneul de volley organizat de tinerii Betel Reus pe plaja din La Pineda pe 13 iunie 2026." />
     <link rel="icon" href="/assets/icon-dark.png" />
     <link rel="preload" as="image" href="/assets/volley-tournament-transparent-900.png" fetchpriority="high" />
-    <link rel="stylesheet" href="/css/styles.css?v=site-20260612-closed-only-hide-form" />
+    <link rel="stylesheet" href="/css/styles.css?v=site-20260612-live-widget" />
   </head>
   <body class="volley-page" id="top">
     <header class="volley-header">
@@ -202,6 +202,65 @@
         </form>
       </section>
 
+      <section class="volley-section volley-live-section" id="live">
+        <section class="volley-live-widget" aria-labelledby="volleyLiveTitle">
+          <div class="volley-live-widget__header">
+            <div>
+              <p class="volley-live-widget__eyebrow" data-i18n="volleyLiveEyebrow">Turneu de volley</p>
+              <h2 id="volleyLiveTitle" data-i18n="volleyLiveTitle">Turneul este în joc</h2>
+            </div>
+            <div class="volley-live-widget__badge">
+              <span aria-hidden="true"></span>
+              <strong data-i18n="volleyLiveBadge">În direct</strong>
+            </div>
+          </div>
+
+          <div class="volley-live-widget__body">
+            <div class="volley-live-widget__court" aria-hidden="true">
+              <div class="volley-live-widget__court-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="volley-live-widget__net"></div>
+              <div class="volley-live-widget__ball"></div>
+              <div class="volley-live-widget__shadow"></div>
+
+              <div class="volley-live-widget__team volley-live-widget__team--left">
+                <span class="volley-live-widget__player volley-live-widget__player--one"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--two"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--three"></span>
+              </div>
+
+              <div class="volley-live-widget__team volley-live-widget__team--right">
+                <span class="volley-live-widget__player volley-live-widget__player--one"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--two"></span>
+                <span class="volley-live-widget__player volley-live-widget__player--three"></span>
+              </div>
+            </div>
+
+            <div class="volley-live-widget__progress">
+              <article class="volley-live-widget__match volley-live-widget__match--done">
+                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundOne">Grupe</span>
+                <strong data-i18n="volleyLiveRoundOneState">Meciuri gata</strong>
+              </article>
+              <article class="volley-live-widget__match volley-live-widget__match--active">
+                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundTwo">Eliminatorii</span>
+                <strong data-i18n="volleyLiveRoundTwoState">Puncte în joc</strong>
+              </article>
+              <article class="volley-live-widget__match">
+                <span class="volley-live-widget__match-round" data-i18n="volleyLiveRoundThree">Finală</span>
+                <strong data-i18n="volleyLiveRoundThreeState">Se apropie</strong>
+              </article>
+            </div>
+          </div>
+
+          <p class="volley-live-widget__status" id="volleyLiveStatus" data-live-status-index="0" data-i18n="volleyLiveStatusOne">
+            Serviciu în desfășurare...
+          </p>
+        </section>
+      </section>
+
       <section class="volley-section volley-teams-section" id="echipe">
         <div>
           <p class="volley-kicker" data-i18n="volleyConfirmedEyebrow">Echipe confirmate</p>
@@ -227,6 +286,6 @@
         </div>
       </div>
     </div>
-    <script src="/js/volley.min.js?v=volley-20260612-closed-only" type="module"></script>
+    <script src="/js/volley.min.js?v=volley-20260612-live-widget" type="module"></script>
   </body>
 </html>
