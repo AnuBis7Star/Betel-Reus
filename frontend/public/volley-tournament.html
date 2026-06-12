@@ -39,6 +39,8 @@
 
     * { box-sizing: border-box; }
 
+    body:not([data-tab="overview"]) [data-overview-only] { display: none; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -226,32 +228,45 @@
 
     .tabs {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 8px;
+      margin: 0 -4px 16px;
       position: sticky;
       top: 0;
       z-index: 20;
-      padding: 10px 0;
-      backdrop-filter: blur(14px);
+      padding: 10px 4px;
+      background: rgba(22, 6, 8, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 246, 232, 0.10);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
 
+    .tabs::-webkit-scrollbar { display: none; }
+
     .tab {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255, 246, 232, 0.16);
+      background: rgba(255, 246, 232, 0.04);
       color: var(--text);
-      border-radius: 999px;
-      padding: 11px 15px;
+      border-radius: 12px;
+      padding: 10px 16px;
       cursor: pointer;
       font-weight: 1000;
-      transition: .2s ease;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .tab:hover, .tab.active {
       background: var(--accent);
-      color: #190d10;
+      color: var(--volley-deep);
       border-color: transparent;
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(255, 210, 29, 0.20);
     }
 
     .section {
@@ -916,13 +931,29 @@
       .workflow, .standings-grid, .groups-grid, .summary-strip, .rules-grid { grid-template-columns: 1fr; }
       .section-title { display: block; }
       .hint { margin-top: 6px; }
-      .tabs { position: static; }
+      .tabs { position: sticky; top: 0; }
+      .tab { padding: 9px 14px; font-size: 12px; }
+      .section { padding: 18px; }
+      .hero-main { padding: 22px; }
+      .hero-main h1 { font-size: clamp(28px, 9vw, 48px); }
+      .subtitle { font-size: 15px; }
+      .save-status { font-size: 11px; }
+      .hero-side { padding: 16px; }
+      .big-status strong { font-size: 26px; }
+      .stat strong { font-size: 22px; }
     }
   </style>
 </head>
-<body>
+<body data-tab="overview">
   <main class="app">
-    <section class="hero">
+    <nav class="tabs" aria-label="Vistas del torneo" role="tablist">
+      <button class="tab active" type="button" data-tab="overview" role="tab" aria-selected="true">Resumen</button>
+      <button class="tab" type="button" data-tab="schedule" role="tab" aria-selected="false">Introducir puntos de grupos</button>
+      <button class="tab" type="button" data-tab="playoffs" role="tab" aria-selected="false">Cuadro final de 8</button>
+      <button class="tab" type="button" data-tab="rules" role="tab" aria-selected="false">Uso / Reglas</button>
+    </nav>
+
+    <section class="hero" data-overview-only>
       <div class="hero-main card">
         <div class="eyebrow">Gestor funcional del torneo</div>
         <h1>Torneo de Voleibol</h1>
@@ -941,50 +972,13 @@
         </div>
         <div class="stats">
           <div class="stat"><strong id="statTeams">15</strong><span>Equipos</span></div>
-          <div class="stat"><strong id="statMatches">29</strong><span>Partidos</span></div>
-          <div class="stat"><strong id="statCourts">2</strong><span>Campos</span></div>
+          <div class="stat"><strong id="statMatches">29</strong><span>Pendientes</span></div>
+          <div class="stat"><strong id="statCourts">3</strong><span>Campos</span></div>
         </div>
       </aside>
     </section>
 
-    <nav class="tabs" aria-label="Vistas del torneo" role="tablist">
-      <button class="tab active" type="button" data-tab="overview" role="tab" aria-selected="true">Resumen</button>
-      <button class="tab" type="button" data-tab="schedule" role="tab" aria-selected="false">Introducir puntos de grupos</button>
-      <button class="tab" type="button" data-tab="playoffs" role="tab" aria-selected="false">Cuadro final de 8</button>
-      <button class="tab" type="button" data-tab="rules" role="tab" aria-selected="false">Reglas</button>
-    </nav>
-
     <section id="overview" class="section card active">
-      <div class="section-title">
-        <div>
-          <h2>Cómo usarlo</h2>
-          <p class="hint">Esta versión no tiene ningún escenario aleatorio. Todo se calcula a partir de los puntos que introduces.</p>
-        </div>
-      </div>
-
-      <div class="workflow">
-        <div class="step">
-          <div class="number">1</div>
-          <strong>Introduce los puntos de grupos</strong>
-          <p>Usa el calendario de dos pistas y rellena los puntos de cada partido de grupo.</p>
-        </div>
-        <div class="step">
-          <div class="number">2</div>
-          <strong>Clasificación automática</strong>
-          <p>Los 2 mejores de cada grupo se seleccionan usando victorias, diferencia de puntos, puntos anotados y enfrentamiento directo.</p>
-        </div>
-        <div class="step">
-          <div class="number">3</div>
-          <strong>Aparecen los cuartos</strong>
-          <p>Cuando todos los partidos de grupo están completos, la aplicación rellena automáticamente el cuadro final de 8.</p>
-        </div>
-        <div class="step">
-          <div class="number">4</div>
-          <strong>Completa el cuadro</strong>
-          <p>Introduce los puntos de las eliminatorias y los ganadores avanzan a semifinales, final y campeón.</p>
-        </div>
-      </div>
-
       <div class="summary-strip">
         <div class="summary-item"><span>Partidos de grupo completados</span><strong id="groupProgress">0 / 21</strong></div>
         <div class="summary-item"><span>Equipos clasificados</span><strong id="qualifierProgress">Pendiente</strong></div>
@@ -1064,8 +1058,38 @@
     <section id="rules" class="section card">
       <div class="section-title">
         <div>
-          <h2>Reglas recomendadas del torneo</h2>
-          <p class="hint">Sencillo, rápido y justo para 15 equipos con solo 2 pistas.</p>
+          <h2>Cómo usarlo</h2>
+          <p class="hint">Esta versión no tiene ningún escenario aleatorio. Todo se calcula a partir de los puntos que introduces.</p>
+        </div>
+      </div>
+
+      <div class="workflow">
+        <div class="step">
+          <div class="number">1</div>
+          <strong>Introduce los puntos de grupos</strong>
+          <p>Usa el calendario de tres campos en paralelo y rellena los puntos de cada partido de grupo.</p>
+        </div>
+        <div class="step">
+          <div class="number">2</div>
+          <strong>Clasificación automática</strong>
+          <p>Los 2 mejores de cada grupo se seleccionan usando victorias, diferencia de puntos, puntos anotados y enfrentamiento directo.</p>
+        </div>
+        <div class="step">
+          <div class="number">3</div>
+          <strong>Aparecen los cuartos</strong>
+          <p>Cuando todos los partidos de grupo están completos, la aplicación rellena automáticamente el cuadro final de 8.</p>
+        </div>
+        <div class="step">
+          <div class="number">4</div>
+          <strong>Completa el cuadro</strong>
+          <p>Introduce los puntos de las eliminatorias y los ganadores avanzan a semifinales, final y campeón.</p>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top: 22px;">
+        <div>
+          <h2>Reglas del torneo</h2>
+          <p class="hint">Sencillo, rápido y justo para 15 equipos con 3 campos en paralelo.</p>
         </div>
       </div>
 
@@ -1076,7 +1100,7 @@
         </div>
         <div class="rule-card">
           <h3>Fase de grupos</h3>
-          <p>Los grupos de 4 equipos juegan 3 partidos por equipo. El grupo de 3 equipos juega 2 partidos por equipo.</p>
+          <p>Los grupos de 4 equipos juegan 3 partidos por equipo. El grupo de 3 equipos juega 2 partidos por equipo. Se juegan 7 franjas de tres partidos simultáneos.</p>
         </div>
         <div class="rule-card">
           <h3>Clasificación y eliminatorias</h3>

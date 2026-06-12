@@ -573,7 +573,9 @@ function renderBracket() {
 
 function renderHeroStats() {
   const teams = Object.values(groups).reduce((sum, list) => sum + list.length, 0);
-  const matches = Object.keys(groupMatches).length + Object.keys(playoffStructure).length;
+  const totalMatches = Object.keys(groupMatches).length + Object.keys(playoffStructure).length;
+  const completed = getCompletedGroupCount() + getCompletedPlayoffCount();
+  const remaining = Math.max(totalMatches - completed, 0);
   const courts = new Set();
   for (const slot of groupSlots) {
     if (slot.c1) courts.add("c1");
@@ -584,7 +586,7 @@ function renderHeroStats() {
   const statMatches = document.getElementById("statMatches");
   const statCourts = document.getElementById("statCourts");
   if (statTeams) statTeams.textContent = String(teams);
-  if (statMatches) statMatches.textContent = String(matches);
+  if (statMatches) statMatches.textContent = String(remaining);
   if (statCourts) statCourts.textContent = String(courts.size);
 }
 
@@ -675,6 +677,7 @@ function bindEvents() {
       document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
       tab.classList.add("active");
       tab.setAttribute("aria-selected", "true");
+      document.body.dataset.tab = tab.dataset.tab;
       document.getElementById(tab.dataset.tab).classList.add("active");
     });
   });
