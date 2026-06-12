@@ -465,7 +465,7 @@
 
     .courts {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 12px;
     }
 
@@ -541,7 +541,7 @@
 
     .team-chip {
       border-radius: 14px;
-      padding: 9px 10px;
+      padding: 9px 8px;
       background: rgba(0,0,0,.32);
       border: 1px solid rgba(255,255,255,.13);
       font-weight: 950;
@@ -550,6 +550,8 @@
       display: grid;
       align-items: center;
       text-align: center;
+      font-size: 14px;
+      word-break: break-word;
     }
 
     .team-chip.winner {
@@ -903,6 +905,7 @@
       .side-panel { position: static; }
       .workflow, .standings-grid, .groups-grid { grid-template-columns: repeat(2, 1fr); }
       .summary-strip, .rules-grid { grid-template-columns: repeat(2, 1fr); }
+      .courts { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 760px) {
@@ -939,7 +942,7 @@
         <div class="stats">
           <div class="stat"><strong id="statTeams">15</strong><span>Equipos</span></div>
           <div class="stat"><strong id="statMatches">29</strong><span>Partidos</span></div>
-          <div class="stat"><strong id="statCourts">2</strong><span>Pistas</span></div>
+          <div class="stat"><strong id="statCourts">2</strong><span>Campos</span></div>
         </div>
       </aside>
     </section>

@@ -11,8 +11,9 @@ const TEXT = {
   missingScore: "Falta puntuación",
   enterBothScores: "Introduce ambos puntos",
   winner: "Ganador",
-  court1: "Pista 1",
-  court2: "Pista 2",
+  court1: "Campo 1",
+  court2: "Campo 2",
+  court3: "Campo 3",
   slot: "Franja",
   buffer: "Margen",
   delayRecovery: "Recuperar retrasos",
@@ -47,44 +48,40 @@ const groupClasses = {
 };
 
 const groupSlots = [
-  { slot: 1, c1: "G-A-1", c2: "G-B-1" },
-  { slot: 2, c1: "G-C-1", c2: "G-A-2" },
-  { slot: 3, c1: "G-B-2", c2: "G-C-2" },
-  { slot: 4, c1: "G-D-1", c2: "G-A-3" },
-  { slot: 5, c1: "G-B-3", c2: "G-C-3" },
-  { slot: 6, c1: "G-A-4", c2: "G-B-4" },
-  { slot: 7, c1: "G-D-2", c2: "G-C-4" },
-  { slot: 8, c1: "G-A-5", c2: "G-B-5" },
-  { slot: 9, c1: "G-C-5", c2: "G-A-6" },
-  { slot: 10, c1: "G-D-3", c2: "G-B-6" },
-  { slot: 11, c1: "G-C-6", c2: null }
+  { slot: 1, c1: "G-A-1", c2: "G-B-3", c3: "G-C-3" },
+  { slot: 2, c1: "G-A-2", c2: "G-B-4", c3: "G-C-4" },
+  { slot: 3, c1: "G-D-1", c2: "G-A-4", c3: "G-A-5" },
+  { slot: 4, c1: "G-B-1", c2: "G-C-1", c3: "G-C-5" },
+  { slot: 5, c1: "G-B-2", c2: "G-D-3", c3: "G-A-6" },
+  { slot: 6, c1: "G-D-2", c2: "G-C-2", c3: "G-B-6" },
+  { slot: 7, c1: "G-A-3", c2: "G-B-5", c3: "G-C-6" }
 ];
 
 const groupMatches = {
-  "G-A-1": { group: "Grupo A", teamA: "Beteliștii", teamB: "Luculescu’s Team" },
-  "G-A-2": { group: "Grupo A", teamA: "Leones de Judá", teamB: "Team Spirit" },
+  "G-A-1": { group: "Grupo A", teamA: "Beteliștii", teamB: "Leones de Judá" },
+  "G-A-2": { group: "Grupo A", teamA: "Luculescu’s Team", teamB: "Team Spirit" },
   "G-A-3": { group: "Grupo A", teamA: "Beteliștii", teamB: "Team Spirit" },
-  "G-A-4": { group: "Grupo A", teamA: "Luculescu’s Team", teamB: "Leones de Judá" },
-  "G-A-5": { group: "Grupo A", teamA: "Beteliștii", teamB: "Leones de Judá" },
-  "G-A-6": { group: "Grupo A", teamA: "Team Spirit", teamB: "Luculescu’s Team" },
+  "G-A-4": { group: "Grupo A", teamA: "Beteliștii", teamB: "Luculescu’s Team" },
+  "G-A-5": { group: "Grupo A", teamA: "Leones de Judá", teamB: "Team Spirit" },
+  "G-A-6": { group: "Grupo A", teamA: "Luculescu’s Team", teamB: "Leones de Judá" },
 
-  "G-B-1": { group: "Grupo B", teamA: "Groapa cu Lei", teamB: "TNS Volley" },
-  "G-B-2": { group: "Grupo B", teamA: "Torre Fuerte", teamB: "Kojaska" },
-  "G-B-3": { group: "Grupo B", teamA: "Groapa cu Lei", teamB: "Kojaska" },
-  "G-B-4": { group: "Grupo B", teamA: "TNS Volley", teamB: "Torre Fuerte" },
-  "G-B-5": { group: "Grupo B", teamA: "Groapa cu Lei", teamB: "Torre Fuerte" },
-  "G-B-6": { group: "Grupo B", teamA: "Kojaska", teamB: "TNS Volley" },
+  "G-B-1": { group: "Grupo B", teamA: "Kojaska", teamB: "Groapa cu Lei" },
+  "G-B-2": { group: "Grupo B", teamA: "TNS Volley", teamB: "Torre Fuerte" },
+  "G-B-3": { group: "Grupo B", teamA: "Kojaska", teamB: "TNS Volley" },
+  "G-B-4": { group: "Grupo B", teamA: "Groapa cu Lei", teamB: "Torre Fuerte" },
+  "G-B-5": { group: "Grupo B", teamA: "Torre Fuerte", teamB: "Kojaska" },
+  "G-B-6": { group: "Grupo B", teamA: "Groapa cu Lei", teamB: "TNS Volley" },
 
   "G-C-1": { group: "Grupo C", teamA: "Los Titanes", teamB: "Mancos Team" },
-  "G-C-2": { group: "Grupo C", teamA: "Santos Rematadores", teamB: "Playeros" },
+  "G-C-2": { group: "Grupo C", teamA: "Playeros", teamB: "Mancos Team" },
   "G-C-3": { group: "Grupo C", teamA: "Los Titanes", teamB: "Playeros" },
-  "G-C-4": { group: "Grupo C", teamA: "Mancos Team", teamB: "Santos Rematadores" },
-  "G-C-5": { group: "Grupo C", teamA: "Los Titanes", teamB: "Santos Rematadores" },
-  "G-C-6": { group: "Grupo C", teamA: "Playeros", teamB: "Mancos Team" },
+  "G-C-4": { group: "Grupo C", teamA: "Santos Rematadores", teamB: "Mancos Team" },
+  "G-C-5": { group: "Grupo C", teamA: "Playeros", teamB: "Santos Rematadores" },
+  "G-C-6": { group: "Grupo C", teamA: "Los Titanes", teamB: "Santos Rematadores" },
 
   "G-D-1": { group: "Grupo D", teamA: "Remate de Fe", teamB: "TOISS" },
-  "G-D-2": { group: "Grupo D", teamA: "Vida Real", teamB: "Remate de Fe" },
-  "G-D-3": { group: "Grupo D", teamA: "TOISS", teamB: "Vida Real" }
+  "G-D-2": { group: "Grupo D", teamA: "Remate de Fe", teamB: "Vida Real" },
+  "G-D-3": { group: "Grupo D", teamA: "Vida Real", teamB: "TOISS" }
 };
 
 const playoffStructure = {
@@ -392,10 +389,10 @@ function renderGroups() {
   });
 }
 
-function makeEmptyCourt() {
+function makeEmptyCourt(courtName) {
   return `
     <article class="court">
-      <div class="court-title">${TEXT.court2} <span class="status-pill">${TEXT.buffer}</span></div>
+      <div class="court-title">${courtName} <span class="status-pill">${TEXT.buffer}</span></div>
       <div class="match-visual">
         <div class="versus">
           <div class="team-chip">${TEXT.delayRecovery}</div>
@@ -451,8 +448,9 @@ function renderGroupSchedule() {
 
   groupSlots.forEach(item => {
     const teamsInSlot = [];
-    if (item.c1) teamsInSlot.push(groupMatches[item.c1].teamA, groupMatches[item.c1].teamB);
+    if (item.c1 && groupMatches[item.c1]) teamsInSlot.push(groupMatches[item.c1].teamA, groupMatches[item.c1].teamB);
     if (item.c2 && groupMatches[item.c2]) teamsInSlot.push(groupMatches[item.c2].teamA, groupMatches[item.c2].teamB);
+    if (item.c3 && groupMatches[item.c3]) teamsInSlot.push(groupMatches[item.c3].teamA, groupMatches[item.c3].teamB);
 
     const card = document.createElement("article");
     card.className = "slot-card";
@@ -462,8 +460,9 @@ function renderGroupSchedule() {
     card.innerHTML = `
       <div class="slot-badge"><div><small>${TEXT.slot}</small>${item.slot}</div></div>
       <div class="courts">
-        ${makeGroupCourt(TEXT.court1, item.c1)}
-        ${item.c2 ? makeGroupCourt(TEXT.court2, item.c2) : makeEmptyCourt()}
+        ${item.c1 ? makeGroupCourt(TEXT.court1, item.c1) : makeEmptyCourt(TEXT.court1)}
+        ${item.c2 ? makeGroupCourt(TEXT.court2, item.c2) : makeEmptyCourt(TEXT.court2)}
+        ${item.c3 ? makeGroupCourt(TEXT.court3, item.c3) : makeEmptyCourt(TEXT.court3)}
       </div>
     `;
     board.appendChild(card);
@@ -579,6 +578,7 @@ function renderHeroStats() {
   for (const slot of groupSlots) {
     if (slot.c1) courts.add("c1");
     if (slot.c2) courts.add("c2");
+    if (slot.c3) courts.add("c3");
   }
   const statTeams = document.getElementById("statTeams");
   const statMatches = document.getElementById("statMatches");
