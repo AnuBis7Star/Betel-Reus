@@ -42,6 +42,10 @@
 
     * { box-sizing: border-box; }
 
+    html {
+      background-color: #1a0102;
+    }
+
     body[data-tab="schedule"] .hero,
     body[data-tab="playoffs"] .hero,
     body[data-tab="rules"] .hero { display: none; }
@@ -55,9 +59,9 @@
         radial-gradient(circle at 18% 12%, rgba(255, 210, 29, 0.08), transparent 24%),
         radial-gradient(circle at 80% 22%, rgba(240, 94, 104, 0.10), transparent 25%),
         linear-gradient(135deg, #2a0203 0%, #5d0709 48%, #180102 100%);
-      background-attachment: fixed;
       padding: 22px;
       padding-top: max(22px, env(safe-area-inset-top, 0px));
+      padding-bottom: max(22px, env(safe-area-inset-bottom, 0px));
       padding-left: max(22px, env(safe-area-inset-left, 0px));
       padding-right: max(22px, env(safe-area-inset-right, 0px));
     }
