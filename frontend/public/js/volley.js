@@ -11,6 +11,7 @@ const colorSummary = document.querySelector("#volleyColorSummary");
 const closedNotice = document.querySelector("#volleyClosedNotice");
 const closedMessage = document.querySelector("#volleyClosedMessage");
 const heroDeadlineText = document.querySelector("#volleyHeroDeadlineText");
+const liveStatus = document.querySelector("#volleyLiveStatus");
 const registrationLinks = document.querySelectorAll("[data-volley-registration-link]");
 const minimumPlayers = 5;
 // Registration closes Friday 12 June 2026 at 18:00 Europe/Madrid.
@@ -20,12 +21,26 @@ const closedNoticeStorageKey = "betel-volley-registration-closed-notice-20260612
 const teamNameCache = new Set();
 const defaultLanguage = "ro";
 const supportedLanguages = new Set(["ro", "es"]);
-const i18nAssetVersion = "i18n-20260612-closed-only";
+const i18nAssetVersion = "i18n-20260612-live-widget";
 const translations = {};
 let shirtColors = [];
 let approvedTeams = [];
 let selectedShirtColor = "";
 let lang = supportedLanguages.has(localStorage.getItem("betel-lang")) ? localStorage.getItem("betel-lang") : defaultLanguage;
+let liveStatusIntervalId = null;
+
+function liveStatusMessages() {
+  return [
+    tx("volleyLiveStatusOne"),
+    tx("volleyLiveStatusTwo"),
+    tx("volleyLiveStatusThree"),
+    tx("volleyLiveStatusFour"),
+    tx("volleyLiveStatusFive"),
+    tx("volleyLiveStatusSix"),
+    tx("volleyLiveStatusSeven"),
+    tx("volleyLiveStatusEight")
+  ];
+}
 
 function tx(key) {
   return translations[lang]?.[key] || translations[defaultLanguage]?.[key] || key;
@@ -162,6 +177,7 @@ function setupRegistrationDeadline() {
 let revealObserver = null;
 const revealSelectors = [
   ".volley-section > div",
+  ".volley-live-widget",
   ".volley-facts article",
   ".volley-rule-list article",
   ".volley-regulation-grid article",
@@ -290,6 +306,7 @@ function applyLanguage() {
   renumberPlayers();
   loadApprovedTeams();
   if (heroDeadlineText) heroDeadlineText.textContent = isVolleyRegistrationClosed() ? tx("volleyHeroClosedText") : deadlineRemainingText();
+  applyLiveStatusText();
 }
 
 function selectedColor() {
@@ -423,6 +440,34 @@ function setupVolleyHeaderScroll() {
     header.classList.remove("is-hidden-on-scroll");
     lastY = window.scrollY;
   });
+}
+
+function applyLiveStatusText() {
+  if (!liveStatus) return;
+  const statuses = liveStatusMessages();
+  const index = Number.parseInt(liveStatus.dataset.liveStatusIndex || "0", 10);
+  liveStatus.textContent = statuses[index] || statuses[0] || "";
+}
+
+function setupLiveWidgetStatusRotation() {
+  if (!liveStatus) return;
+  applyLiveStatusText();
+  if (liveStatusIntervalId) {
+    window.clearInterval(liveStatusIntervalId);
+    liveStatusIntervalId = null;
+  }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  if (liveStatusMessages().length < 2) return;
+
+  liveStatusIntervalId = window.setInterval(() => {
+    const statuses = liveStatusMessages();
+    if (statuses.length < 2) return;
+    const currentIndex = Number.parseInt(liveStatus.dataset.liveStatusIndex || "0", 10);
+    const nextIndex = (currentIndex + 1) % statuses.length;
+    liveStatus.dataset.liveStatusIndex = String(nextIndex);
+    liveStatus.textContent = statuses[nextIndex];
+  }, 4400);
 }
 
 async function loadColorAvailability() {
@@ -655,6 +700,7 @@ async function initializeVolleyPage() {
   setupRegistrationDeadline();
   setupExtraColorScroller();
   setupVolleyHeaderScroll();
+  setupLiveWidgetStatusRotation();
   loadColorAvailability();
 
   document.querySelector("#langToggle")?.addEventListener("click", async () => {

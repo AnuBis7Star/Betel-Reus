@@ -3005,6 +3005,401 @@ footer img {
   display: none !important;
 }
 
+.volley-live-section {
+  padding-top: 0;
+}
+
+.volley-live-widget {
+  display: grid;
+  gap: 18px;
+  border: 1px solid rgba(255, 246, 232, 0.16);
+  border-radius: 8px;
+  padding: clamp(20px, 3vw, 28px);
+  background:
+    radial-gradient(circle at top right, rgba(255, 210, 29, 0.16), transparent 30%),
+    linear-gradient(160deg, rgba(22, 6, 8, 0.44), rgba(57, 12, 17, 0.76));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+  overflow: clip;
+}
+
+.volley-live-widget__header,
+.volley-live-widget__body {
+  display: grid;
+  gap: 18px;
+}
+
+.volley-live-widget__header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.volley-live-widget__eyebrow {
+  margin: 0 0 8px;
+  color: rgba(255, 246, 232, 0.7);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.volley-live-widget__header h2 {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 0.98;
+}
+
+.volley-live-widget__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: center;
+  min-height: 40px;
+  border: 1px solid rgba(255, 210, 29, 0.34);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: rgba(255, 246, 232, 0.08);
+  color: var(--volley-cream);
+  font-size: 0.88rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.volley-live-widget__badge span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--volley-yellow);
+  box-shadow: 0 0 0 0 rgba(255, 210, 29, 0.48);
+  animation: volleyLivePulse 1.8s ease-out infinite;
+}
+
+.volley-live-widget__body {
+  grid-template-columns: minmax(0, 1.25fr) minmax(250px, 0.75fr);
+  align-items: center;
+}
+
+.volley-live-widget__court,
+.volley-live-widget__progress,
+.volley-live-widget__status {
+  border: 1px solid rgba(255, 246, 232, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 246, 232, 0.06);
+}
+
+.volley-live-widget__court {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  min-height: 240px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(255, 246, 232, 0.06), transparent 38%),
+    linear-gradient(145deg, rgba(101, 20, 28, 0.86), rgba(72, 14, 20, 0.9));
+}
+
+.volley-live-widget__court-lines span,
+.volley-live-widget__net,
+.volley-live-widget__ball,
+.volley-live-widget__player {
+  position: absolute;
+}
+
+.volley-live-widget__court-lines span {
+  background: rgba(255, 246, 232, 0.34);
+}
+
+.volley-live-widget__court-lines span:nth-child(1) {
+  inset: 18px auto 18px 50%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.volley-live-widget__court-lines span:nth-child(2) {
+  inset: 18px auto auto 10%;
+  width: 80%;
+  height: 1px;
+}
+
+.volley-live-widget__court-lines span:nth-child(3) {
+  inset: auto auto 18px 10%;
+  width: 80%;
+  height: 1px;
+}
+
+.volley-live-widget__net {
+  top: 18px;
+  bottom: 18px;
+  left: 50%;
+  width: 10px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 246, 232, 0.64) 0 6px,
+      rgba(255, 246, 232, 0.12) 6px 10px
+    );
+  box-shadow:
+    -1px 0 0 rgba(255, 246, 232, 0.2),
+    1px 0 0 rgba(255, 246, 232, 0.2);
+}
+
+.volley-live-widget__team {
+  position: absolute;
+  inset: 0;
+}
+
+.volley-live-widget__player {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 246, 232, 0.65);
+  border-radius: 50%;
+  background: rgba(255, 246, 232, 0.38);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  animation: volleyLivePlayerFloat 6.8s ease-in-out infinite;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player {
+  border-color: rgba(192, 219, 236, 0.68);
+  background: #7da0b7;
+  box-shadow:
+    0 0 0 4px rgba(125, 160, 183, 0.12),
+    0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.volley-live-widget__team--right .volley-live-widget__player {
+  border-color: rgba(213, 213, 213, 0.3);
+  background: #2b2b2b;
+  box-shadow:
+    0 0 0 4px rgba(43, 43, 43, 0.12),
+    0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--one {
+  top: 32%;
+  left: 16%;
+  animation-delay: 0ms;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--two {
+  top: 50%;
+  left: 26%;
+  animation-delay: 240ms;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--three {
+  top: 68%;
+  left: 14%;
+  animation-delay: 520ms;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--four {
+  top: 39%;
+  left: 35%;
+  animation-delay: 780ms;
+}
+
+.volley-live-widget__team--left .volley-live-widget__player--five {
+  top: 70%;
+  left: 34%;
+  animation-delay: 1020ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--one {
+  top: 32%;
+  right: 16%;
+  animation-delay: 180ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--two {
+  top: 50%;
+  right: 26%;
+  animation-delay: 460ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--three {
+  top: 68%;
+  right: 14%;
+  animation-delay: 720ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--four {
+  top: 39%;
+  right: 35%;
+  animation-delay: 980ms;
+}
+
+.volley-live-widget__team--right .volley-live-widget__player--five {
+  top: 70%;
+  right: 34%;
+  animation-delay: 1240ms;
+}
+
+.volley-live-widget__ball {
+  top: 33%;
+  left: 17%;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 246, 232, 0.8);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff7ea 0 28%, var(--volley-yellow) 29% 64%, #c48b00 65% 100%);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+  animation: volleyLiveBallFlight 18s linear infinite;
+}
+
+.volley-live-widget__progress {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.volley-live-widget__match {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: 14px 14px 14px 18px;
+  border: 1px solid rgba(255, 246, 232, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 246, 232, 0.04);
+}
+
+.volley-live-widget__match::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 4px;
+  border-radius: 999px;
+  background: rgba(255, 246, 232, 0.18);
+}
+
+.volley-live-widget__match--done::before {
+  background: rgba(255, 210, 29, 0.48);
+}
+
+.volley-live-widget__match--active::before {
+  background: linear-gradient(180deg, var(--volley-yellow), #ff9f4a);
+  box-shadow: 0 0 18px rgba(255, 210, 29, 0.22);
+}
+
+.volley-live-widget__match-round {
+  color: rgba(255, 246, 232, 0.62);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.volley-live-widget__match strong {
+  color: var(--volley-cream);
+  font-size: 1rem;
+}
+
+.volley-live-widget__status {
+  margin: 0;
+  padding: 14px 16px;
+  color: rgba(255, 246, 232, 0.9);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+@keyframes volleyLivePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 210, 29, 0.48);
+  }
+
+  45% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 9px rgba(255, 210, 29, 0);
+  }
+}
+
+@keyframes volleyLiveBallFlight {
+  0% {
+    top: 33%;
+    left: 17%;
+    transform: scale(0.94);
+  }
+
+  10% {
+    top: 33%;
+    left: 17%;
+    transform: scale(0.94);
+  }
+
+  22% {
+    top: 48%;
+    left: 27%;
+    transform: scale(0.98);
+  }
+
+  32% {
+    top: 48%;
+    left: 27%;
+    transform: scale(0.98);
+  }
+
+  44% {
+    top: 38%;
+    left: 36%;
+    transform: scale(1.02);
+  }
+
+  54% {
+    top: 38%;
+    left: 36%;
+    transform: scale(1.02);
+  }
+
+  70% {
+    top: 49%;
+    left: 73%;
+    transform: scale(0.97);
+  }
+
+  82% {
+    top: 38%;
+    left: 64%;
+    transform: scale(1.01);
+  }
+
+  90% {
+    top: 38%;
+    left: 64%;
+    transform: scale(1.01);
+  }
+
+  100% {
+    top: 33%;
+    left: 17%;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes volleyLivePlayerFloat {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-1px, -3px);
+  }
+
+  45% {
+    transform: translate(2px, -5px);
+  }
+
+  70% {
+    transform: translate(-2px, 3px);
+  }
+
+  85% {
+    transform: translate(1px, 1px);
+  }
+}
+
 .volley-form.reveal-on-scroll {
   transform: translateY(26px) scale(0.985);
 }
@@ -3433,6 +3828,20 @@ footer img {
   .volley-closed-notice {
     bottom: 188px;
   }
+
+  .volley-live-widget__header,
+  .volley-live-widget__body {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-live-widget__badge {
+    justify-self: start;
+  }
+
+  .volley-live-widget__court {
+    min-height: 220px;
+  }
+
 }
 
 @media (min-width: 901px) {
@@ -3532,6 +3941,33 @@ footer img {
 
   .volley-poster {
     min-height: 0;
+  }
+
+  .volley-live-section {
+    padding-top: 0;
+  }
+
+  .volley-live-widget {
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .volley-live-widget__court {
+    aspect-ratio: 6 / 5;
+    min-height: 190px;
+  }
+
+  .volley-live-widget__progress {
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volley-live-widget__badge span,
+  .volley-live-widget__ball,
+  .volley-live-widget__shadow,
+  .volley-live-widget__player {
+    animation: none !important;
   }
 }
 
