@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor del Torneo de Voleibol</title>
+  <link rel="icon" href="/assets/icon-dark.png" />
+  <style>
+    :root {
+      --bg-1: #250304;
+      --bg-2: #08033d;
+      --bg-3: #21010c;
+      --panel: rgba(255,255,255,.085);
+      --panel-strong: rgba(255,255,255,.14);
+      --line: rgba(255,255,255,.18);
+      --text: #fff;
+      --muted: rgba(255,255,255,.68);
+      --yellow: #f7c800;
+      --blue: #145dde;
+      --green: #08944e;
+      --red: #ce3835;
+      --accent: #ffd22d;
+      --win: #57e389;
+      --danger: #ff6b6b;
+      --warning: #ffca3a;
+      --radius: 22px;
+      --shadow: 0 22px 65px rgba(0,0,0,.38);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 15%, rgba(247,200,0,.16), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(20,93,222,.35), transparent 30%),
+        radial-gradient(circle at 70% 85%, rgba(206,56,53,.26), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 54%, var(--bg-3));
+      padding: 22px;
+    }
+
+    .app { max-width: 1400px; margin: 0 auto; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr .6fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+      min-height: 190px;
+    }
+
+    .hero-main::before {
+      content: "🏐";
+      position: absolute;
+      right: 32px;
+      top: 18px;
+      font-size: 82px;
+      opacity: .14;
+      filter: grayscale(1);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 72px);
+      line-height: .88;
+      text-transform: uppercase;
+      letter-spacing: -.065em;
+      max-width: 790px;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      color: var(--muted);
+      max-width: 790px;
+      line-height: 1.55;
+      font-size: 16px;
+    }
+
+    .save-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.32);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .save-status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--win);
+      box-shadow: 0 0 0 3px rgba(86,227,137,.18);
+    }
+
+    .save-status[data-status="pending"]::before,
+    .save-status[data-status="loading"]::before {
+      background: var(--warning);
+      box-shadow: 0 0 0 3px rgba(255,202,58,.18);
+      animation: savePulse 1s infinite ease-in-out;
+    }
+
+    .save-status[data-status="error"]::before,
+    .save-status[data-status="offline"]::before {
+      background: var(--danger);
+      box-shadow: 0 0 0 3px rgba(255,107,107,.18);
+    }
+
+    @keyframes savePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+
+    .hero-side {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-content: center;
+    }
+
+    .big-status {
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(0,0,0,.24);
+      border: 1px solid var(--line);
+    }
+
+    .big-status span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      margin-bottom: 5px;
+    }
+
+    .big-status strong {
+      display: block;
+      color: var(--accent);
+      font-size: 31px;
+      line-height: 1.05;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+
+    .stat {
+      border-radius: 15px;
+      padding: 12px 8px;
+      background: rgba(255,255,255,.08);
+      text-align: center;
+      border: 1px solid var(--line);
+    }
+
+    .stat strong { display: block; font-size: 25px; line-height: 1; }
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 10px 0;
+      backdrop-filter: blur(14px);
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 1000;
+      transition: .2s ease;
+    }
+
+    .tab:hover, .tab.active {
+      background: var(--accent);
+      color: #190d10;
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    .section {
+      display: none;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .section.active { display: block; }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -.035em;
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .step {
+      background: rgba(0,0,0,.24);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .step .number {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #1b1010;
+      font-weight: 1000;
+      margin-bottom: 9px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .side-panel {
+      padding: 16px;
+      position: sticky;
+      top: 74px;
+    }
+
+    .side-panel h3 {
+      margin: 0 0 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 15px;
+    }
+
+    .control-row {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    select, button, input[type="number"] {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.32);
+      color: var(--text);
+      border-radius: 14px;
+      font-weight: 900;
+    }
+
+    select, button { padding: 11px 12px; }
+
+    select { width: 100%; }
+    select option { color: #111; }
+
+    button {
+      cursor: pointer;
+      transition: .15s ease;
+    }
+
+    button:hover { background: rgba(255,255,255,.14); }
+
+    button.primary {
+      background: var(--accent);
+      color: #1b1010;
+      border-color: transparent;
+    }
+
+    button.danger {
+      background: rgba(255,107,107,.12);
+      color: #ffd5d5;
+      border-color: rgba(255,107,107,.35);
+    }
+
+    .button-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .legend span {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot.complete { background: var(--win); }
+    .dot.incomplete { background: var(--warning); }
+    .dot.selected { background: var(--accent); }
+
+    .court-board { display: grid; gap: 12px; }
+
+    .slot-card {
+      border-radius: 22px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--line);
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 14px;
+      transition: .2s ease;
+    }
+
+    .slot-card.dimmed {
+      opacity: .26;
+      filter: grayscale(.45);
+    }
+
+    .slot-card.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(255,210,45,.20) inset;
+    }
+
+    .slot-badge {
+      border-radius: 18px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--accent);
+      font-weight: 1000;
+      min-height: 128px;
+    }
+
+    .slot-badge small {
+      display: block;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 10px;
+      margin-bottom: 3px;
+    }
+
+    .courts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .court {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px) 50% 0 / 50% 100%,
+        linear-gradient(0deg, rgba(255,255,255,.1) 1px, transparent 1px) 0 50% / 100% 50%,
+        rgba(255,255,255,.055);
+      min-height: 128px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      position: relative;
+    }
+
+    .court::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: rgba(255,255,255,.25);
+      transform: translateX(-50%);
+    }
+
+    .court-title {
+      padding: 8px 11px;
+      font-size: 11px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.8);
+      background: rgba(0,0,0,.22);
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .status-pill {
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      background: rgba(255,255,255,.10);
+      color: var(--muted);
+    }
+
+    .status-pill.complete {
+      background: rgba(86,227,137,.14);
+      color: var(--win);
+    }
+
+    .match-visual {
+      padding: 11px;
+      display: grid;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .versus {
+      display: grid;
+      grid-template-columns: 1fr 68px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .team-chip {
+      border-radius: 14px;
+      padding: 9px 10px;
+      background: rgba(0,0,0,.32);
+      border: 1px solid rgba(255,255,255,.13);
+      font-weight: 950;
+      line-height: 1.2;
+      min-height: 52px;
+      display: grid;
+      align-items: center;
+      text-align: center;
+    }
+
+    .team-chip.winner {
+      border-color: rgba(86,227,137,.8);
+      background: rgba(86,227,137,.16);
+      box-shadow: 0 0 0 2px rgba(86,227,137,.13) inset;
+    }
+
+    .team-chip.loser { color: rgba(255,255,255,.55); }
+
+    .score-box {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      justify-items: center;
+    }
+
+    .score-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      width: 68px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 1000;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .vs {
+      color: var(--accent);
+      font-weight: 1000;
+      font-size: 11px;
+      letter-spacing: .05em;
+    }
+
+    .match-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(0,0,0,.25);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .pill.winner {
+      color: var(--win);
+      background: rgba(86,227,137,.10);
+    }
+
+    .pill.warning {
+      color: var(--warning);
+      background: rgba(255,202,58,.10);
+    }
+
+    .standings-grid, .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .group {
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--line);
+    }
+
+    .group-header {
+      padding: 12px 14px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .group-header small { opacity: .8; }
+
+    .group-a .group-header { background: var(--yellow); color: #1c1200; }
+    .group-b .group-header { background: var(--blue); }
+    .group-c .group-header { background: var(--green); }
+    .group-d .group-header { background: var(--red); }
+
+    .team-list {
+      list-style: none;
+      padding: 10px;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .team {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.07);
+      font-weight: 900;
+    }
+
+    .seed {
+      width: 25px;
+      height: 25px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255,255,255,.13);
+      color: var(--accent);
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 9px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--accent);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    td {
+      color: rgba(255,255,255,.87);
+      font-weight: 750;
+    }
+
+    tr.qualifier td { background: rgba(86,227,137,.12); }
+    tr.pending td { color: rgba(255,255,255,.48); }
+
+    .mini-note {
+      margin: 10px 12px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .bracket-wrap {
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .bracket {
+      min-width: 1080px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .round {
+      display: grid;
+      gap: 14px;
+    }
+
+    .round h3 {
+      margin: 0 0 2px;
+      color: var(--accent);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .bracket-match {
+      border-radius: 18px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--line);
+      padding: 12px;
+      min-height: 138px;
+    }
+
+    .bracket-match.complete { border-color: rgba(86,227,137,.45); }
+    .bracket-match.pending { border-color: rgba(255,202,58,.35); }
+
+    .match-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 8px;
+    }
+
+    .bracket-team {
+      display: grid;
+      grid-template-columns: 1fr 58px;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 9px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.07);
+      margin-bottom: 7px;
+      font-weight: 900;
+    }
+
+    .bracket-team.winner {
+      background: rgba(86,227,137,.15);
+      border: 1px solid rgba(86,227,137,.5);
+    }
+
+    .bracket-team.loser { color: rgba(255,255,255,.55); }
+
+    .bracket-team .placeholder {
+      color: rgba(255,255,255,.45);
+      font-style: italic;
+      font-weight: 800;
+    }
+
+    .bracket-score-input {
+      width: 58px !important;
+      padding: 7px 4px !important;
+      font-size: 15px !important;
+    }
+
+    .champion-box {
+      margin-top: 16px;
+      padding: 22px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,210,45,.34), transparent 42%),
+        rgba(0,0,0,.28);
+      border: 1px solid rgba(255,210,45,.45);
+      text-align: center;
+    }
+
+    .champion-box .cup {
+      font-size: 54px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .champion-box span {
+      display: block;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      font-size: 12px;
+      font-weight: 1000;
+      margin-bottom: 6px;
+    }
+
+    .champion-box strong {
+      display: block;
+      color: var(--accent);
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .summary-item {
+      padding: 13px;
+      border-radius: 17px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--line);
+    }
+
+    .summary-item span {
+      display: block;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: 11px;
+      font-weight: 1000;
+      margin-bottom: 5px;
+    }
+
+    .summary-item strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .rule-card {
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--line);
+    }
+
+    .rule-card h3 {
+      margin: 0 0 7px;
+      color: var(--accent);
+    }
+
+    .rule-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .alert {
+      border-radius: 16px;
+      padding: 12px 13px;
+      background: rgba(255,202,58,.10);
+      border: 1px solid rgba(255,202,58,.25);
+      color: rgba(255,255,255,.86);
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1100px) {
+      .hero, .layout { grid-template-columns: 1fr; }
+      .side-panel { position: static; }
+      .workflow, .standings-grid, .groups-grid { grid-template-columns: repeat(2, 1fr); }
+      .summary-strip, .rules-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 14px; }
+      .courts { grid-template-columns: 1fr; }
+      .slot-card { grid-template-columns: 1fr; }
+      .slot-badge { min-height: auto; padding: 11px; }
+      .workflow, .standings-grid, .groups-grid, .summary-strip, .rules-grid { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .hint { margin-top: 6px; }
+      .tabs { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="hero-main card">
+        <div class="eyebrow">Gestor funcional del torneo</div>
+        <h1>Torneo de Voleibol</h1>
+        <p class="subtitle">
+          Introduce los puntos manualmente. La aplicación calcula la clasificación de grupos,
+          selecciona automáticamente los 2 mejores de cada grupo, crea los cuartos de final y
+          avanza a los ganadores hasta decidir el campeón.
+        </p>
+        <span class="save-status" id="saveStatus" data-status="loading">Cargando…</span>
+      </div>
+      <aside class="hero-side card">
+        <div class="big-status">
+          <span>Estado actual</span>
+          <strong id="statusText">Fase de grupos</strong>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>15</strong><span>Equipos</span></div>
+          <div class="stat"><strong>23</strong><span>Partidos</span></div>
+          <div class="stat"><strong>2</strong><span>Pistas</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="tabs" aria-label="Vistas del torneo">
+      <button class="tab active" data-tab="overview">Resumen</button>
+      <button class="tab" data-tab="schedule">Introducir puntos de grupos</button>
+      <button class="tab" data-tab="playoffs">Cuadro final de 8</button>
+      <button class="tab" data-tab="rules">Reglas</button>
+    </nav>
+
+    <section id="overview" class="section card active">
+      <div class="section-title">
+        <div>
+          <h2>Cómo usarlo</h2>
+          <p class="hint">Esta versión no tiene ningún escenario aleatorio. Todo se calcula a partir de los puntos que introduces.</p>
+        </div>
+      </div>
+
+      <div class="workflow">
+        <div class="step">
+          <div class="number">1</div>
+          <strong>Introduce los puntos de grupos</strong>
+          <p>Usa el calendario de dos pistas y rellena los puntos de cada partido de grupo.</p>
+        </div>
+        <div class="step">
+          <div class="number">2</div>
+          <strong>Clasificación automática</strong>
+          <p>Los 2 mejores de cada grupo se seleccionan usando victorias, diferencia de puntos, puntos anotados y enfrentamiento directo.</p>
+        </div>
+        <div class="step">
+          <div class="number">3</div>
+          <strong>Aparecen los cuartos</strong>
+          <p>Cuando todos los partidos de grupo están completos, la aplicación rellena automáticamente el cuadro final de 8.</p>
+        </div>
+        <div class="step">
+          <div class="number">4</div>
+          <strong>Completa el cuadro</strong>
+          <p>Introduce los puntos de las eliminatorias y los ganadores avanzan a semifinales, final y campeón.</p>
+        </div>
+      </div>
+
+      <div class="summary-strip">
+        <div class="summary-item"><span>Partidos de grupo completados</span><strong id="groupProgress">0 / 21</strong></div>
+        <div class="summary-item"><span>Equipos clasificados</span><strong id="qualifierProgress">Pendiente</strong></div>
+        <div class="summary-item"><span>Partidos de eliminatoria completados</span><strong id="playoffProgress">0 / 8</strong></div>
+        <div class="summary-item"><span>Campeón</span><strong id="championSummary">Pendiente</strong></div>
+      </div>
+
+      <div class="section-title" style="margin-top: 22px;">
+        <div>
+          <h2>Clasificación en directo</h2>
+          <p class="hint">Las filas verdes están actualmente en posición de clasificación. La clasificación se actualiza al instante cuando cambian los puntos.</p>
+        </div>
+      </div>
+      <div class="standings-grid" id="standingsGrid"></div>
+
+      <div class="alert">
+        Importante: si dos equipos tienen el mismo número de victorias, la tabla usa la diferencia de puntos,
+        después los puntos totales anotados y después el enfrentamiento directo. Si siguen empatados,
+        podéis decidir un mini desempate manualmente.
+      </div>
+
+      <div class="button-grid" style="max-width: 360px;">
+        <button class="primary" id="demoScoresBtn">Rellenar puntos de ejemplo para probar</button>
+        <button class="danger" id="clearScoresBtn">Borrar todos los puntos</button>
+      </div>
+    </section>
+
+    <section id="schedule" class="section card">
+      <div class="section-title">
+        <div>
+          <h2>Introduce los puntos de grupos</h2>
+          <p class="hint">El calendario usa las dos pistas casi constantemente. Los ganadores se resaltan automáticamente al introducir los puntos.</p>
+        </div>
+      </div>
+
+      <div class="layout">
+        <aside class="side-panel card">
+          <h3>Filtros</h3>
+          <div class="control-row">
+            <label for="teamFilter">Resaltar equipo</label>
+            <select id="teamFilter">
+              <option value="all">Mostrar todos los equipos</option>
+            </select>
+          </div>
+          <button id="resetFilterBtn">Restablecer filtro</button>
+          <div class="legend">
+            <span><i class="dot complete"></i> partido completado</span>
+            <span><i class="dot incomplete"></i> falta puntuación</span>
+            <span><i class="dot selected"></i> equipo resaltado</span>
+          </div>
+        </aside>
+
+        <div class="court-board" id="groupSchedule"></div>
+      </div>
+    </section>
+
+    <section id="playoffs" class="section card">
+      <div class="section-title">
+        <div>
+          <h2>Cuadro final de 8</h2>
+          <p class="hint">El cuadro se desbloquea automáticamente cuando todos los partidos de grupo tienen puntuación.</p>
+        </div>
+      </div>
+      <div id="playoffAlert" class="alert">Introduce primero todos los puntos de la fase de grupos. Después los cuartofinalistas aparecerán automáticamente.</div>
+      <div class="bracket-wrap">
+        <div class="bracket" id="bracket"></div>
+      </div>
+      <div class="champion-box">
+        <div class="cup">🏆</div>
+        <span>Campeón</span>
+        <strong id="championName">Pendiente</strong>
+      </div>
+    </section>
+
+    <div id="groupsGrid" style="display: none;"></div>
+
+    <section id="rules" class="section card">
+      <div class="section-title">
+        <div>
+          <h2>Reglas recomendadas del torneo</h2>
+          <p class="hint">Sencillo, rápido y justo para 15 equipos con solo 2 pistas.</p>
+        </div>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <h3>Puntuación</h3>
+          <p>Todas las fases se juegan a 25 puntos. No hay límite máximo de puntos: si un partido llega a 30-28, se sigue jugando y el resultado es válido.</p>
+        </div>
+        <div class="rule-card">
+          <h3>Fase de grupos</h3>
+          <p>Los grupos de 4 equipos juegan 3 partidos por equipo. El grupo de 3 equipos juega 2 partidos por equipo.</p>
+        </div>
+        <div class="rule-card">
+          <h3>Clasificación y eliminatorias</h3>
+          <p>Se clasifican los 2 mejores de cada grupo. Orden: victorias, diferencia de puntos, puntos anotados y enfrentamiento directo. Después se juega el cuadro final de 8.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/volley-tournament.min.js?v=volley-tournament-20260613"></script>
+</body>
+</html>

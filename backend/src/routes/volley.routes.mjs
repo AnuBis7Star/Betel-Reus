@@ -7,11 +7,25 @@ import {
   getVolleyColors,
   updateAdminVolleyRegistration
 } from "../controllers/volley.controller.mjs";
+import {
+  getVolleyTournamentStateController,
+  saveVolleyTournamentStateController
+} from "../controllers/volley-tournament.controller.mjs";
 import { requireAdmin } from "../middleware/admin.middleware.mjs";
 
 async function handleVolleyRoutes(req, res, url) {
   if (url.pathname === "/api/volley/teams" && req.method === "GET") {
     await getApprovedVolleyTeams(req, res);
+    return true;
+  }
+
+  if (url.pathname === "/api/volley/tournament-state" && req.method === "GET") {
+    await getVolleyTournamentStateController(req, res);
+    return true;
+  }
+
+  if (url.pathname === "/api/volley/tournament-state" && req.method === "POST") {
+    await saveVolleyTournamentStateController(req, res);
     return true;
   }
 
