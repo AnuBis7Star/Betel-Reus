@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestor del Torneo de Voleibol</title>
+  <meta name="description" content="Gestor en directo del torneo de voleibol: introduce los puntos, sigue la clasificación, los cuartos, semifinales, final y campeón." />
+  <meta name="robots" content="noindex,nofollow" />
   <link rel="icon" href="/assets/icon-dark.png" />
   <style>
     :root {
@@ -905,7 +907,7 @@
           selecciona automáticamente los 2 mejores de cada grupo, crea los cuartos de final y
           avanza a los ganadores hasta decidir el campeón.
         </p>
-        <span class="save-status" id="saveStatus" data-status="loading">Cargando…</span>
+        <span class="save-status" id="saveStatus" data-status="loading" role="status" aria-live="polite">Cargando…</span>
       </div>
       <aside class="hero-side card">
         <div class="big-status">
@@ -920,11 +922,11 @@
       </aside>
     </section>
 
-    <nav class="tabs" aria-label="Vistas del torneo">
-      <button class="tab active" data-tab="overview">Resumen</button>
-      <button class="tab" data-tab="schedule">Introducir puntos de grupos</button>
-      <button class="tab" data-tab="playoffs">Cuadro final de 8</button>
-      <button class="tab" data-tab="rules">Reglas</button>
+    <nav class="tabs" aria-label="Vistas del torneo" role="tablist">
+      <button class="tab active" type="button" data-tab="overview" role="tab" aria-selected="true">Resumen</button>
+      <button class="tab" type="button" data-tab="schedule" role="tab" aria-selected="false">Introducir puntos de grupos</button>
+      <button class="tab" type="button" data-tab="playoffs" role="tab" aria-selected="false">Cuadro final de 8</button>
+      <button class="tab" type="button" data-tab="rules" role="tab" aria-selected="false">Reglas</button>
     </nav>
 
     <section id="overview" class="section card active">
@@ -980,8 +982,8 @@
       </div>
 
       <div class="button-grid" style="max-width: 360px;">
-        <button class="primary" id="demoScoresBtn">Rellenar puntos de ejemplo para probar</button>
-        <button class="danger" id="clearScoresBtn">Borrar todos los puntos</button>
+        <button class="primary" id="demoScoresBtn" type="button">Rellenar puntos de ejemplo para probar</button>
+        <button class="danger" id="clearScoresBtn" type="button">Borrar todos los puntos</button>
       </div>
     </section>
 
@@ -1002,7 +1004,7 @@
               <option value="all">Mostrar todos los equipos</option>
             </select>
           </div>
-          <button id="resetFilterBtn">Restablecer filtro</button>
+          <button id="resetFilterBtn" type="button">Restablecer filtro</button>
           <div class="legend">
             <span><i class="dot complete"></i> partido completado</span>
             <span><i class="dot incomplete"></i> falta puntuación</span>

@@ -67,6 +67,9 @@ function normalizeScoreCollection(rawValue) {
 }
 
 function normalizeState(rawValue) {
+  if (typeof rawValue === "string") {
+    try { rawValue = JSON.parse(rawValue); } catch { rawValue = null; }
+  }
   const payload = rawValue && typeof rawValue === "object" && !Array.isArray(rawValue) ? rawValue : {};
   return {
     groupScores: normalizeScoreCollection(payload.groupScores),
@@ -107,7 +110,7 @@ async function getVolleyTournamentState() {
       updatedAt: new Date().toISOString()
     };
     memory.volleyTournamentStates[tournamentStateId] = created;
-    return created;
+    return memoryToState(created);
   }
 
   await ensureTournamentSchema();
@@ -131,7 +134,6 @@ async function saveVolleyTournamentState(payload) {
   const nextState = normalizePayload(payload);
 
   if (!pool) {
-    const existing = memory.volleyTournamentStates[tournamentStateId];
     const updated = {
       id: tournamentStateId,
       title: tournamentStateTitle,
@@ -139,14 +141,10 @@ async function saveVolleyTournamentState(payload) {
       updatedAt: new Date().toISOString()
     };
     memory.volleyTournamentStates[tournamentStateId] = updated;
-    return { previous: existing ? memoryToState(existing) : null, current: updated };
+    return updated;
   }
 
   await ensureTournamentSchema();
-  const before = await pool.query(
-    "SELECT id, title, state, updated_at FROM volley_tournament_states WHERE id = $1",
-    [tournamentStateId]
-  );
   const result = await pool.query(
     `INSERT INTO volley_tournament_states (id, title, state, updated_at)
      VALUES ($1, $2, $3::jsonb, now())
@@ -154,10 +152,7 @@ async function saveVolleyTournamentState(payload) {
      RETURNING id, title, state, updated_at`,
     [tournamentStateId, tournamentStateTitle, JSON.stringify(nextState)]
   );
-  return {
-    previous: before.rowCount ? rowToState(before.rows[0]) : null,
-    current: rowToState(result.rows[0])
-  };
+  return rowToState(result.rows[0]);
 }
 
 export { getVolleyTournamentState, saveVolleyTournamentState, tournamentStateId };

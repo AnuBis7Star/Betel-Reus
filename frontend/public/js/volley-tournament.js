@@ -2,8 +2,6 @@ import { apiRequest } from "./api.js";
 
 const API_PATH = "/api/volley/tournament-state";
 
-const STORAGE_KEY = "volleyballTournamentManagerScoresV2SpanishFixed";
-
 const TEXT = {
   pending: "Pendiente",
   groupPhase: "Fase de grupos",
@@ -105,7 +103,6 @@ let state = {
   playoffScores: {}
 };
 
-let saveStatus = "idle";
 let remoteLoaded = false;
 let saveStatusElement = null;
 let saveToken = 0;
@@ -139,8 +136,11 @@ function sanitizeRemoteState(record) {
   return result;
 }
 
+function hasUserInput() {
+  return Object.keys(state.groupScores).length > 0 || Object.keys(state.playoffScores).length > 0;
+}
+
 function setSaveStatus(status) {
-  saveStatus = status;
   if (!saveStatusElement) return;
   const labels = {
     idle: TEXT.saveIdle,
@@ -181,10 +181,15 @@ async function loadRemoteState() {
   try {
     const result = await apiRequest(API_PATH);
     const sanitized = sanitizeRemoteState(result);
-    state.groupScores = sanitized.groupScores;
-    state.playoffScores = sanitized.playoffScores;
+    const hadLocalInput = hasUserInput();
+    state.groupScores = { ...sanitized.groupScores, ...state.groupScores };
+    state.playoffScores = { ...sanitized.playoffScores, ...state.playoffScores };
     remoteLoaded = true;
-    setSaveStatus("idle");
+    if (hadLocalInput) {
+      persistState();
+    } else {
+      setSaveStatus("idle");
+    }
   } catch (error) {
     console.warn("No se pudo cargar el estado guardado.", error);
     remoteLoaded = true;
@@ -423,8 +428,8 @@ function makeGroupCourt(courtName, matchId) {
           <div class="team-chip ${winner === match.teamA ? "winner" : loser === match.teamA ? "loser" : ""}">${match.teamA}</div>
           <div class="score-box">
             <div class="score-inputs">
-              <input type="number" min="0" value="${score.a}" data-group-score="${matchId}" data-side="a" aria-label="Puntos ${match.teamA}">
-              <input type="number" min="0" value="${score.b}" data-group-score="${matchId}" data-side="b" aria-label="Puntos ${match.teamB}">
+              <input type="number" min="0" max="999" step="1" inputmode="numeric" value="${score.a}" data-group-score="${matchId}" data-side="a" aria-label="Puntos ${match.teamA}">
+              <input type="number" min="0" max="999" step="1" inputmode="numeric" value="${score.b}" data-group-score="${matchId}" data-side="b" aria-label="Puntos ${match.teamB}">
             </div>
             <div class="vs">PUNTOS</div>
           </div>
@@ -466,9 +471,6 @@ function renderGroupSchedule() {
 
   document.querySelectorAll("[data-group-score]").forEach(input => {
     input.addEventListener("change", event => {
-      setGroupScore(event.target.dataset.groupScore, event.target.dataset.side, event.target.value);
-    });
-    input.addEventListener("blur", event => {
       setGroupScore(event.target.dataset.groupScore, event.target.dataset.side, event.target.value);
     });
   });
@@ -544,11 +546,11 @@ function renderBracket() {
         <div class="match-label"><span>${structure.label}</span><span>${ready ? TEXT.ready : TEXT.waiting}</span></div>
         <div class="bracket-team ${winner === match.teamA ? "winner" : loser === match.teamA ? "loser" : ""}">
           <span class="${match.teamA ? "" : "placeholder"}">${match.teamA || structure.sourceA}</span>
-          <input class="bracket-score-input" type="number" min="0" value="${score.a}" data-playoff-score="${id}" data-side="a" ${ready ? "" : "disabled"} aria-label="Puntos ${match.teamA || structure.sourceA}">
+          <input class="bracket-score-input" type="number" min="0" max="999" step="1" inputmode="numeric" value="${score.a}" data-playoff-score="${id}" data-side="a" ${ready ? "" : "disabled"} aria-label="Puntos ${match.teamA || structure.sourceA}">
         </div>
         <div class="bracket-team ${winner === match.teamB ? "winner" : loser === match.teamB ? "loser" : ""}">
           <span class="${match.teamB ? "" : "placeholder"}">${match.teamB || structure.sourceB}</span>
-          <input class="bracket-score-input" type="number" min="0" value="${score.b}" data-playoff-score="${id}" data-side="b" ${ready ? "" : "disabled"} aria-label="Puntos ${match.teamB || structure.sourceB}">
+          <input class="bracket-score-input" type="number" min="0" max="999" step="1" inputmode="numeric" value="${score.b}" data-playoff-score="${id}" data-side="b" ${ready ? "" : "disabled"} aria-label="Puntos ${match.teamB || structure.sourceB}">
         </div>
         <div class="match-meta">
           ${complete ? `<span class="pill winner">${TEXT.winner}: ${winner}</span>` : ready ? `<span class="pill warning">${TEXT.enterScore}</span>` : `<span class="pill warning">${TEXT.waitingPrevious}</span>`}
@@ -562,9 +564,6 @@ function renderBracket() {
 
   document.querySelectorAll("[data-playoff-score]").forEach(input => {
     input.addEventListener("change", event => {
-      setPlayoffScore(event.target.dataset.playoffScore, event.target.dataset.side, event.target.value);
-    });
-    input.addEventListener("blur", event => {
       setPlayoffScore(event.target.dataset.playoffScore, event.target.dataset.side, event.target.value);
     });
   });
@@ -603,24 +602,24 @@ function renderTeamFilter() {
 
 function fillSampleScores() {
   const sample = {
-    "G-A-1": { a: 21, b: 12 }, "G-A-2": { a: 18, b: 21 }, "G-A-3": { a: 21, b: 18 },
-    "G-A-4": { a: 14, b: 21 }, "G-A-5": { a: 21, b: 15 }, "G-A-6": { a: 21, b: 13 },
-    "G-B-1": { a: 15, b: 21 }, "G-B-2": { a: 17, b: 21 }, "G-B-3": { a: 11, b: 21 },
-    "G-B-4": { a: 16, b: 21 }, "G-B-5": { a: 14, b: 21 }, "G-B-6": { a: 21, b: 13 },
-    "G-C-1": { a: 21, b: 10 }, "G-C-2": { a: 21, b: 14 }, "G-C-3": { a: 21, b: 15 },
-    "G-C-4": { a: 12, b: 21 }, "G-C-5": { a: 21, b: 17 }, "G-C-6": { a: 21, b: 18 },
-    "G-D-1": { a: 21, b: 16 }, "G-D-2": { a: 13, b: 21 }, "G-D-3": { a: 21, b: 15 }
+    "G-A-1": { a: 25, b: 18 }, "G-A-2": { a: 22, b: 25 }, "G-A-3": { a: 25, b: 21 },
+    "G-A-4": { a: 17, b: 25 }, "G-A-5": { a: 25, b: 19 }, "G-A-6": { a: 25, b: 16 },
+    "G-B-1": { a: 19, b: 25 }, "G-B-2": { a: 21, b: 25 }, "G-B-3": { a: 14, b: 25 },
+    "G-B-4": { a: 20, b: 25 }, "G-B-5": { a: 18, b: 25 }, "G-B-6": { a: 25, b: 17 },
+    "G-C-1": { a: 25, b: 12 }, "G-C-2": { a: 25, b: 17 }, "G-C-3": { a: 25, b: 19 },
+    "G-C-4": { a: 15, b: 25 }, "G-C-5": { a: 25, b: 21 }, "G-C-6": { a: 25, b: 22 },
+    "G-D-1": { a: 25, b: 20 }, "G-D-2": { a: 16, b: 25 }, "G-D-3": { a: 25, b: 18 }
   };
 
   const playoffs = {
-    "QF1": { a: 21, b: 17 },
-    "QF2": { a: 21, b: 19 },
-    "QF3": { a: 21, b: 16 },
-    "QF4": { a: 23, b: 21 },
+    "QF1": { a: 25, b: 21 },
+    "QF2": { a: 25, b: 23 },
+    "QF3": { a: 25, b: 19 },
+    "QF4": { a: 27, b: 25 },
     "SF1": { a: 25, b: 22 },
     "SF2": { a: 25, b: 20 },
     "F": { a: 25, b: 23 },
-    "P3": { a: 21, b: 18 }
+    "P3": { a: 25, b: 21 }
   };
 
   state.groupScores = sample;
@@ -647,11 +646,16 @@ function renderAll() {
 }
 
 function bindEvents() {
-  document.querySelectorAll(".tab").forEach(tab => {
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach(tab => {
     tab.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      tabs.forEach(t => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
       document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
       tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
       document.getElementById(tab.dataset.tab).classList.add("active");
     });
   });
@@ -669,9 +673,8 @@ function init() {
   saveStatusElement = document.getElementById("saveStatus");
   bindEvents();
   setSaveStatus("loading");
+  renderAll();
   loadRemoteState();
 }
 
 init();
-
-export { state };
