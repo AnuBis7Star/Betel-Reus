@@ -1,6 +1,7 @@
 import {
   createVolleyRegistrationController,
   deleteAdminVolleyRegistration,
+  exportAdminVolleyRegistrations,
   getAdminVolleyRegistrations,
   getApprovedVolleyTeams,
   getVolleyColors,
@@ -27,6 +28,12 @@ async function handleVolleyRoutes(req, res, url) {
   if (url.pathname === "/api/admin/volley/registrations" && req.method === "GET") {
     if (!requireAdmin(req, res)) return true;
     await getAdminVolleyRegistrations(req, res);
+    return true;
+  }
+
+  if (url.pathname === "/api/admin/volley/export" && req.method === "GET") {
+    if (!requireAdmin(req, res)) return true;
+    await exportAdminVolleyRegistrations(req, res);
     return true;
   }
 

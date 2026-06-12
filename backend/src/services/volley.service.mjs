@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import ExcelJS from "exceljs";
 
 import { memory } from "../config/memory.mjs";
 import { pool } from "../config/db.mjs";
@@ -191,6 +192,137 @@ function volleyRegistrationFromRow(row) {
   };
 }
 
+function getShirtColorLabel(colorId) {
+  const color = shirtColors.find((item) => item.id === colorId);
+  return color ? color.ro : colorId || "";
+}
+
+function getRegistrationStatusLabel(status) {
+  return {
+    pending: "În așteptare",
+    approved: "Acceptat",
+    rejected: "Respins"
+  }[status] || status || "";
+}
+
+function formatExportTimestamp(value) {
+  if (!value) return "";
+  return new Intl.DateTimeFormat("ro-RO", {
+    dateStyle: "short",
+    timeStyle: "short",
+    timeZone: "Europe/Madrid"
+  }).format(new Date(value));
+}
+
+function autoFitWorksheetColumns(worksheet) {
+  worksheet.columns.forEach((column) => {
+    let maxLength = 12;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      const cellValue = cell.value == null ? "" : String(cell.value);
+      maxLength = Math.max(maxLength, Math.min(cellValue.length + 2, 48));
+    });
+    column.width = maxLength;
+  });
+}
+
+function styleWorksheetHeader(worksheet) {
+  const headerRow = worksheet.getRow(1);
+  headerRow.font = { bold: true };
+  headerRow.alignment = { vertical: "middle", horizontal: "left" };
+  headerRow.eachCell((cell) => {
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFF3EBDD" }
+    };
+    cell.border = {
+      bottom: { style: "thin", color: { argb: "FFD8D0C2" } }
+    };
+  });
+  worksheet.views = [{ state: "frozen", ySplit: 1 }];
+}
+
+async function exportVolleyRegistrationsWorkbook() {
+  const registrations = await listVolleyRegistrations();
+  const workbook = new ExcelJS.Workbook();
+  const today = new Date().toISOString().slice(0, 10);
+  workbook.creator = "Biserica Betel Reus";
+  workbook.created = new Date();
+  workbook.modified = new Date();
+
+  const teamsSheet = workbook.addWorksheet("Echipe");
+  teamsSheet.columns = [
+    { header: "Status", key: "status" },
+    { header: "Echipă", key: "teamName" },
+    { header: "Reprezentant", key: "representativeName" },
+    { header: "Biserică", key: "churchName" },
+    { header: "Culoare tricou", key: "shirtColor" },
+    { header: "Nr. jucători", key: "playersCount" },
+    { header: "Jucători", key: "players" },
+    { header: "Note", key: "notes" },
+    { header: "Creat la", key: "createdAt" },
+    { header: "Actualizat la", key: "updatedAt" }
+  ];
+
+  registrations.forEach((registration) => {
+    teamsSheet.addRow({
+      status: getRegistrationStatusLabel(registration.status),
+      teamName: registration.teamName,
+      representativeName: registration.representativeName,
+      churchName: registration.churchName || "",
+      shirtColor: getShirtColorLabel(registration.shirtColor),
+      playersCount: Array.isArray(registration.players) ? registration.players.length : 0,
+      players: Array.isArray(registration.players) ? registration.players.join(", ") : "",
+      notes: registration.notes || "",
+      createdAt: formatExportTimestamp(registration.createdAt),
+      updatedAt: formatExportTimestamp(registration.updatedAt)
+    });
+  });
+
+  const playersSheet = workbook.addWorksheet("Jucători");
+  playersSheet.columns = [
+    { header: "Echipă", key: "teamName" },
+    { header: "Ordine", key: "order" },
+    { header: "Nume jucător", key: "playerName" },
+    { header: "Reprezentant", key: "representativeName" },
+    { header: "Biserică", key: "churchName" },
+    { header: "Culoare", key: "shirtColor" },
+    { header: "Status", key: "status" }
+  ];
+
+  registrations.forEach((registration) => {
+    const players = Array.isArray(registration.players) && registration.players.length
+      ? registration.players
+      : [""];
+    players.forEach((playerName, index) => {
+      playersSheet.addRow({
+        teamName: registration.teamName,
+        order: playerName ? index + 1 : "",
+        playerName,
+        representativeName: registration.representativeName,
+        churchName: registration.churchName || "",
+        shirtColor: getShirtColorLabel(registration.shirtColor),
+        status: getRegistrationStatusLabel(registration.status)
+      });
+    });
+  });
+
+  [teamsSheet, playersSheet].forEach((worksheet) => {
+    styleWorksheetHeader(worksheet);
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) return;
+      row.alignment = { vertical: "top", wrapText: true };
+    });
+    autoFitWorksheetColumns(worksheet);
+  });
+
+  const buffer = Buffer.from(await workbook.xlsx.writeBuffer());
+  return {
+    buffer,
+    filename: `betel-volley-echipe-${today}.xlsx`
+  };
+}
+
 async function createVolleyRegistration(payload) {
   if (isVolleyRegistrationClosed()) throw httpError(403, "Volley registrations are closed");
   if (normalizeText(payload.website, 80)) throw httpError(400, "Invalid registration");
@@ -289,6 +421,7 @@ async function deleteVolleyRegistration(id) {
 export {
   createVolleyRegistration,
   deleteVolleyRegistration,
+  exportVolleyRegistrationsWorkbook,
   isVolleyRegistrationClosed,
   listApprovedVolleyTeams,
   listVolleyColorAvailability,

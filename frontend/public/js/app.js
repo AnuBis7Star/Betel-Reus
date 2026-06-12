@@ -277,6 +277,54 @@ async function loadAdminDataFromApi(throwOnError = false) {
   }
 }
 
+async function exportVolleyExcel() {
+  const button = $("#exportVolleyExcel");
+  const message = $("#volleyAdminMessage");
+  if (!button) return;
+  button.disabled = true;
+  if (message) {
+    message.textContent = tx("adminVolleyExporting");
+    message.className = "form-note";
+  }
+  try {
+    const headers = {};
+    if ((currentAdminCode || defaultAdminCode)) headers["x-admin-code"] = currentAdminCode || defaultAdminCode;
+    const response = await fetch("/api/admin/volley/export", { headers });
+    if (!response.ok) {
+      let errorText = tx("adminVolleyExportError");
+      try {
+        const data = await response.json();
+        errorText = data.error || errorText;
+      } catch {}
+      const error = new Error(errorText);
+      error.status = response.status;
+      throw error;
+    }
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const download = document.createElement("a");
+    const disposition = response.headers.get("content-disposition") || "";
+    const filenameMatch = disposition.match(/filename="([^"]+)"/i);
+    download.href = url;
+    download.download = filenameMatch?.[1] || `betel-volley-echipe-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    document.body.append(download);
+    download.click();
+    download.remove();
+    URL.revokeObjectURL(url);
+    if (message) {
+      message.textContent = "";
+      message.className = "form-note";
+    }
+  } catch (error) {
+    if (message) {
+      message.textContent = error.status === 401 ? tx("adminAuthError") : tx("adminVolleyExportError");
+      message.className = "form-note is-error";
+    }
+  } finally {
+    button.disabled = false;
+  }
+}
+
 function logAudit(action, entity, before = null, after = null) {
   auditLogs.unshift({
     id: crypto.randomUUID(),
@@ -1192,6 +1240,7 @@ function setupAdmin() {
   $("#volleyManageDrawer")?.addEventListener("input", updateVolleyDrawerDirtyState);
   $("#volleyManageDrawer")?.addEventListener("change", updateVolleyDrawerDirtyState);
   $("#volleyDeleteConfirmModal")?.addEventListener("click", handleVolleyDeleteConfirmClick);
+  $("#exportVolleyExcel")?.addEventListener("click", exportVolleyExcel);
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (pendingVolleyDeleteId) {
