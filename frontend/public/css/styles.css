@@ -1365,63 +1365,46 @@ cite {
 }
 
 .volley-admin-table {
-  min-width: 1120px;
-  table-layout: fixed;
+  min-width: 1080px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.volley-admin-table thead,
+.volley-admin-table tbody,
+.volley-admin-table tr {
+  display: block;
+}
+
+.volley-admin-table thead tr,
+.volley-admin-table tbody tr {
+  display: grid;
+  grid-template-columns: 1.15fr 1.15fr 1fr 0.9fr 1.6fr 0.8fr 1.8fr 0.9fr;
+  align-items: stretch;
+}
+
+.volley-admin-table thead tr {
+  border-bottom: 1px solid var(--line);
+}
+
+.volley-admin-table tbody tr {
+  border-bottom: 1px solid var(--line);
 }
 
 .volley-admin-table th,
 .volley-admin-table td {
+  border-bottom: 0;
+  min-width: 0;
+  height: 100%;
+  padding: 12px 12px;
   overflow-wrap: anywhere;
   word-break: normal;
-  padding: 10px 10px;
 }
 
-.volley-admin-table tbody tr {
-  height: 96px;
-}
-
-.volley-admin-table td:first-child {
-  display: table-cell;
-}
-
-.volley-admin-table th:nth-child(1),
-.volley-admin-table td:nth-child(1) {
-  width: 11%;
-}
-
-.volley-admin-table th:nth-child(2),
-.volley-admin-table td:nth-child(2) {
-  width: 12%;
-}
-
-.volley-admin-table th:nth-child(3),
-.volley-admin-table td:nth-child(3) {
-  width: 12%;
-}
-
-.volley-admin-table th:nth-child(4),
-.volley-admin-table td:nth-child(4) {
-  width: 8%;
-}
-
-.volley-admin-table th:nth-child(5),
-.volley-admin-table td:nth-child(5) {
-  width: 18%;
-}
-
-.volley-admin-table th:nth-child(6),
-.volley-admin-table td:nth-child(6) {
-  width: 7%;
-}
-
-.volley-admin-table th:nth-child(7),
-.volley-admin-table td:nth-child(7) {
-  width: 22%;
-}
-
-.volley-admin-table th:nth-child(8),
-.volley-admin-table td:nth-child(8) {
-  width: 10%;
+.volley-admin-table td {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .volley-admin-table input,
@@ -1483,7 +1466,7 @@ cite {
 .volley-admin-team strong,
 .volley-admin-table td:nth-child(2),
 .volley-admin-table td:nth-child(3) {
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
 }
 
 .volley-admin-players span,
@@ -1522,6 +1505,9 @@ cite {
 }
 
 .volley-admin-table .table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   white-space: nowrap;
 }
 
