@@ -1,0 +1,39 @@
+name: Quality checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run syntax and i18n checks
+        run: npm run check
+
+      - name: Run git diff whitespace check
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}"
+            git diff --check "origin/${{ github.base_ref }}...HEAD"
+          elif [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            git diff --check "${{ github.event.before }}" "${{ github.sha }}"
+          else
+            echo "Initial push event detected; skipping git diff --check."
+          fi
