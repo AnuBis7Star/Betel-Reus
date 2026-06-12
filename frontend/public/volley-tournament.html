@@ -9,24 +9,32 @@
   <link rel="icon" href="/assets/icon-dark.png" />
   <style>
     :root {
-      --bg-1: #250304;
-      --bg-2: #08033d;
-      --bg-3: #21010c;
-      --panel: rgba(255,255,255,.085);
-      --panel-strong: rgba(255,255,255,.14);
-      --line: rgba(255,255,255,.18);
-      --text: #fff;
-      --muted: rgba(255,255,255,.68);
-      --yellow: #f7c800;
-      --blue: #145dde;
-      --green: #08944e;
-      --red: #ce3835;
-      --accent: #ffd22d;
-      --win: #57e389;
-      --danger: #ff6b6b;
-      --warning: #ffca3a;
+      --volley-red: #7f090b;
+      --volley-deep: #160608;
+      --volley-yellow: #ffd21d;
+      --volley-cream: #fff6e8;
+      --volley-blue: #173765;
+      --volley-pink: #f05e68;
+      --volley-green: #2f8f4f;
+
+      --bg-1: #2a0203;
+      --bg-2: #5d0709;
+      --bg-3: #180102;
+      --panel: rgba(255, 246, 232, 0.07);
+      --panel-strong: rgba(255, 246, 232, 0.13);
+      --line: rgba(255, 246, 232, 0.18);
+      --text: var(--volley-cream);
+      --muted: rgba(255, 246, 232, 0.68);
+      --yellow: var(--volley-yellow);
+      --blue: var(--volley-blue);
+      --green: var(--volley-green);
+      --red: var(--volley-red);
+      --accent: var(--volley-yellow);
+      --win: #5be08d;
+      --danger: var(--volley-pink);
+      --warning: var(--volley-yellow);
       --radius: 22px;
-      --shadow: 0 22px 65px rgba(0,0,0,.38);
+      --shadow: 0 22px 65px rgba(0, 0, 0, 0.45);
     }
 
     * { box-sizing: border-box; }
@@ -37,10 +45,9 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 15%, rgba(247,200,0,.16), transparent 26%),
-        radial-gradient(circle at 85% 18%, rgba(20,93,222,.35), transparent 30%),
-        radial-gradient(circle at 70% 85%, rgba(206,56,53,.26), transparent 30%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2) 54%, var(--bg-3));
+        radial-gradient(circle at 18% 12%, rgba(255, 210, 29, 0.08), transparent 24%),
+        radial-gradient(circle at 80% 22%, rgba(240, 94, 104, 0.10), transparent 25%),
+        linear-gradient(135deg, #2a0203 0%, #5d0709 48%, #180102 100%);
       padding: 22px;
     }
 
@@ -69,13 +76,16 @@
     }
 
     .hero-main::before {
-      content: "🏐";
+      content: "";
       position: absolute;
-      right: 32px;
-      top: 18px;
-      font-size: 82px;
-      opacity: .14;
-      filter: grayscale(1);
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 150px;
+      height: 100px;
+      background: url("/assets/volley-tournament-transparent-900.png") no-repeat center / contain;
+      opacity: .22;
+      pointer-events: none;
     }
 
     .eyebrow {
@@ -152,6 +162,17 @@
       display: grid;
       gap: 12px;
       align-content: center;
+    }
+
+    .hero-logo {
+      display: block;
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: contain;
+      margin: 0 auto;
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
     }
 
     .big-status {
@@ -910,6 +931,7 @@
         <span class="save-status" id="saveStatus" data-status="loading" role="status" aria-live="polite">Cargando…</span>
       </div>
       <aside class="hero-side card">
+        <img class="hero-logo" src="/assets/volley-tournament-transparent-900.png" width="450" height="300" alt="" />
         <div class="big-status">
           <span>Estado actual</span>
           <strong id="statusText">Fase de grupos</strong>
