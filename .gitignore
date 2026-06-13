@@ -16,6 +16,7 @@ verification-*.png
 graphify-out/
 .ai-local/
 ARCHITECTURE.md
+AGENTS.md
 
 # Build output
 dist/
