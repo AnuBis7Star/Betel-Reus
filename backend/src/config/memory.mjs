@@ -31,8 +31,7 @@ const memory = {
     }
   ],
   volleyRegistrations: [],
-  auditLogs: [],
-  volleyTournamentStates: {}
+  auditLogs: []
 };
 
 export { memory };
