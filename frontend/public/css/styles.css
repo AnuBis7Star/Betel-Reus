@@ -3780,6 +3780,219 @@ footer img {
   color: #ffd5d8;
 }
 
+.volley-winner-section {
+  padding-top: clamp(36px, 5vw, 64px);
+}
+
+.volley-winner-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1fr) minmax(260px, 0.78fr);
+  gap: clamp(18px, 3vw, 30px);
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 246, 232, 0.18);
+  border-radius: 8px;
+  padding: clamp(22px, 4vw, 34px);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 210, 29, 0.2), transparent 28%),
+    linear-gradient(145deg, rgba(22, 6, 8, 0.42), rgba(82, 16, 24, 0.82));
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.22);
+}
+
+.volley-winner-card__animation {
+  position: relative;
+  display: grid;
+  min-height: 260px;
+  place-items: center;
+}
+
+.volley-winner-card__medal {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: clamp(110px, 16vw, 152px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 3px solid rgba(255, 246, 232, 0.72);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #fff6b8 0 18%, var(--volley-yellow) 22% 62%, #b57605 100%);
+  color: var(--volley-deep);
+  font-size: clamp(3.7rem, 8vw, 6.6rem);
+  font-weight: 1000;
+  line-height: 1;
+  box-shadow: 0 22px 38px rgba(0, 0, 0, 0.24);
+  animation: volleyWinnerMedal 3.8s ease-in-out infinite;
+}
+
+.volley-winner-card__ball {
+  position: absolute;
+  right: 18%;
+  bottom: 18%;
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255, 246, 232, 0.84);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff7ea 0 28%, var(--volley-yellow) 29% 64%, #c48b00 65% 100%);
+  animation: volleyWinnerBall 4.8s ease-in-out infinite;
+}
+
+.volley-winner-card__burst {
+  position: absolute;
+  width: 16px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255, 210, 29, 0.78);
+  transform-origin: center 170px;
+  animation: volleyWinnerConfetti 2.8s ease-in-out infinite;
+}
+
+.volley-winner-card__burst--one {
+  --burst-rotate: -22deg;
+  top: 18px;
+  left: 28%;
+  transform: rotate(-22deg);
+}
+
+.volley-winner-card__burst--two {
+  --burst-rotate: 24deg;
+  top: 12px;
+  right: 30%;
+  width: 12px;
+  height: 34px;
+  background: rgba(255, 246, 232, 0.72);
+  animation-delay: 260ms;
+  transform: rotate(24deg);
+}
+
+.volley-winner-card__burst--three {
+  --burst-rotate: 72deg;
+  right: 16%;
+  bottom: 42px;
+  width: 12px;
+  height: 30px;
+  background: rgba(240, 94, 104, 0.76);
+  animation-delay: 520ms;
+  transform: rotate(72deg);
+}
+
+.volley-winner-card__copy {
+  display: grid;
+  gap: 14px;
+}
+
+.volley-winner-card__copy h2 {
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 6.4rem);
+  line-height: 0.9;
+}
+
+.volley-winner-card__copy p:not(.volley-kicker) {
+  margin: 0;
+  max-width: 620px;
+  color: rgba(255, 246, 232, 0.84);
+  font-size: 1.1rem;
+  line-height: 1.55;
+}
+
+.volley-winner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.volley-winner-meta span,
+.volley-winner-roster p {
+  border: 1px solid rgba(255, 210, 29, 0.32);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 210, 29, 0.1);
+  color: rgba(255, 246, 232, 0.9);
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.volley-winner-roster {
+  display: grid;
+  gap: 12px;
+  border: 1px solid rgba(255, 246, 232, 0.14);
+  border-radius: 8px;
+  padding: 18px;
+  background: rgba(255, 246, 232, 0.07);
+}
+
+.volley-winner-roster p {
+  justify-self: start;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.volley-winner-roster ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.volley-winner-roster li {
+  border-bottom: 1px solid rgba(255, 246, 232, 0.12);
+  padding: 0 0 8px;
+  color: var(--volley-cream);
+  font-weight: 900;
+}
+
+.volley-winner-roster li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.volley-finished-close {
+  grid-template-columns: minmax(0, 0.78fr);
+}
+
+.volley-finished-close h2 {
+  max-width: 720px;
+  font-size: clamp(2.6rem, 5.4vw, 5rem);
+  line-height: 0.96;
+}
+
+@keyframes volleyWinnerMedal {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes volleyWinnerBall {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(18px, -18px) rotate(28deg);
+  }
+}
+
+@keyframes volleyWinnerConfetti {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0) rotate(var(--burst-rotate, 0deg));
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-8px) rotate(calc(var(--burst-rotate, 0deg) + 8deg));
+  }
+}
+
 .volley-legal-note {
   margin: 0;
   max-width: none !important;
@@ -3839,6 +4052,14 @@ footer img {
   }
 
   .volley-live-widget__court {
+    min-height: 220px;
+  }
+
+  .volley-winner-card {
+    grid-template-columns: 1fr;
+  }
+
+  .volley-winner-card__animation {
     min-height: 220px;
   }
 
@@ -3960,13 +4181,23 @@ footer img {
   .volley-live-widget__progress {
     padding: 14px;
   }
+
+  .volley-winner-card {
+    padding: 18px;
+  }
+
+  .volley-winner-card__copy h2 {
+    font-size: clamp(2.7rem, 13vw, 4rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .volley-live-widget__badge span,
   .volley-live-widget__ball,
-  .volley-live-widget__shadow,
-  .volley-live-widget__player {
+  .volley-live-widget__player,
+  .volley-winner-card__medal,
+  .volley-winner-card__ball,
+  .volley-winner-card__burst {
     animation: none !important;
   }
 }
