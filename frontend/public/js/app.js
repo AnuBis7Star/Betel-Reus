@@ -425,7 +425,8 @@ function applyLanguage() {
   document.documentElement.lang = lang;
   const languageToggle = $("#langToggle");
   if (languageToggle) {
-    languageToggle.textContent = lang === "ro" ? "ES" : "RO";
+    languageToggle.textContent = lang === "ro" ? "RO" : "ES";
+    languageToggle.dataset.lang = lang;
     languageToggle.setAttribute("aria-label", tx(lang === "ro" ? "languageToggleSpanish" : "languageToggleRomanian"));
   }
   $$("[data-i18n]").forEach((node) => {
@@ -447,6 +448,16 @@ function applyLanguage() {
     const key = node.dataset.i18nTitle;
     const value = tx(key);
     if (value !== key) node.title = value;
+  });
+  $$("[data-i18n-alt]").forEach((node) => {
+    const key = node.dataset.i18nAlt;
+    const value = tx(key);
+    if (value !== key) node.alt = value;
+  });
+  $$("[data-i18n-src]").forEach((node) => {
+    const key = node.dataset.i18nSrc;
+    const value = tx(key);
+    if (value !== key) node.src = value;
   });
   if ($("#bookSearch")) $("#bookSearch").placeholder = tx("bookSearchPlaceholder");
   renderSchedule();
@@ -692,7 +703,21 @@ function closeEventModal() {
   document.body.classList.remove("event-modal-open");
 }
 
+function openAnnouncementModal() {
+  $("#announcementModal")?.classList.add("is-open");
+  $("#announcementModal")?.setAttribute("aria-hidden", "false");
+  document.body.classList.add("event-modal-open");
+}
+
+function closeAnnouncementModal() {
+  $("#announcementModal")?.classList.remove("is-open");
+  $("#announcementModal")?.setAttribute("aria-hidden", "true");
+  if (!activeEventId) document.body.classList.remove("event-modal-open");
+}
+
 function setupEvents() {
+  $("[data-announcement-modal-open]")?.addEventListener("click", openAnnouncementModal);
+  $$("[data-announcement-modal-close]").forEach((button) => button.addEventListener("click", closeAnnouncementModal));
   $("#landingEventsList")?.addEventListener("click", (event) => {
     const card = event.target.closest("[data-event-id]");
     if (!card) return;
@@ -700,6 +725,7 @@ function setupEvents() {
   });
   $$("[data-event-modal-close]").forEach((button) => button.addEventListener("click", closeEventModal));
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && $("#announcementModal")?.classList.contains("is-open")) closeAnnouncementModal();
     if (event.key === "Escape" && activeEventId) closeEventModal();
   });
 }
@@ -2302,25 +2328,19 @@ function renderAuditLog() {
 }
 
 function nextSundayLive(now = new Date()) {
-  const sessions = [
-    { hour: 10, endHour: 12, label: "duminică dimineața" },
-    { hour: 18, endHour: 20, label: "duminică seara" }
-  ];
+  const session = { hour: 10, endHour: 12, label: "duminică dimineața" };
+  const start = new Date(now);
+  start.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+  start.setHours(session.hour, 0, 0, 0);
+  const end = new Date(start);
+  end.setHours(session.endHour, 0, 0, 0);
 
-  for (const session of sessions) {
-    const start = new Date(now);
-    start.setDate(now.getDate() + ((7 - now.getDay()) % 7));
-    start.setHours(session.hour, 0, 0, 0);
-    const end = new Date(start);
-    end.setHours(session.endHour, 0, 0, 0);
-    if (now >= start && now < end) return { live: true, end, session };
-    if (start > now) return { live: false, start, session };
-  }
+  if (now >= start && now < end) return { live: true, end, session };
+  if (start > now) return { live: false, start, session };
 
-  const next = new Date(now);
-  next.setDate(now.getDate() + ((7 - now.getDay()) % 7 || 7));
-  next.setHours(10, 0, 0, 0);
-  return { live: false, start: next, session: sessions[0] };
+  start.setDate(start.getDate() + 7);
+  end.setDate(end.getDate() + 7);
+  return { live: false, start, session };
 }
 
 function formatTimeDistance(ms) {

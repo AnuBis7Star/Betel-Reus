@@ -17,7 +17,44 @@ The repository code and Git diff are the source of truth.
 
 Temporary AI task specs, reports, handoffs, and logs are local-only working files. They must stay inside `.ai-local/` and must not be treated as permanent project documentation.
 
-## 3. Local-only AI files
+## 3. Branch workflow
+
+- `develop` is the integration/testing branch.
+- `main` is production and deploys automatically.
+- Never implement directly on `develop` or `main`.
+- Create every task branch from `develop`.
+- Open PRs back into `develop`.
+- Merge to `develop` only after review and local human testing.
+- Merge `develop` to `main` only for an explicit release.
+
+Branch names must be lowercase kebab-case and use one of these prefixes:
+
+```text
+feat/short-description
+fix/short-description
+docs/short-description
+chore/short-description
+hotfix/short-description
+```
+
+Commits must use Conventional Commits:
+
+```text
+feat(scope): add useful behavior
+fix(scope): correct broken behavior
+docs(workflow): update branch process
+```
+
+Before opening a PR for normal code changes, run:
+
+```bash
+npm run typecheck
+npm run lint
+```
+
+Add build/tests when the change touches logic, UI flows, or release-facing behavior. If a required script is missing, report that explicitly instead of substituting silently.
+
+## 4. Local-only AI files
 
 Local-only AI workflow files live here:
 
@@ -49,17 +86,19 @@ Rules:
 - `.ai-local/` files must not be moved into tracked docs folders
 - temporary AI notes must stay local-only
 
-## 4. Mode A: Codex-only workflow
+## 5. Mode A: Codex-only workflow
 
 This is the default and fallback workflow.
 
 1. Create or write the task.
-2. Codex plans the change.
-3. Codex implements the change.
-4. Codex runs checks.
-5. Codex reviews its own diff.
-6. Codex fixes any issues found.
-7. Human manually verifies important user-facing flows.
+2. Codex checks the current branch.
+3. Codex creates a task branch from `develop` before editing.
+4. Codex plans the change.
+5. Codex implements the change.
+6. Codex runs checks.
+7. Codex reviews its own diff.
+8. Codex fixes any issues found.
+9. Human manually verifies important user-facing flows.
 
 Project-specific verification commands:
 
@@ -86,29 +125,30 @@ Important note:
 
 Codex may write a local report in `.ai-local/reports/` if the task is large enough to justify it.
 
-## 5. Mode B: Codex + OpenCode middleman workflow
+## 6. Mode B: Codex + OpenCode middleman workflow
 
 This is an optional future workflow.
 
 1. Codex creates a local task spec in `.ai-local/tasks/`.
-2. OpenCode reads the task spec.
-3. OpenCode makes minimal targeted edits.
-4. OpenCode inspects `package.json` before running commands.
-5. OpenCode runs relevant checks.
-6. OpenCode writes an implementation report in `.ai-local/reports/`.
-7. Codex reviews:
+2. Codex creates a task branch from `develop`.
+3. OpenCode reads the task spec.
+4. OpenCode makes minimal targeted edits.
+5. OpenCode inspects `package.json` before running commands.
+6. OpenCode runs relevant checks.
+7. OpenCode writes an implementation report in `.ai-local/reports/`.
+8. Codex reviews:
    - task spec
    - implementation report
    - `git diff --stat`
    - relevant diffs
    - check output summary
-8. OpenCode fixes simple issues.
-9. Codex fixes difficult or architecture-sensitive issues.
-10. Human manually verifies important user-facing flows.
+9. OpenCode fixes simple issues.
+10. Codex fixes difficult or architecture-sensitive issues.
+11. Human manually verifies important user-facing flows.
 
 OpenCode must not become required for development. This mode is only an optional way to shift repetitive implementation and testing work onto a cheaper middleman agent.
 
-## 6. Agent responsibilities
+## 7. Agent responsibilities
 
 ### Codex should do
 
@@ -145,7 +185,7 @@ OpenCode must not become required for development. This mode is only an optional
 - committing `.ai-local/` files
 - guessing when the task is ambiguous
 
-## 7. Project-specific risk areas
+## 8. Project-specific risk areas
 
 ### Admin surfaces and admin code flow
 
@@ -179,7 +219,7 @@ Production behavior depends on env vars, upload paths, and domain settings. Agen
 
 Utility modules affect many routes and responses. Unrelated refactors in these files create wide regression risk.
 
-## 8. Task spec template
+## 9. Task spec template
 
 Real task specs should usually be saved locally in `.ai-local/tasks/` and should not be committed.
 
