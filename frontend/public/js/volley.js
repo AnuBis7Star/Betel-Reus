@@ -44,7 +44,10 @@ function applyLanguage() {
   const metaDescription = document.querySelector("meta[name='description']");
   if (metaDescription) metaDescription.content = tx("volleyPageDescription");
   const toggle = document.querySelector("#langToggle");
-  if (toggle) toggle.textContent = lang === "ro" ? "ES" : "RO";
+  if (toggle) {
+    toggle.textContent = lang === "ro" ? "RO" : "ES";
+    toggle.dataset.lang = lang;
+  }
 
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const key = node.dataset.i18n;

@@ -78,7 +78,7 @@
         <a class="nav-library" href="/library.html" data-i18n="navLibrary">Bibliotecă</a>
         <a href="#contact" data-i18n="navContact">Contact</a>
       </nav>
-      <button class="lang-toggle" type="button" id="langToggle" aria-label="Schimbă limba în spaniolă">ES</button>
+      <button class="lang-toggle" type="button" id="langToggle" data-lang="ro" aria-label="Schimbă limba în spaniolă">RO</button>
       <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-controls="mobileMenu" aria-expanded="false" data-i18n-aria-label="mobileMenuOpen">
         <span></span>
         <span></span>
@@ -117,6 +117,17 @@
             <a href="https://www.youtube.com/@BisericaBetelReus/live" target="_blank" rel="noreferrer" data-i18n="liveYoutube">Urmărește live pe YouTube</a>
           </div>
         </div>
+      </section>
+
+      <section class="section live-announcement" id="anunt-live">
+        <div class="live-announcement-label">
+          <p class="eyebrow" data-i18n="summerLiveEyebrow">Anunț</p>
+        </div>
+        <div class="live-announcement-copy">
+          <h2 data-i18n="summerLiveTitle">Programul live pe perioada verii</h2>
+          <p><span data-i18n="summerLiveText">Pe perioada verii, slujbele de după-amiază nu vor fi transmise live.</span> <span data-i18n="summerLiveBlessing">Vă mulțumim pentru înțelegere. Fiți binecuvântați!</span></p>
+        </div>
+        <button class="live-announcement-source" type="button" data-announcement-modal-open data-i18n="summerLiveSource">Vezi afișul</button>
       </section>
 
       <section class="section video-feature" id="predici">
@@ -254,6 +265,15 @@
         </div>
       </section>
     </main>
+
+    <div class="event-modal announcement-modal" id="announcementModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="announcementModalTitle">
+      <button class="event-modal-backdrop" type="button" data-announcement-modal-close aria-label="Închide"></button>
+      <div class="announcement-modal-panel">
+        <button class="event-modal-close" type="button" data-announcement-modal-close aria-label="Închide">×</button>
+        <h2 id="announcementModalTitle" data-i18n="summerLiveTitle">Programul live pe perioada verii</h2>
+        <img src="/assets/announcement-summer-live-ro.svg" width="900" height="1600" alt="Anunț Betel Reus despre transmisiunile live de după-amiază pe perioada verii" data-i18n-src="summerLivePosterSrc" data-i18n-alt="summerLiveImageAlt" loading="lazy" />
+      </div>
+    </div>
 
     <div class="event-modal" id="eventModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
       <button class="event-modal-backdrop" type="button" data-event-modal-close aria-label="Închide"></button>
